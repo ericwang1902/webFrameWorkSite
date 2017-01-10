@@ -1,0 +1,17 @@
+{
+    "menuList":[
+        {
+            "menuName":"用户管理",
+            "funcList":[
+                    {
+                        "funcName":"增加用户",
+                        "funcLink":"/index"
+                    },
+                    {
+                        "funcName":"修改用户",
+                        "funcLink":"/index"
+                    }
+            ]
+        }
+    ]
+}
