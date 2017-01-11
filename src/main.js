@@ -45,12 +45,13 @@ const routes = [
     path: '/dashboard',
     component: App,
     children: [
-      { path: 'role/modifyrole', component: adduser, meta: { title: '添加用户' } }
+      { path: '/role/addrole', component: adduser, meta: { title: '添加用户' } }
     ]
   },
   {
     path:'/',
-    component:login
+    component:login,
+    meta:{title:'管理后台'}
   }
 ]
 
