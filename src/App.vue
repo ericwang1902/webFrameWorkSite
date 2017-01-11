@@ -19,23 +19,15 @@
 
 <el-row style="height: 100%">
 <el-col :span="8" style="width: 225px;height: 100%" >
-<el-menu style="height: 100%" default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+<el-menu style="height: 100%" default-active="2" :router="true" class="el-menu-vertical-demo"  @open="handleOpen" @close="handleClose">
 <div v-for="(menu, index) in menus">
-  <el-submenu :index="index.toString()">
-    <template slot="title"><i></i>{{menu.menuName}}</template>
+  <el-submenu :index="index.toString()" >
+    <template slot="title">{{menu.menuName}}</template>
     <div v-for="(func,index2) in menu.funcList">
-      <el-menu-item :index="index.toString()+'-'+index2.toString()">{{func.funcName}}</el-menu-item>
+      <el-menu-item :index="index.toString()+'-'+index2.toString()" :route="{path: func.funcLink,query:{url:func.funcLink}}">{{func.funcName}}</el-menu-item>
     </div>
   </el-submenu>
 </div>
-
-
-<!--<el-submenu index="1">
-  <template slot="title"><i></i>导航一</template>
-  <el-menu-item index="1-1">选项1</el-menu-item>
-  <el-menu-item index="1-2">选项2</el-menu-item>
-  <el-menu-item index="1-3">选项3</el-menu-item>
-</el-submenu>-->
 
 </el-menu>
 </el-col>

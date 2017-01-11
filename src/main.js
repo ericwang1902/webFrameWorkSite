@@ -9,7 +9,10 @@ import store from './common/store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
+//components
 import adduser from './dashboard/adduser'
+import login from './components/login'
+
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
@@ -39,11 +42,15 @@ Vue.use(VueAxios, axios)
 // 我们晚点再讨论嵌套路由。
 const routes = [
   {
-    path: '/',
+    path: '/dashboard',
     component: App,
     children: [
-      { path: 'adduser', component: adduser, meta: { title: '添加用户' } }
+      { path: 'role/modifyrole', component: adduser, meta: { title: '添加用户' } }
     ]
+  },
+  {
+    path:'/',
+    component:login
   }
 ]
 
