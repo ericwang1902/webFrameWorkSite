@@ -60,7 +60,7 @@ import config from '../common/config'
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.axios.post('http://localhost:3000/sysmanage/login', {
+                        this.axios.post(config.LoginUrl, {
                                     username: this.ruleForm2.mobile,
                                     password: this.ruleForm2.pass
                                 })

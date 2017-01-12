@@ -68,6 +68,9 @@
         console.log(key, keyPath);
       },
       jumpTo(key, keypath) {
+        if(key=="exit"){
+          
+        }
         console.log("key:" + key)
         console.log("keypath:" + keypath)
       }
