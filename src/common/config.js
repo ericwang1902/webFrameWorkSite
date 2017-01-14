@@ -1,7 +1,7 @@
 var config={
-    URL:"http://localhost:3000/",
-    LoginUrl:URL+"/sysmanage/login"
-    
+    GetLoginUrl:"http://localhost:3000/sysmanage/login",
+    LogoutURL:"http://localhost:3000/sysmanage/logout",
+    GetUserInfo:"http://localhost:3000/sysmanage/user"
 
 }
 

@@ -59,16 +59,18 @@ import config from '../common/config'
         methods: {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
+                    var user = {
+                        username: this.ruleForm2.mobile,
+                        password: this.ruleForm2.pass
+                    }
                     if (valid) {
-                        this.axios.post(config.LoginUrl, {
-                                    username: this.ruleForm2.mobile,
-                                    password: this.ruleForm2.pass
-                                })
+                        this.axios.post(config.GetLoginUrl, user)
                                 .then((response) => {
                                     console.log(response.data.authresult)
                                     if(response.data.authresult==true)
                                         {
-                                           // console.log(response.data.authresult)
+                                      this.$store.commit('setUserInfo',user)
+                                     console.log(this.$store.getters.getUserInfo)
                                        this.$router.push('/dashboard');
                                         }
                                     else{

@@ -1,6 +1,6 @@
 <template>
     <div>
-       添加用户
+       添加菜单
     </div>
 </template>
 <script>

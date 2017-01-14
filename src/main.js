@@ -10,8 +10,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
 //components
-import adduser from './dashboard/adduser'
-import login from './components/login'
+import login from './components/login'//登录组件
+import addmenu from './dashboard/admin/addmenu'//添加菜单
+import modifymenu from './dashboard/admin/modifymenu'//修改菜单
+
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -44,14 +46,16 @@ const routes = [
   {
     path: '/dashboard',
     component: App,
+    meta: { title: '控制台' },
     children: [
-      { path: '/role/addrole', component: adduser, meta: { title: '添加用户' } }
+      { path: 'menu/addmenu', component: addmenu, meta: { title: '添加菜单' } },
+      { path: 'menu/modifymenu', component: modifymenu, meta: { title: '修改菜单' } }
     ]
   },
   {
-    path:'/',
-    component:login,
-    meta:{title:'管理后台'}
+    path: '/',
+    component: login,
+    meta: { title: '管理后台' }
   }
 ]
 

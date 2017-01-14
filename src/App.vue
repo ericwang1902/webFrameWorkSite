@@ -19,17 +19,27 @@
 
 <el-row style="height: 100%">
 <el-col :span="8" style="width: 225px;height: 100%" >
-<el-menu style="height: 100%" default-active="2" :router="true" class="el-menu-vertical-demo"  @open="handleOpen" @close="handleClose">
-<div v-for="(menu, index) in menus">
-  <el-submenu :index="index.toString()" >
-    <template slot="title">{{menu.menuName}}</template>
-    <div v-for="(func,index2) in menu.funcList">
-      <el-menu-item :index="index.toString()+'-'+index2.toString()" :route="{path: func.funcLink,query:{url:func.funcLink}}">{{func.funcName}}</el-menu-item>
-    </div>
-  </el-submenu>
-</div>
 
+<!--官方menu 结合router的使用方法，出现menu-item和跳转不匹配的情况-->
+<!--<el-menu style="height: 100%" :router="isRouter" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+      <el-submenu v-for="(menu, index) in menus" :index="index.toString()">
+        <template slot="title"><i class="el-icon-message"></i>{{menu.menuName}}</template>
+          <el-menu-item  v-for="(func,index2) in menu.funcList" :index="index.toString()+'-'+index2.toString()" :route="{path: func.funcLink}">{{func.funcName}}</el-menu-item>
+      </el-submenu>
+</el-menu>-->
+<!--end 官方menu-->
+
+<el-menu style="height: 100%" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+      <el-submenu v-for="(menu, index) in menus" :index="index.toString()">
+        <template slot="title"><i class="el-icon-message"></i>{{menu.menuName}}</template>
+         <router-link style="text-decoration:none" v-for="(func,index2) in menu.funcList" :to="func.funcLink">
+           <el-menu-item   :index="index.toString()+'-'+index2.toString()" >{{func.funcName}}</el-menu-item>
+         </router-link>
+      </el-submenu>
 </el-menu>
+
+
+
 </el-col>
 <el-col :span="16">
   <router-view></router-view>
@@ -40,17 +50,20 @@
 </template>
 
 <script>
+import config from './common/config'
+
   export default {
     name: 'app',
     data() {
       return {
+        isRouter:true,
         menus: []
       }
     },
     components: {
     },
     created: function () {
-      this.axios.get('http://localhost:3000/sysmanage/user')
+      this.axios.get(config.GetUserInfo)
         .then((response) => {
           this.menus = response.data[0].role[0].menuList;
           console.log(this.menus)
@@ -68,8 +81,25 @@
         console.log(key, keyPath);
       },
       jumpTo(key, keypath) {
+        var usrinfo ={
+          username:this.$store.getters.getUserInfo.username,
+          password:this.$store.getters.getUserInfo.password
+        }
         if(key=="exit"){
-          
+          console.log(usrinfo)
+          this.axios.post(config.LogoutURL,usrinfo)
+          .then((response)=>{
+            console.log(response);
+           if(response.data.authresult==false)
+           {
+              this.$store.commit('setUserInfo',{});
+              this.$router.push('/');
+           }
+
+          })
+          .catch(function(err){
+            console.log(err)
+          })
         }
         console.log("key:" + key)
         console.log("keypath:" + keypath)
