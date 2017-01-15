@@ -25,7 +25,7 @@
 
         <!--dialog start-->
 
-<el-dialog title="收货地址" v-model="dialogFormVisible">
+<el-dialog title="收货地址" v-model="dialogFormVisible" >
     <el-form :model="menuform" :rules="rules" label-position="left" ref="menuform" label-width="100px">
         <el-form-item label="菜单名称" prop="menuName">
             <el-input v-model="menuform.menuName"></el-input>
@@ -42,8 +42,8 @@
 </el-form-item>
 
 <el-form-item>
-    <el-button type="primary" v-if="!isCreateForm" @click="modifyForm('menuform')">提交修改</el-button>
-    <el-button type="primary" v-if="isCreateForm" @click="createMenu('menuform')">立即创建</el-button>
+    <el-button type="primary" v-show="!isCreateForm" @click="modifyForm('menuform')">提交修改</el-button>
+    <el-button type="primary" v-show="isCreateForm" @click="createMenu('menuform')">立即创建</el-button>
     <el-button @click="resetForm('menuform')">重置</el-button>
 </el-form-item>
 </el-form>
@@ -142,19 +142,23 @@
                 this.$refs[formName].resetFields();
             },
             modifyMenu(row){
-                console.log("row info:"+JSON.stringify(row))
+                console.log("所选行的信息:"+JSON.stringify(row))
                 this.dialogFormVisible = true;
                 this.isCreateForm=false;
                 //row是一行的menu数据
                 //弹出表单
                 this.menuform.menuName=row.menuName;
-                this.menuform.funcSelection = row.funcList;
-                console.log("selections:"+JSON.stringify(this.menuform.funcSelection))
-                for(var i =0;i<row.funcList.length;i++){
-                    console.log("this:"+typeof(this))
-                    this.$refs.funcListTable.toggleRowSelection(this.menuform.funcSelection.find(d => d._id === row.funcList[i]._id))
-                }
-               
+
+                console.log("该列表所绑定的funcList信息:"+JSON.stringify(this.funcList))
+              //  console.log(typeof(this.$refs.funcListTable))
+
+                // for(var i =0;i<row.funcList.length;i++){
+                //     console.log(JSON.stringify(this.funcList.find(d => d._id === row.funcList[i]._id)) )
+                //     this.$refs['funcListTable'].toggleRowSelection(this.funcList.find(d => d._id === row.funcList[i]._id),true)
+                // }
+
+               this.funcList.forEach((row) => this.$refs.funcListTable.toggleRowSelection(row, true));
+                
  
 
             }
