@@ -18,7 +18,7 @@
 </el-row>
 
 <el-row style="height: 100%">
-<el-col :span="8" style="width: 225px;height: 100%" >
+<el-col :span="4" style="height: 100%" >
 
 <!--官方menu 结合router的使用方法，出现menu-item和跳转不匹配的情况-->
 <!--<el-menu style="height: 100%" :router="isRouter" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
@@ -29,7 +29,7 @@
 </el-menu>-->
 <!--end 官方menu-->
 
-<el-menu style="height: 100%" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+<el-menu style="height: 100%;border-radius: 0px"  theme="dark" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
       <el-submenu v-for="(menu, index) in menus" :index="index.toString()">
         <template slot="title"><i class="el-icon-message"></i>{{menu.menuName}}</template>
          <router-link style="text-decoration:none" v-for="(func,index2) in menu.funcList" :to="func.funcLink">
@@ -41,7 +41,7 @@
 
 
 </el-col>
-<el-col :span="16">
+<el-col :span="20" style="height: 100%" >
   <router-view></router-view>
 </el-col>
 
@@ -65,8 +65,17 @@ import config from './common/config'
     created: function () {
       this.axios.get(config.GetUserInfo)
         .then((response) => {
-          this.menus = response.data[0].role[0].menuList;
-          console.log(this.menus)
+          
+          var user = response.data[0];
+          var roles= user.role;
+          
+          //role其实是一个数组
+          for(var i=0;i<roles.length;i++){
+            //concat就是合并数组
+            this.menus=this.menus.concat(roles[i].menuList);
+          }
+          
+          
         }
         )
         .catch(function (error) {

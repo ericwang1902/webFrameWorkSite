@@ -1,6 +1,6 @@
 <template>
     <div>
-       添加菜单
+       角色管理
     </div>
 </template>
 <script>

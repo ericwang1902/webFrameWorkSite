@@ -11,8 +11,8 @@ import 'element-ui/lib/theme-default/index.css'
 
 //components
 import login from './components/login'//登录组件
-import addmenu from './dashboard/admin/addmenu'//添加菜单
-import modifymenu from './dashboard/admin/modifymenu'//修改菜单
+import menu from './dashboard/admin/menu/menu'//菜单管理
+import role from './dashboard/admin/role/role'//角色管理
 
 
 import axios from 'axios'
@@ -48,8 +48,8 @@ const routes = [
     component: App,
     meta: { title: '控制台' },
     children: [
-      { path: 'menu/addmenu', component: addmenu, meta: { title: '添加菜单' } },
-      { path: 'menu/modifymenu', component: modifymenu, meta: { title: '修改菜单' } }
+      { path: 'menu', component: menu, meta: { title: '菜单管理' } },
+      { path: 'role', component: role, meta: { title: '角色管理' } }
     ]
   },
   {
