@@ -35,7 +35,7 @@
         </el-card>
 
 <!--dialog start-->
-<el-dialog :title="title" v-model="dialogFormVisible"  @close="updateMenuList" >
+<el-dialog :title="title" v-model="$store.getters.getDialogStatus"  @close="ondialogclose" >
     <menuform :isCreateForm="isCreateForm" :row="rowdata" :funcList="funcList"></menuform>
 </el-dialog>
 <!--dialog end-->
@@ -55,8 +55,6 @@
         },
         data() {
             return {
-                dialogFormVisible: false,
-
                 isCreateForm:true,
                 rowdata:{},
                 funcList:[],
@@ -109,20 +107,22 @@
             },
             //点击新建按钮
             createMenu(){
-                this.dialogFormVisible = true;
+                console.log(this.$store.getters.getDialogStatus)
+                this.$store.commit('setDialogStatus',true)
                 this.isCreateForm=true;
                 this.title="添加菜单"
             },
            //点击修改按钮，弹出框，传递参数进去
             modifyMenu(row){
-                this.dialogFormVisible = true;
+                this.$store.commit('setDialogStatus',true)
 
                 this.isCreateForm=false;
                 this.rowdata=row;
                 this.title="修改菜单"
             },
-            updateMenuList(){
+            ondialogclose(){
                 this.getMenuList(this.pageitems, this.currentPage);
+                this.$store.commit('setDialogStatus',false);
             },
             //暂时不支持修改每页数量
              handleSizeChange(val) {
@@ -132,11 +132,6 @@
                 this.currentPage =val;
                 this.getMenuList(this.pageitems,val);
                 console.log(`当前页: ${val}`);
-            }
-        },
-        events:{
-            'closeDialog': function(closedialog){
-            this.dialogFormVisible = closedialog;
             }
         }
     }

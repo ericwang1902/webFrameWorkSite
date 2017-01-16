@@ -8,10 +8,12 @@ var userInfo = {
     username: "",
     password: ""
 }
+var dialogStatus=false;
 
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
-    user: userInfo//登录用户信息
+    user: userInfo,//登录用户信息
+    dialogStatus:dialogStatus
 }
 
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
@@ -20,11 +22,16 @@ const mutations = {
     setUserInfo: function (state, userinfo) {
         state.user.username = userinfo.username;
         state.user.password = userinfo.password;
+    },
+    //设置对话框的显示状态
+    setDialogStatus:function(state,status){
+        state.dialogStatus = status;
     }
 }
 
 const getters = {
-    getUserInfo: state => { return state.user }
+    getUserInfo: state => { return state.user },
+    getDialogStatus:state=> {return state.dialogStatus}
 
 }
 

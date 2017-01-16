@@ -50,6 +50,7 @@
                     this.ModifyInitForm()
                 }else{
                     this.CreateInitFrom();
+                     this.menuform.menuName ="";
                 }
 
             },
@@ -58,6 +59,7 @@
                     this.ModifyInitForm()
                 }else{
                     this.CreateInitFrom();
+                    this.menuform.menuName ="";
                 }
             }
         },
@@ -66,6 +68,7 @@
                 this.ModifyInitForm()
             }else{
                 this.CreateInitFrom();
+                this.menuform.menuName ="";
             }
         },
         methods: {
@@ -107,7 +110,8 @@
                             this.axios.post(config.menuCreate, this.menuform)
                                 .then((response) => {
                                     console.log(response)
-                                    
+                                    this.$store.commit('setDialogStatus',false)
+                                     this.menuform.menuName ="";
                                 })
                                 .catch(function (err) {
                                     console.log(err)
