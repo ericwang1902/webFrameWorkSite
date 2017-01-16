@@ -23,30 +23,9 @@
             </el-table>
         </el-card>
 
-        <!--dialog start-->
-
-<el-dialog title="收货地址" v-model="dialogFormVisible" >
-    <el-form :model="menuform" :rules="rules" label-position="left" ref="menuform" label-width="100px">
-        <el-form-item label="菜单名称" prop="menuName">
-            <el-input v-model="menuform.menuName"></el-input>
-        </el-form-item>
-
-        <el-form-item label="选择功能" style="width: 100%" >
-<el-table :data="funcList" max-height="450" ref="funcListTable" border style="width: 100%" @selection-change="handleSelectionChange">
-<el-table-column type="selection" width="55">
-</el-table-column>
-
-<el-table-column prop="funcName" label="功能名称">
-</el-table-column>
-</el-table>
-</el-form-item>
-
-<el-form-item>
-    <el-button type="primary" v-show="!isCreateForm" @click="modifyForm('menuform')">提交修改</el-button>
-    <el-button type="primary" v-show="isCreateForm" @click="createMenu('menuform')">立即创建</el-button>
-    <el-button @click="resetForm('menuform')">重置</el-button>
-</el-form-item>
-</el-form>
+<!--dialog start-->
+<el-dialog title="收货地址" v-model="dialogFormVisible" @close="updateMenuList" >
+    <menuform :isCreateForm="isCreateForm" :row="rowdata" :funcList="funcList"></menuform>
 </el-dialog>
 <!--dialog end-->
 
@@ -57,20 +36,23 @@
 
 <script>
     import config from '../../../common/config'
+    import menuform from './menuform'
 
     export default {
+        components:{
+            menuform
+        },
         data() {
             return {
                 dialogFormVisible: false,
+
                 isCreateForm:true,
+                rowdata:{},
+                funcList:[],
+
                 menudata: [],
                 tagTypes: config.tagTypes,
 
-                funcList: [],//用来显示的功能列表
-                menuform: {
-                    menuName: '',
-                    funcSelection: []
-                },
                 //rules几要素：1.form中的rules；2.item中的prop；3.data中的rules对象
                 rules: {
                     menuName: [
@@ -88,79 +70,31 @@
                 this.axios.get(config.menuList)
                     .then(response => {
                         this.menudata = response.data;
-                        this.axios.get(config.funcList)
-                            .then((response => {
-                                this.funcList = response.data;
-                                //    console.log(response.data)
-                            }))
-                            .catch(function (err) {
-                                console.log(err)
-                            })
+                        this.getFuncList();
                     })
                     .catch(function (err) {
                         console.log(err);
                     })
             },
-            //获取选择项
-            handleSelectionChange(val) {
-                this.menuform.funcSelection = val;
-                console.log(JSON.stringify(this.menuform.funcSelection))
+            getFuncList(){
+                 this.axios.get(config.funcList)
+                    .then((response => {
+                        this.funcList = response.data;
+                    }))
+                    .catch(function (err) {
+                        console.log(err)
+                    })
             },
-            createMenu(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        if (this.menuform.funcSelection.length == 0) {
-                            //当没有选择功能
-                            this.$message({
-                                showClose: true,
-                                message: '请选择至少一个功能！',
-                                type: 'error'
-                            });
-                        }
-                        else {
-                            //创建菜单接口，成功后回调
-                            this.axios.post(config.menuCreate, this.menuform)
-                                .then((response) => {
-                                    this.dialogFormVisible = false;
-                                    this.getMenuList();
-                                })
-                                .catch(function (err) {
-                                    console.log(err)
-                                })
-                        }
-
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            },
-            modifyForm(formName){
-
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
+           //点击修改按钮，弹出框，传递参数进去
             modifyMenu(row){
-                console.log("所选行的信息:"+JSON.stringify(row))
+               // console.log("所选行的信息:"+JSON.stringify(row))
                 this.dialogFormVisible = true;
+
                 this.isCreateForm=false;
-                //row是一行的menu数据
-                //弹出表单
-                this.menuform.menuName=row.menuName;
-
-                console.log("该列表所绑定的funcList信息:"+JSON.stringify(this.funcList))
-              //  console.log(typeof(this.$refs.funcListTable))
-
-                // for(var i =0;i<row.funcList.length;i++){
-                //     console.log(JSON.stringify(this.funcList.find(d => d._id === row.funcList[i]._id)) )
-                //     this.$refs['funcListTable'].toggleRowSelection(this.funcList.find(d => d._id === row.funcList[i]._id),true)
-                // }
-
-               this.funcList.forEach((row) => this.$refs.funcListTable.toggleRowSelection(row, true));
-                
- 
-
+                this.rowdata=row;
+            },
+            updateMenuList(){
+                this.getMenuList();
             }
         }
     }
