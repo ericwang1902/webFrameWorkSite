@@ -2,7 +2,7 @@
     <div>
         <el-card class="box-card" style="margin: 10px">
             <div slot="header" class="clearfix">
-                <el-button style="float: right; " @click="dialogFormVisible = true;isCreateForm=true;" type="primary">添加菜单</el-button>
+                <el-button style="float: right; " @click="createMenu()" type="primary">添加菜单</el-button>
             </div>
 
             <el-table border :data="menudata" style="width: 100%">
@@ -21,10 +21,21 @@
                 </template>
             </el-table-column>
             </el-table>
+            <!--分页-->
+            <div class="block">
+                <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="1"
+                :page-size="pageitems"
+                layout="prev, pager, next, jumper"
+                :total="total">
+                </el-pagination>
+            </div>
         </el-card>
 
 <!--dialog start-->
-<el-dialog title="收货地址" v-model="dialogFormVisible" @close="updateMenuList" >
+<el-dialog :title="title" v-model="dialogFormVisible"  @close="updateMenuList" >
     <menuform :isCreateForm="isCreateForm" :row="rowdata" :funcList="funcList"></menuform>
 </el-dialog>
 <!--dialog end-->
@@ -49,6 +60,11 @@
                 isCreateForm:true,
                 rowdata:{},
                 funcList:[],
+                title:"",
+
+                currentPage:1,
+                pageitems:10,
+                total:0,
 
                 menudata: [],
                 tagTypes: config.tagTypes,
@@ -63,13 +79,19 @@
             }
         },
         created: function () {
-            this.getMenuList();
+            this.getMenuList(10,1);
         },
         methods: {
-            getMenuList() {
-                this.axios.get(config.menuList)
+            getMenuList(pageitems,currentpage) {
+                this.axios.get(config.menuList,{
+                        params: {
+                        pageItems: pageitems,
+                        currentPage:currentpage
+                        }
+                        })
                     .then(response => {
-                        this.menudata = response.data;
+                        this.menudata = response.data.menus;
+                        this.total = Number(response.data.count);
                         this.getFuncList();
                     })
                     .catch(function (err) {
@@ -85,16 +107,36 @@
                         console.log(err)
                     })
             },
+            //点击新建按钮
+            createMenu(){
+                this.dialogFormVisible = true;
+                this.isCreateForm=true;
+                this.title="添加菜单"
+            },
            //点击修改按钮，弹出框，传递参数进去
             modifyMenu(row){
-               // console.log("所选行的信息:"+JSON.stringify(row))
                 this.dialogFormVisible = true;
 
                 this.isCreateForm=false;
                 this.rowdata=row;
+                this.title="修改菜单"
             },
             updateMenuList(){
-                this.getMenuList();
+                this.getMenuList(this.pageitems, this.currentPage);
+            },
+            //暂时不支持修改每页数量
+             handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage =val;
+                this.getMenuList(this.pageitems,val);
+                console.log(`当前页: ${val}`);
+            }
+        },
+        events:{
+            'closeDialog': function(closedialog){
+            this.dialogFormVisible = closedialog;
             }
         }
     }

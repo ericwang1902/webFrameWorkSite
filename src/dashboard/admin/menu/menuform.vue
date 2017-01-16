@@ -47,18 +47,35 @@
         watch: {
             row: function () {
                 if (!this.isCreateForm) {
-                    this.initForm()
+                    this.ModifyInitForm()
+                }else{
+                    this.CreateInitFrom();
                 }
 
+            },
+            isCreateForm:function(){
+               if (!this.isCreateForm) {
+                    this.ModifyInitForm()
+                }else{
+                    this.CreateInitFrom();
+                }
             }
         },
         mounted: function () {
             if (!this.isCreateForm) {
-                this.initForm()
+                this.ModifyInitForm()
+            }else{
+                this.CreateInitFrom();
             }
         },
         methods: {
-            initForm() {
+            CreateInitFrom(){
+                this.menuform.menuName ="";
+                this.funcList.forEach((row) => {
+                    this.$refs.funcListTable.toggleRowSelection(row, false);//将符合条件的表行置为false，作为下一个for的初始化。
+                })
+            },
+            ModifyInitForm() {
                 this.menuform.menuName = this.row.menuName;
                 console.log("watch:" + JSON.stringify(this.row))
                 this.funcList.forEach((row) => {
@@ -90,6 +107,7 @@
                             this.axios.post(config.menuCreate, this.menuform)
                                 .then((response) => {
                                     console.log(response)
+                                    
                                 })
                                 .catch(function (err) {
                                     console.log(err)
