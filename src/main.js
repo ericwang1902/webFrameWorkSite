@@ -13,6 +13,7 @@ import 'element-ui/lib/theme-default/index.css'
 import login from './components/login'//登录组件
 import menu from './dashboard/admin/menu/menu'//菜单管理
 import role from './dashboard/admin/role/role'//角色管理
+import user from './dashboard/admin/user/user'//用户列表
 
 
 import axios from 'axios'
@@ -49,7 +50,8 @@ const routes = [
     meta: { title: '控制台' },
     children: [
       { path: 'menu', component: menu, meta: { title: '菜单管理' } },
-      { path: 'role', component: role, meta: { title: '角色管理' } }
+      { path: 'role', component: role, meta: { title: '角色管理' } },
+      { path: 'user', component: user, meta: { title: '用户管理' } }
     ]
   },
   {

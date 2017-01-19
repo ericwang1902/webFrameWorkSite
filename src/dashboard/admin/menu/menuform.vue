@@ -5,14 +5,14 @@
         </el-form-item>
 
         <el-form-item label="选择功能" style="width: 100%" >
-<el-table :data="funcList" max-height="450" ref="funcListTable" border style="width: 100%" @selection-change="handleSelectionChange">
-<el-table-column type="selection" width="55">
-</el-table-column>
+            <el-table :data="funcList" max-height="450" ref="funcListTable" border style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55">
+            </el-table-column>
 
-<el-table-column prop="funcName" label="功能名称">
-</el-table-column>
-</el-table>
-</el-form-item>
+            <el-table-column prop="funcName" label="功能名称">
+            </el-table-column>
+            </el-table>
+        </el-form-item>
 
 <el-form-item>
     <el-button type="primary" v-show="!isCreateForm" @click="modifyForm('menuform')">提交修改</el-button>
@@ -110,7 +110,7 @@
                             this.axios.post(config.menuCreate, this.menuform)
                                 .then((response) => {
                                     console.log(response)
-                                    this.$store.commit('setDialogStatus',false)
+                                    this.$store.commit('setDialogStatus',false);
                                      this.menuform.menuName ="";
                                 })
                                 .catch(function (err) {
@@ -132,7 +132,31 @@
 
             },
             modifyForm(formName) {
-
+                this.$refs[formName].validate((valid)=>{
+                    if(valid){
+                        if (this.menuform.funcSelection.length == 0) {
+                            //当没有选择功能
+                            this.$message({
+                                showClose: true,
+                                message: '请选择至少一个功能！',
+                                type: 'error'
+                            });
+                        }
+                        else{
+                            
+                            console.log(JSON.stringify(this.row))
+                            this.axios.put(config.menuModify+'/'+this.row.menuId, this.menuform)
+                                .then((response) => {
+                                    console.log(response)
+                                    this.$store.commit('setDialogStatus',false)
+                                    this.menuform.menuName ="";
+                                })
+                                .catch(function (err) {
+                                    console.log(err)
+                                })
+                        }
+                    }
+                });
             }
         }
     }

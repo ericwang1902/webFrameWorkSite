@@ -69,8 +69,14 @@ import config from '../common/config'
                                     console.log(response.data.authresult)
                                     if(response.data.authresult==true)
                                         {
-                                      this.$store.commit('setUserInfo',user)
-                                     console.log(this.$store.getters.getUserInfo)
+                                        var localuserInfo={
+                                             username: this.ruleForm2.mobile,
+                                             password: this.ruleForm2.pass,
+                                             userid:response.data.userId
+                                        }
+                                        console.log(localuserInfo.userid)
+                                      this.$store.commit('setUserInfo',localuserInfo)
+                                     // console.log(this.$store.getters.getUserInfo)
                                        this.$router.push('/dashboard');
                                         }
                                     else{

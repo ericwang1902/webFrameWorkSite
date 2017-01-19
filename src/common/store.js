@@ -6,14 +6,17 @@ Vue.use(Vuex)
 
 var userInfo = {
     username: "",
-    password: ""
+    password: "",
+    userid:""
 }
 var dialogStatus=false;
+var RoleDialogStatus =false;
 
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
     user: userInfo,//登录用户信息
-    dialogStatus:dialogStatus
+    dialogStatus:dialogStatus,//菜单form状态
+    RoleDialogStatus:RoleDialogStatus//角色form的对话框的状态
 }
 
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
@@ -22,16 +25,22 @@ const mutations = {
     setUserInfo: function (state, userinfo) {
         state.user.username = userinfo.username;
         state.user.password = userinfo.password;
+        state.user.userid=userinfo.userid;
     },
     //设置对话框的显示状态
     setDialogStatus:function(state,status){
         state.dialogStatus = status;
+    },
+    //设置角色form的对话框状态
+    setRoleDialogStatus:function(state,status){
+        state.RoleDialogStatus = status;
     }
 }
 
 const getters = {
     getUserInfo: state => { return state.user },
-    getDialogStatus:state=> {return state.dialogStatus}
+    getDialogStatus:state=> {return state.dialogStatus},
+    getRoleDialogStatus:state=>{return state.RoleDialogStatus}
 
 }
 

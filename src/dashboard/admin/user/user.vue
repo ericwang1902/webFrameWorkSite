@@ -1,17 +1,16 @@
 <template>
     <div class="menucontent">
        <el-tabs  class="eltabs" @tab-click="handleClick">
-        <el-tab-pane label="角色列表"><rolelist></rolelist></el-tab-pane>
+        <el-tab-pane label="用户列表"><userlist></userlist></el-tab-pane>
         </el-tabs>
     </div>
 </template>
 <script>
-import rolelist from './rolelist';
-
+import userlist from './userlist';
 
 export default {
     components:{
-        rolelist
+        userlist
     },
     methods: {
         handleClick(tab, event) {

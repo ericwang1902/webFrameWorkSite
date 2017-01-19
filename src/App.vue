@@ -63,10 +63,12 @@ import config from './common/config'
     components: {
     },
     created: function () {
-      this.axios.get(config.GetUserInfo)
+       console.log("userinfo:"+this.$store.getters.getUserInfo.userid)
+      this.axios.get(config.GetUserInfo+'/'+this.$store.getters.getUserInfo.userid)
         .then((response) => {
-          
-          var user = response.data[0];
+         
+          var user = response.data;
+         //  console.log("user:"+JSON.stringify(user))
           var roles= user.role;
           
           //role其实是一个数组

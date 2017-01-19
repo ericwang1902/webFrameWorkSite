@@ -6,7 +6,7 @@
             </div>
 
             <el-table border :data="menudata" style="width: 100%">
-            <el-table-column label="#" type="index" width="100">
+            <el-table-column label="#" prop="index"  width="100">
             </el-table-column>
             <el-table-column label="菜单名称" prop="menuName" width="200">
             </el-table-column>
@@ -88,7 +88,20 @@
                         }
                         })
                     .then(response => {
-                        this.menudata = response.data.menus;
+                        this.menudata =[];
+                        //构造分页序号
+                        response.data.menus.forEach(
+                            (item,index,array)=>{
+                                    this.menudata.push({
+                                        index:((this.currentPage-1)*this.pageitems)+index+1,
+                                        menuId:item._id,
+                                        menuName:item.menuName,
+                                        funcList:item.funcList
+                                })
+                            }
+                        )
+
+                        //this.menudata = response.data.menus;
                         this.total = Number(response.data.count);
                         this.getFuncList();
                     })
