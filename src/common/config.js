@@ -4,6 +4,8 @@ var config={
     GetUserInfo:"http://localhost:3000/sysmanage/user",
 
     roleList:"http://localhost:3000/sysmanage/role",//角色列表
+    roleModify:"http://localhost:3000/sysmanage/role",//角色修改
+    roleCreate:"http://localhost:3000/sysmanage/role",//角色创建
 
     menuList:"http://localhost:3000/sysmanage/menu",//系统menulist的接口
     menuCreate:"http://localhost:3000/sysmanage/menu",//系统menu创建的接口

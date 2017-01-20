@@ -18,7 +18,7 @@
                     </template>
                     </el-table-column>
 
-                    <el-table-column label="职责" prop="roleName"></el-table-column>
+                    <el-table-column label="角色" prop="roleName"></el-table-column>
                     <el-table-column label="说明" prop="roleDes"></el-table-column>
                     <el-table-column  width="200px" label="操作">
                         <template scope="props">
@@ -62,7 +62,7 @@
             getRoleList:function(){
                 this.axios.get(config.roleList)
                 .then((response=>{
-                    console.log(JSON.stringify(response.data))
+                  //  console.log(JSON.stringify(response.data))
                     this.rolelistData = response.data;//系统内所有的角色列表
 
                 }))
@@ -83,6 +83,7 @@
                 console.log("修改角色")
                 this.title="修改角色"
                 this.isCreateForm = false;
+                this.rowData=currentRow;
                 this.$store.commit('setRoleDialogStatus',true);
                 console.log("当前行："+JSON.stringify(currentRow));
 
@@ -91,6 +92,7 @@
             //对话框关闭的回调
             ondialogclose(){
                 console.log("对话框关闭")
+                this.getRoleList();
                 this.$store.commit('setRoleDialogStatus',false);
             },
             //获取menulist
