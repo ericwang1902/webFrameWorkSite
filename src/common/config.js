@@ -2,6 +2,7 @@ var config={
     GetLoginUrl:"http://localhost:3000/sysmanage/login",
     LogoutURL:"http://localhost:3000/sysmanage/logout",
     GetUserInfo:"http://localhost:3000/sysmanage/user",
+    userModfiy:"http://localhost:3000/sysmanage/usre",//用户修改
 
     roleList:"http://localhost:3000/sysmanage/role",//角色列表
     roleModify:"http://localhost:3000/sysmanage/role",//角色修改

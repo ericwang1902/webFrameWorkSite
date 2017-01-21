@@ -1,21 +1,105 @@
 <template>
     <div>
         <el-card class="box-card" style="margin: 10px">
+            <el-table border :data="usersArray" style="width: 100%">
+                <el-table-column type="expand">
+                    <template scope="props1">
+                        <el-table :data="props1.row.role" style="width: 100%">                       
+                            <el-table-column label="角色名称" prop="roleName"></el-table-column>
+                            <el-table-column label="角色说明" prop="roleDes"></el-table-column>
+                            <el-table-column label="角色id" prop="_id"></el-table-column>
+                        </el-table>
+                    </template>
+                    </el-table-column>
+                 <el-table-column label="手机号" prop="mobile" width="200">
+                 </el-table-column>
+                 <el-table-column label="用户名" prop="username">
+                 </el-table-column>
+                 <el-table-column  width="200px" label="操作">
+                        <template scope="props">
+                            <el-button type="text" @click="modifyUser(props.row)" size="small">编辑</el-button>
+                            <el-button type="text" @click="details(props.row)" size="small">详情</el-button>
+                        </template>
+                 </el-table-column>
+            </el-table>
         </el-card>
+<!--dialog start-->
+<el-dialog :title="title" v-model="$store.getters.getUserDialogStatus"  @close="ondialogclose" >
+    <userform :isCreateForm="isCreateForm" :userRow="rowData" :roleList="roleList"></userform>
+</el-dialog>
+<!--dialog end-->
     </div>
+
+    
 </template>
 <script>
 import config from '../../../common/config'
+import userform from './userform'
 
 export default {
+    components:{
+        userform
+    },
     data () {
         return {
-            userdata:{}
+            //系统内所有后台用户的信息，构成数组
+            usersArray:[],
+            
+            title:"添加用户",
+            isCreateForm:true,
+            rowData:{},
+            roleList:[]
         }
     },
     created () {
-        this.axios.get(config.GetUserInfo+'/'+this.$store.getters.setUserInfo.userid)
-        
+        //在登录开始，获取后台用户信息
+        this.getUsers();
+        this.getRoleList();
+       
+    },
+    methods: {
+        //获取后台用户信息
+        getUsers:function(){
+            this.axios.get(config.GetUserInfo)
+                        .then((response)=>{
+                            this.usersArray = response.data;
+                            console.log(response.data)
+                        })
+                        .catch(function(err){
+                            console.log(err)
+                        })
+        },
+        //获取所有role清单
+        getRoleList:function(){
+            this.axios.get(config.roleList)
+                      .then((response)=>{
+                          this.roleList = response.data;//设置给form的属性
+                          console.log("获取所有的role清单")
+                          console.log(JSON.stringify(this.roleList))
+                      })
+                      .catch(function(err){
+                          console.log(err)
+                      })
+        },
+        //修改用户
+        modifyUser(currentRow){
+            console.log("修改用户")
+            this.isCreateForm = false;
+            this.rowData = currentRow;
+            this.$store.commit('setUserDialogStatus',true);
+            this.title="修改用户";
+
+            
+        },
+        //用户详情
+        details(currentRow){
+            console.log("用户详情："+JSON.stringify(currentRow))
+        },
+        //对话框关闭回调事件
+        ondialogclose(){
+            console.log("对话框关闭")
+            this.$store.commit('setUserDialogStatus',false);
+        }
     }
 }
 </script>

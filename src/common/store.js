@@ -11,12 +11,14 @@ var userInfo = {
 }
 var dialogStatus=false;
 var RoleDialogStatus =false;
+var UserDialogStatus=false;
 
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
     user: userInfo,//登录用户信息
     dialogStatus:dialogStatus,//菜单form状态
-    RoleDialogStatus:RoleDialogStatus//角色form的对话框的状态
+    RoleDialogStatus:RoleDialogStatus,//角色form的对话框的状态
+    UserDialogStatus:UserDialogStatus//用户form的对话框的状态
 }
 
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
@@ -34,13 +36,18 @@ const mutations = {
     //设置角色form的对话框状态
     setRoleDialogStatus:function(state,status){
         state.RoleDialogStatus = status;
+    },
+    //设置用户form的对话框的状态
+    setUserDialogStatus:function(state,status){
+        state.UserDialogStatus = status;
     }
 }
 
 const getters = {
     getUserInfo: state => { return state.user },
     getDialogStatus:state=> {return state.dialogStatus},
-    getRoleDialogStatus:state=>{return state.RoleDialogStatus}
+    getRoleDialogStatus:state=>{return state.RoleDialogStatus},
+    getUserDialogStatus:state=>{return state.UserDialogStatus}
 
 }
 
