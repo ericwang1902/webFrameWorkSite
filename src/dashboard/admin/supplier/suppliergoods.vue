@@ -1,0 +1,9 @@
+<template>
+    <div>
+        创建该供应商的供应商品
+    </div>
+</template>
+<script>
+</script>
+<style>
+</style>

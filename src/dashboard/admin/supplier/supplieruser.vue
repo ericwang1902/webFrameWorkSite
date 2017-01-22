@@ -1,0 +1,9 @@
+<template>
+    <div>
+        绑定或者创建供应商后台用户
+    </div>
+</template>
+<script>
+</script>
+<style>
+</style>

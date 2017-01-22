@@ -15,6 +15,14 @@ import menu from './dashboard/admin/menu/menu'//菜单管理
 import role from './dashboard/admin/role/role'//角色管理
 import user from './dashboard/admin/user/user'//用户列表
 
+import supplier from './dashboard/admin/supplier/supplier'//供应商管理
+import supplierlist from './dashboard/admin/supplier/supplierlist'//供应商列表
+import supplieruser from './dashboard/admin/supplier/supplieruser'//绑定供应商后台用户
+import supplierworker from './dashboard/admin/supplier/supplierworker'//绑定供应商的店员，用来接收订单通知
+import suppliergoods from './dashboard/admin/supplier/suppliergoods'//创建该供应商提供的商品
+
+
+
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -51,7 +59,19 @@ const routes = [
     children: [
       { path: 'menu', component: menu, meta: { title: '菜单管理' } },
       { path: 'role', component: role, meta: { title: '角色管理' } },
-      { path: 'user', component: user, meta: { title: '用户管理' } }
+      { path: 'user', component: user, meta: { title: '用户管理' } },
+      {
+        path: 'supplier',
+        component: supplier,
+        meta: { title: '供应商管理' },
+        children: [
+          { path: 'supplierlist', component: supplierlist, meta: { title: "供应商列表" } },
+          { path: 'supplieruser', component: supplieruser, meta: { title: "设置供应商后台用户" } },
+          { path: 'supplierworker', component: supplierworker, meta: { title: "绑定供应商店员" } },
+          { path: 'suppliergoods', component: suppliergoods, meta: { title: "管理商品" } }
+
+        ]
+      }
     ]
   },
   {
