@@ -4,6 +4,10 @@
             <el-form-item label = "用户名称" prop = "userName">
                 <el-input v-model="userform.userName"></el-input>
             </el-form-item>
+             <el-form-item v-if="isCreateForm" label = "密码" prop = "passWord">
+                <el-input v-model="userform.passWord"></el-input>
+            </el-form-item>
+            
             <el-form-item label="选择角色" style="width: 100%">
                 <el-table :data = "roleList" max-height="450" ref="roleListTable" border style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
@@ -29,13 +33,16 @@ export default {
         return {
             userform:{
                 userName:'',
-                password:'',
+                passWord:'',
                 roleSelection:[]
             },
             rules:{
                 userName:[
                     {required:true,message:'请输入用户名称',trigger:'blur'}
                 ],
+                passWord:[
+                    {required:true,message:'请输入密码',trigger:'blur'}
+                ]
 
             }
         }
@@ -45,6 +52,24 @@ export default {
         console.log(this.userRow)
         console.log(this.roleList)
         console.log("userform end")
+    },
+    watch:{
+        userRow:function(){
+           if (!this.isCreateForm) {
+                this.modifyInitForm()
+            }else{
+                this.createInitFrom();
+                this.userform.userName ="";
+            }
+        },
+           isCreateForm:function(){
+                    if(!this.isCreateForm){
+                        this.modifyInitForm();
+                    }else{
+                        this.createInitFrom();
+                        this.userform.userName ="";
+                    }
+                }
     },
     mounted(){
          if (!this.isCreateForm) {
@@ -88,8 +113,34 @@ export default {
                     this.$refs.roleListTable.toggleRowSelection(row,false);
                 })
             },
+        //创建用户
+        createUser(formName){
+            this.$refs[formName].validate((valid)=>{
+                if(valid){
+                    if (this.userform.roleSelection.length == 0) {
+                            //当没有选择功能
+                            this.$message({
+                                showClose: true,
+                                message: '请选择至少一个角色！',
+                                type: 'error'
+                            });
+                        }
+                        else{
+                            this.axios.post(config.userCreaste,this.userform)
+                                    .then((response=>{
+                                       console.log(response)
+                                       this.$store.commit('setUserDialogStatus',false);
+                                       this.userform.userName="";
+                                    }))
+                                    .catch(function(err){
+                                        console.log(err)
+                                    })
+                        }
+                }
+            })
+        },
         //修改用户
-        modifyRole(formName){
+        modifyUser(formName){
                 this.$refs[formName].validate((valid)=>{
                     if(valid){
                         if (this.userform.roleSelection.length == 0) {

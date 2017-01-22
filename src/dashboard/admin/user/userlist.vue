@@ -1,6 +1,10 @@
 <template>
     <div>
         <el-card class="box-card" style="margin: 10px">
+            <div slot="header" class="clearfix">
+                <el-button style="float: right; " @click="createUser()" type="primary">添加用户</el-button>
+            </div>
+
             <el-table border :data="usersArray" style="width: 100%">
                 <el-table-column type="expand">
                     <template scope="props1">
@@ -18,15 +22,20 @@
                  <el-table-column  width="200px" label="操作">
                         <template scope="props">
                             <el-button type="text" @click="modifyUser(props.row)" size="small">编辑</el-button>
-                            <el-button type="text" @click="details(props.row)" size="small">详情</el-button>
+                            <el-button type="text" @click="resetPassword(props.row)" size="small">密码重置</el-button>
                         </template>
                  </el-table-column>
             </el-table>
         </el-card>
 <!--dialog start-->
 <el-dialog :title="title" v-model="$store.getters.getUserDialogStatus"  @close="ondialogclose" >
-    <userform :isCreateForm="isCreateForm" :userRow="rowData" :roleList="roleList"></userform>
+    <userform  :isCreateForm="isCreateForm" :userRow="rowData" :roleList="roleList"></userform>
+    
 </el-dialog>
+<el-dialog title="修改密码" v-model="$store.getters.getPasswordDialogStatus"  @close="onpsddialogclose" >
+    <passwordform :userRow="rowData"></passwordform>  
+</el-dialog>
+
 <!--dialog end-->
     </div>
 
@@ -35,10 +44,12 @@
 <script>
 import config from '../../../common/config'
 import userform from './userform'
+import passwordform from './passwordform'
 
 export default {
     components:{
-        userform
+        userform,
+        passwordform
     },
     data () {
         return {
@@ -84,21 +95,34 @@ export default {
         //修改用户
         modifyUser(currentRow){
             console.log("修改用户")
-            this.isCreateForm = false;
             this.rowData = currentRow;
             this.$store.commit('setUserDialogStatus',true);
             this.title="修改用户";
-
+            this.isCreateForm = false;
             
         },
-        //用户详情
-        details(currentRow){
-            console.log("用户详情："+JSON.stringify(currentRow))
+        //重置密码
+        resetPassword(currentRow){
+            this.rowData = currentRow;
+            this.$store.commit('setPasswordDialogStatus',true);           
+            console.log("修改密码："+JSON.stringify(currentRow))
         },
         //对话框关闭回调事件
         ondialogclose(){
             console.log("对话框关闭")
+            this.getUsers();
             this.$store.commit('setUserDialogStatus',false);
+           
+        },
+        onpsddialogclose(){
+            this.getUsers();
+            this.$store.commit('setPasswordDialogStatus',false)
+        },
+        //创建用户按钮
+        createUser(){
+            console.log("创建用户")
+            this.$store.commit('setUserDialogStatus',true);
+            this.isCreateForm = true;
         }
     }
 }
