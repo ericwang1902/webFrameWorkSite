@@ -15,6 +15,8 @@ var config={
 
     funcList:"http://localhost:3000/sysmanage/func",
 
+    supplierCreate:"http://localhost:3000/sysmanage/supplier",//供应商创建接口
+
     tagTypes:['primary','success','warning','danger']
 }
 

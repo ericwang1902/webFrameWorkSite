@@ -15,16 +15,35 @@
   export default {
     data() {
       return {
-        active: 0
+        active: 0,
+        navList:[
+          {actValue:0,pathValue:"/dashboard/supplier/supplierlist"},
+          {actValue:1,pathValue:"/dashboard/supplier/supplieruser"},
+          {actValue:2,pathValue:"/dashboard/supplier/supplierworker"},
+          {actValue:3,pathValue:"/dashboard/supplier/suppliergoods"}
+        ]
       };
     },
 
     methods: {
         back(){
-            if (this.active-- < 0) this.active = 4;
+          if(this.active>0){
+            this.active--;
+            this.active = this.navList[this.active].actValue;
+            this.$router.push({ path: this.navList[this.active].pathValue }) 
+          }
         },
       next() {
-        if (this.active++ > 3) this.active = 0;
+        if(this.active<4){
+            this.active++;
+            console.log(this.active) 
+            if(this.active<4){
+              this.active = this.navList[this.active].actValue;
+              this.$router.push({ path: this.navList[this.active].pathValue })
+            }
+            
+           
+          }
       }
     }
   }
