@@ -1,6 +1,5 @@
 <template>
     <div>
-            <steps></steps>
         <div>
             <router-view></router-view>
         </div>

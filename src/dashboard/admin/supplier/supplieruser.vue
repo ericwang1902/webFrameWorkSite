@@ -1,6 +1,8 @@
 <template>
     <div>
-        绑定或者创建供应商后台用户
+         <el-card class="box-card" style="margin: 10px">
+             供应商后台用户
+         </el-card>
     </div>
 </template>
 <script>
