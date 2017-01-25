@@ -10,7 +10,7 @@
             <el-form-item label = "供应商说明" prop = "supplierdes">
                 <el-input v-model="supform.supplierdes"></el-input>
             </el-form-item>
-            <el-form-item label="选择用户" style="width: 100%">
+            <el-form-item v-show="isCreateForm" label="选择用户" style="width: 100%">
                 <el-table :data = "userList" max-height="450" ref="userListTable" border style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
                     </el-table-column>
@@ -22,7 +22,7 @@
             <el-form-item>
                 <el-button type="primary" v-show="!isCreateForm" @click="modifySupplier('supform')">提交修改</el-button>
                 <el-button type="primary" v-show="isCreateForm" @click="createSupplier('supform')">立即创建</el-button>
-                <el-button @click="resetForm('supform')">重置</el-button>
+                <el-button v-show="isCreateForm" @click="resetForm('supform')">重置</el-button>
             </el-form-item>
         </el-form>
     </div>

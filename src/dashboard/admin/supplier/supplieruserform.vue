@@ -4,12 +4,15 @@
             <el-form-item label = "供应商名称" prop = "suppliername">
                 <el-input disabled v-model="supRow.suppliername"></el-input>
             </el-form-item>
-            <el-form-item label="选择用户" style="width: 100%">
+            <el-form-item  label="选择用户" style="width: 100%">
                 <el-table :data = "userList" max-height="450" ref="userListTable" border style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
                     </el-table-column>
+                    <el-table-column prop="nickname" label="昵称">
+                    </el-table-column>
                     <el-table-column prop="username" label="用户名称">
                     </el-table-column>
+                    
                 </el-table>
             </el-form-item>
             <el-form-item>
@@ -20,8 +23,10 @@
     </div>
 </template>
 <script>
+import config from '../../../common/config'
+
 export default {
-    props:['supRow','userList','isCreateForm'],
+    props:['supRow','userList'],
     data () {
 
         return {
@@ -34,7 +39,7 @@ export default {
     },
     mounted () {
         console.log(this.supRow)
-       this.InitForm();
+        this.InitForm();
        
     },
     methods: {
@@ -55,7 +60,8 @@ export default {
             },
             //获取选择项
             handleSelectionChange(val) {
-            //做表单验证提醒
+                this.userselection = val;
+                //做表单验证提醒
                if(this.userselection.length>1){
                             //当没有选择角色时
                             this.$message({
@@ -66,27 +72,48 @@ export default {
                             this.userList.forEach((row)=>{
                                 this.$refs.userListTable.toggleRowSelection(row,false);
                             })
-                }else{
-                    this.userselection = val;
+                            this.userselection = [];
                 }
             },
             //提交修改
             ModifySupplieruserform(formName){
-                this.$refs[formName].validate((valid)=>{
-                    if(valid){
-                        if(this.supplieruserform.roleSelection.length==0){
+            console.log(JSON.stringify(this.supRow))
+            this.$refs[formName].validate((valid)=>{
+                if(valid){
+                    var length =this.userselection.length;
+                    if(length==0){
                             //当没有选择角色时
                             this.$message({
                                 showClose:true,
-                                message:'请选择至少一个角色！',
+                                message:'必须选择一个用户！',
                                 type:'error'
                             });
-                        }else{
-                            //1.修改用户；2.关联到该supRow的supplier
-                            this.axios.put()
-                        }
+                            this.userList.forEach((row)=>{
+                                this.$refs.userListTable.toggleRowSelection(row,false);
+                            })
+                    }else if(length>1){
+                            //当选得角色数量过多时
+                            this.$message({
+                                showClose:true,
+                                message:'只能选择一个用户！',
+                                type:'error'
+                            });
+                            this.userList.forEach((row)=>{
+                                this.$refs.userListTable.toggleRowSelection(row,false);
+                            })
+                    }else{
+                    this.supplieruserform.supplieruser=this.userselection[0]._id;
+                    this.axios.put(config.supplierModify+'/'+this.supRow._id,this.supplieruserform)
+                              .then((response)=>{
+                                  console.log(response)
+                                  this.$store.commit('setSupplierDialogStatus',false);
+                              })
+                              .catch(function(err){
+                                  console.log(err)
+                              })
                     }
-                })
+                }
+            })
             }
     }
 }

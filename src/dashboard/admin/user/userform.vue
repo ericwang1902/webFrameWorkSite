@@ -4,11 +4,14 @@
             <el-form-item label = "用户名称" prop = "userName">
                 <el-input v-model="userform.userName"></el-input>
             </el-form-item>
+            <el-form-item label = "昵称" prop = "nickName">
+                <el-input v-model="userform.nickName"></el-input>
+            </el-form-item>
              <el-form-item v-if="isCreateForm" label = "密码" prop = "passWord">
                 <el-input v-model="userform.passWord"></el-input>
             </el-form-item>
             
-            <el-form-item label="选择角色" style="width: 100%">
+            <el-form-item   label="选择角色" style="width: 100%">
                 <el-table :data = "roleList" max-height="450" ref="roleListTable" border style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
                     </el-table-column>
@@ -33,12 +36,16 @@ export default {
         return {
             userform:{
                 userName:'',
+                nickName:'',
                 passWord:'',
                 roleSelection:[]
             },
             rules:{
                 userName:[
                     {required:true,message:'请输入用户名称',trigger:'blur'}
+                ],
+                nickName:[
+                    {required:true,message:'请输入昵称',trigger:'blur'}
                 ],
                 passWord:[
                     {required:true,message:'请输入密码',trigger:'blur'}
@@ -59,7 +66,6 @@ export default {
                 this.modifyInitForm()
             }else{
                 this.createInitFrom();
-                this.userform.userName ="";
             }
         },
            isCreateForm:function(){
@@ -67,7 +73,6 @@ export default {
                         this.modifyInitForm();
                     }else{
                         this.createInitFrom();
-                        this.userform.userName ="";
                     }
                 }
     },
@@ -76,7 +81,6 @@ export default {
                 this.modifyInitForm()
             }else{
                 this.createInitFrom();
-                this.userform.userName ="";
             }
     },
     methods: {
@@ -88,6 +92,8 @@ export default {
         //新建用户的表单初始化
         createInitFrom(){
             this.userform.userName='';
+            this.userform.nickName='';
+            this.userform.passWord='';
             this.roleList.forEach((row)=>{
                     this.$refs.roleListTable.toggleRowSelection(row,false);
             })
@@ -95,6 +101,9 @@ export default {
         //修改用户的表单初始化
         modifyInitForm(){
             this.userform.userName = this.userRow.username;
+            this.userform.nickName = this.userRow.nickName;
+            this.userform.passWord = this.userRow.passWord;
+
             this.roleList.forEach((row)=>{
                 this.$refs.roleListTable.toggleRowSelection(row,false);
             })
@@ -130,7 +139,7 @@ export default {
                                     .then((response=>{
                                        console.log(response)
                                        this.$store.commit('setUserDialogStatus',false);
-                                       this.userform.userName="";
+                                       this.createInitFrom();
                                     }))
                                     .catch(function(err){
                                         console.log(err)

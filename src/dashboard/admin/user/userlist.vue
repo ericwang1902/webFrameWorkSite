@@ -19,6 +19,8 @@
                  </el-table-column>
                  <el-table-column label="用户名" prop="username">
                  </el-table-column>
+                 <el-table-column label="昵称" prop="nickname" width="200">
+                 </el-table-column>
                  <el-table-column  width="200px" label="操作">
                         <template scope="props">
                             <el-button type="text" @click="modifyUser(props.row)" size="small">编辑</el-button>
