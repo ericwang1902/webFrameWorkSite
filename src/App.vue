@@ -63,8 +63,9 @@ import config from './common/config'
     components: {
     },
     created: function () {
-       console.log("userinfo:"+this.$store.getters.getUserInfo.userid)
-      this.axios.get(config.GetUserInfo+'/'+this.$store.getters.getUserInfo.userid)
+      
+      console.log("userinfo:"+this.$store.getters.getUserInfo.userid)
+      this.axios.get(config.GetUserInfo+'/'+JSON.parse(localStorage.getItem('currentInfo')).userid)
         .then((response) => {
          
           var user = response.data;

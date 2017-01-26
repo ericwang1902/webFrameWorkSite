@@ -14,6 +14,8 @@ var RoleDialogStatus =false;
 var UserDialogStatus=false;
 var PasswordDialogStatus = false;
 var SupplierDialogStatus = false;
+var GoodsDialogStatus = false;
+
 
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
@@ -22,7 +24,8 @@ const state = {
     RoleDialogStatus:RoleDialogStatus,//角色form的对话框的状态
     UserDialogStatus:UserDialogStatus,//用户form的对话框的状态
     PasswordDialogStatus:PasswordDialogStatus,//用户修改密码的对话框的状态
-    SupplierDialogStatus:SupplierDialogStatus//供应商新建form的状态
+    SupplierDialogStatus:SupplierDialogStatus,//供应商新建form的状态
+    GoodsDialogStatus:GoodsDialogStatus//商品新建form的状态
 }
 
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
@@ -52,6 +55,10 @@ const mutations = {
     //新建供应商的form的对话框状态
     setSupplierDialogStatus:function(state,status){
         state.SupplierDialogStatus = status;
+    },
+    //新建商品的form的对话框状态
+    setGoodsDialogStatus:function(state,status){
+        state.GoodsDialogStatus = status;
     }
 }
 
@@ -61,7 +68,8 @@ const getters = {
     getRoleDialogStatus:state=>{return state.RoleDialogStatus},
     getUserDialogStatus:state=>{return state.UserDialogStatus},
     getPasswordDialogStatus:state=>{return state.PasswordDialogStatus},
-    getSupplierDialogStatus:state=>{return state.SupplierDialogStatus}
+    getSupplierDialogStatus:state=>{return state.SupplierDialogStatus},
+    getGoodsDialogStatus:state=>{return state.GoodsDialogStatus}
 
 }
 

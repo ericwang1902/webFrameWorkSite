@@ -17,6 +17,7 @@
     "vue": "^2.1.0",
     "vue-axios": "^1.2.2",
     "vue-router": "^2.1.1",
+    "vueditor": "^0.2.4",
     "vuex": "^2.1.1"
   },
   "devDependencies": {

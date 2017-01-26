@@ -4,7 +4,30 @@ import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
 
-import store from './common/store'
+import store from './common/store'//vuex配置和相关数据在这里面
+
+import Vueditor from 'vueditor' //富文本编辑器
+import "vueditor/dist/css/vueditor.min.css"
+// your config here
+let config = {
+  toolbar: [
+    'removeFormat', 'undo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor'
+  ],
+  fontName: [
+    {val: "宋体, SimSun", abbr: "宋体"}, {val: "黑体, SimHei", abbr: "黑体"},
+    {val: "楷体, SimKai", abbr: "楷体"}, {val: "微软雅黑, 'Microsoft YaHei'", abbr: "微软雅黑"},
+    {val: "arial black"}, {val: "times new roman"}, {val: "Courier New"}
+  ],
+  fontSize: ['12px', '14px', '16px', '18px', '0.8rem', '1.0rem', '1.2rem', '1.5rem', '2.0rem'],
+  emoji: ["1f600", "1f601", "1f602", "1f923", "1f603"],
+  lang: 'en',
+  mode: 'default',
+  iframePath: '',
+  fileuploadUrl: ''
+};
+Vue.use(Vueditor, config);
+
+
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
@@ -20,6 +43,9 @@ import supplierlist from './dashboard/admin/supplier/supplierlist'//供应商列
 import supplieruser from './dashboard/admin/supplier/supplieruser'//绑定供应商后台用户
 import supplierworker from './dashboard/admin/supplier/supplierworker'//绑定供应商的店员，用来接收订单通知
 import suppliergoods from './dashboard/admin/supplier/suppliergoods'//创建该供应商提供的商品
+
+import goods from './dashboard/admin/goods/goods'//商品
+
 
 
 
@@ -66,11 +92,14 @@ const routes = [
         meta: { title: '供应商管理' },
         children: [
           { path: 'supplierlist', component: supplierlist, meta: { title: "供应商列表" } },
-          { path: 'supplieruser', component: supplieruser, meta: { title: "设置供应商后台用户" } },
-          { path: 'supplierworker', component: supplierworker, meta: { title: "绑定供应商店员" } },
-          { path: 'suppliergoods', component: suppliergoods, meta: { title: "管理商品" } }
+          { path: 'supplieruser', component: supplieruser, meta: { title: "设置供应商后台用户" } },//作废
+          { path: 'supplierworker', component: supplierworker, meta: { title: "绑定供应商店员" } },//作废
+          { path: 'suppliergoods', component: suppliergoods, meta: { title: "管理商品" } }//作废
 
         ]
+      },
+      {
+        path:'goods', component:goods,meta:{title:'商品管理'}
       }
     ]
   },

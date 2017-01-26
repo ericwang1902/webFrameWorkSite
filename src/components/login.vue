@@ -76,6 +76,7 @@ import config from '../common/config'
                                         }
                                         console.log(localuserInfo.userid)
                                       this.$store.commit('setUserInfo',localuserInfo)
+                                       localStorage.setItem("currentInfo", JSON.stringify(localuserInfo)); //本地存储
                                      // console.log(this.$store.getters.getUserInfo)
                                        this.$router.push('/dashboard');
                                         }

@@ -19,6 +19,9 @@ var config={
     supplierList:"http://localhost:3000/sysmanage/supplier",//供应商列表
     supplierModify:"http://localhost:3000/sysmanage/supplier",//修改供应商
 
+    goodsList:"http://localhost:3000/sysmanage/goods",//商品接口
+    goodsCreate:"http://localhost:3000/sysmanage/goods",//创建商品接口
+
     tagTypes:['primary','success','warning','danger']
 }
 
