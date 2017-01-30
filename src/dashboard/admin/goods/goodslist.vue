@@ -4,17 +4,12 @@
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="createGoods()" type="primary">创建商品</el-button>
             </div>
-            <el-table border :data="goodslistData" style="width: 100%" >
-                <el-table-column label="商品名称" width="300" prop="goodsname"></el-table-column>
-                <!--<el-table-column label="商品介绍" width="300" prop="goodsdes"></el-table-column>
-                <el-table-column label="商品进价" width="300" prop="goodsbuyprice"></el-table-column>
-                <el-table-column label="商品售价" width="300" prop="goodsprice"></el-table-column>-->
-                <!--<el-table-column width="300" fixed="right" label="操作">
-                    <template scope="props">
-                        <el-button type="primary" @click="modifyGoods(props.row)" size="mini">修改</el-button>
-                    </template>
-                </el-table-column>-->
-            </el-table>
+           <el-table border :data="goodslistData" style="width: 100%">
+               <el-table-column label="名称" prop = "goodsname"></el-table-column>
+               <el-table-column label="描述" prop = "goodsdes"></el-table-column>
+               <el-table-column label="进价" prop = "goodsbuyprice"></el-table-column>
+               <el-table-column label="售价" prop = "goodsprice"></el-table-column>
+           </el-table>
         </el-card>
         <!--dialog start-->
 <el-dialog :title="title" v-model="$store.getters.getGoodsDialogStatus"  @close="ondialogclose" >
@@ -44,14 +39,16 @@ export default {
     created () {
         this.getGoodsList();//获取所有的商品列表
         this.getSupplierList();
+        console.log("商品列表：")
+        console.log(this.goodslistData);
     },
     methods: {
         getGoodsList(){
             this.axios.get(config.goodsList)
                       .then((response)=>{
-                          this.goodsListData = response.data;
-                          console.log("商品列表：")
-                          console.log(response.data);
+                          this.goodslistData = response.data;
+                         
+                          console.log(JSON.stringify(this.goodslistData));
                       })
                       .catch(function(err){
                           console.log(err)

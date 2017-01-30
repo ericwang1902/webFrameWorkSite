@@ -5,11 +5,6 @@
                 <el-button style="float: right; " @click="createSupplier()" type="primary">添加供应商</el-button>
             </div>
             <el-table border :data="supplierlistData" style="width: 100%" >
-                <el-table-column type="expand">
-                    <template scope="props">
-                            sdf
-                    </template>
-                </el-table-column>
                 <el-table-column label="供应商编号" width="300" prop="suppliernum"></el-table-column>
                 <el-table-column label="供应商名称" width="300" prop="suppliername"></el-table-column>
                 <el-table-column label="供应商说明" width="300" prop="supplierdes"></el-table-column>
@@ -59,6 +54,7 @@ export default {
     created () {
         this.getsupplierList();
         this.getUserList();
+        console.log(this.supplierlistData);
     },
     methods:{
        //获取后台用户信息
@@ -80,7 +76,7 @@ export default {
         getsupplierList(){
             this.axios.get(config.supplierList)
                       .then((response)=>{
-                          console.log(response.data)
+                       //   console.log(response.data)
                           this.supplierlistData = response.data;
                       })
                       .catch(function(err){
