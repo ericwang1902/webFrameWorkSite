@@ -56,13 +56,16 @@ export default {
     },
     watch: {
         supRow:function(){
+            console.log("supRow")
             this.initForm();
         },
         isCreateForm:function(){
+            console.log("isCreateForm")
             this.initForm();
         }
     },
     mounted(){
+        console.log("mounted")
         this.initForm();
     },
     methods: {
@@ -75,11 +78,13 @@ export default {
             }
         },
         createInitSupplier(){
+            console.log("createInitSupplier")
             this.supform.suppliernum ='';
             this.supform.suppliername = '';
             this.supform.supplierdes='';
         },
         modifyInitSupplier(){
+            console.log("modifyInitSupplier")
             this.supform = this.supRow;
             //已经维护了用户
            this.userList.forEach((row)=>{

@@ -48,7 +48,7 @@ export default {
                       .then((response)=>{
                           this.goodslistData = response.data;
                          
-                          console.log(JSON.stringify(this.goodslistData));
+                          
                       })
                       .catch(function(err){
                           console.log(err)
@@ -58,8 +58,6 @@ export default {
             this.axios.get(config.supplierList)
                        .then((response)=>{
                            this.supplierList = response.data;
-                           console.log("供应商列表：")
-                           console.log(this.supplierList);
                        })
                        .catch(function(err){
                            console.log(err)
@@ -68,6 +66,7 @@ export default {
         createGoods(){
             console.log("创建商品");
             this.$store.commit('setGoodsDialogStatus',true);
+            this.isCreateForm = true;
         },
         //修改供应商
         modifyGoods(val){

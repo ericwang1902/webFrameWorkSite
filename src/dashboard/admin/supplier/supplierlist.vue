@@ -54,7 +54,6 @@ export default {
     created () {
         this.getsupplierList();
         this.getUserList();
-        console.log(this.supplierlistData);
     },
     methods:{
        //获取后台用户信息
