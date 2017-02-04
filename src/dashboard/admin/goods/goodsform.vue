@@ -71,14 +71,21 @@
         },
         mounted () {
             console.log("mounted!")
-            this.InitCreateGoods();
+            this.InitForm();
         },
         watch: {
           isCreateForm:function(){
-              this.InitCreateGoods();
+              this.InitForm();
           }  
         },
         methods: {
+            InitForm(){
+                if(this.isCreateForm){
+                    this.InitCreateGoods();
+                }else{
+                    this.InitModifyGoods();
+                }
+            },
             InitCreateGoods() {
                 this.goodsform.goodsnum = "";
                 this.goodsform.goodsname = "";
@@ -93,12 +100,61 @@
                 this.goodsform.salesnum = "";
                 this.goodsform.goodsjudge = "";
                 this.$refs["vueEditor1"].setContent('');
+                this.supplierList.forEach((row)=>{
+                    this.$refs.supplierListTable.toggleRowSelection(row,false);
+                })
+            },
+            InitModifyGoods(){
+                this.goodsform.goodsnum=this.goodsRow.goodsnum;
+                this.goodsform.goodsname = this.goodsRow.goodsname;
+                this.goodsform.goodsdes = this.goodsRow.goodsdes;
+                this.goodsform.goodsphoto = this.goodsRow.goodsphoto;
+                this.goodsform.goodsprice = this.goodsRow.goodsprice;
+                this.goodsform.goodsbuyprice = this.goodsRow.goodsbuyprice;
+                this.goodsform.goodsstate = this.goodsRow.goodsstate;
+                this.goodsform.goodstype = this.goodsRow.goodstype;
+                this.goodsform.weight = this.goodsRow.weight;
+                this.goodsform.supplier = this.goodsRow.supplier;
+                this.goodsform.salesnum = this.goodsRow.salesnum;
+                this.goodsform.goodsjudge = this.goodsRow.goodsjudge;
+                this.$refs["vueEditor1"].setContent(this.goodsRow.goodsdes);
+
+                this.supplierList.forEach((row)=>{
+                    this.$refs.supplierListTable.toggleRowSelection(row,false);
+                })
+                this.$refs.supplierListTable.toggleRowSelection(this.supplierList.find(d => d._id === this.goodsRow.supplier._id), true);
             },
             modifyGoods(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         console.log("modifyGoods方法")
-
+                        var length = this.supplierSelection.length;
+                        if(length==0){
+                            //当没有选择供应商时
+                            this.$message({
+                                showClose:true,
+                                message:'必须选择一个用户！',
+                                type:'error'
+                            });
+                            this.userList.forEach((row)=>{
+                                this.$refs.userListTable.toggleRowSelection(row,false);
+                            })
+                        }else if(length>1){
+                            //当选择的供应商过多时
+                            this.$message({
+                                showClose:true,
+                                message:'只能选择一个用户！',
+                                type:'error'
+                            });
+                            this.userList.forEach((row)=>{
+                                this.$refs.userListTable.toggleRowSelection(row,false);
+                            })
+                        }else{
+                            this.goodsform.supplier = this.supplierSelection[0]._id;
+                            //提交给put接口
+                            this.axios.put(config.goodsModify+'/'+this.goodsRow._id,this.goodsform)
+                                       .then((response))
+                        }
 
                     }
                 })
@@ -160,9 +216,9 @@
             //重置表单
             resetForm(formName) {
                 this.$refs[formName].resetFields();
-                // this.roleList.forEach((row)=>{
-                //     this.$refs.roleListTable.toggleRowSelection(row,false);
-                // })
+                this.supplierList.forEach((row)=>{
+                                    this.$refs.supplierListTable.toggleRowSelection(row,false);
+                                })
             },
             //获取选择项
             handleSelectionChange(val) {

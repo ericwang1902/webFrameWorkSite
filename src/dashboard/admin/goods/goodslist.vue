@@ -9,11 +9,17 @@
                <el-table-column label="描述" prop = "goodsdes"></el-table-column>
                <el-table-column label="进价" prop = "goodsbuyprice"></el-table-column>
                <el-table-column label="售价" prop = "goodsprice"></el-table-column>
+               <el-table-column label="供应商" prop = "supplier.suppliername"></el-table-column>
+               <el-table-column width="100" fixed="right" label="操作">
+                    <template scope="props">
+                        <el-button type="primary" @click="modifyGoods(props.row)" size="mini">修改</el-button>
+                    </template>
+                </el-table-column>
            </el-table>
         </el-card>
         <!--dialog start-->
 <el-dialog :title="title" v-model="$store.getters.getGoodsDialogStatus"  @close="ondialogclose" >
-        <goodsform :isCreateForm="isCreateForm" :goodsRow="goodsRow" :supplierList="supplierList"></goodsform>
+        <goodsform v-if="$store.getters.getGoodsDialogStatus":isCreateForm="isCreateForm" :goodsRow="goodsRow" :supplierList="supplierList"></goodsform>
  </el-dialog>
 <!--dialog end-->
     </div>
@@ -71,6 +77,7 @@ export default {
         //修改供应商
         modifyGoods(val){
             this.goodsRow = val;
+            this.isCreateForm =false;
             this.$store.commit('setGoodsDialogStatus',true);
 
         },
