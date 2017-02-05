@@ -14,9 +14,9 @@ let config = {
     'removeFormat', 'undo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor'
   ],
   fontName: [
-    {val: "宋体, SimSun", abbr: "宋体"}, {val: "黑体, SimHei", abbr: "黑体"},
-    {val: "楷体, SimKai", abbr: "楷体"}, {val: "微软雅黑, 'Microsoft YaHei'", abbr: "微软雅黑"},
-    {val: "arial black"}, {val: "times new roman"}, {val: "Courier New"}
+    { val: "宋体, SimSun", abbr: "宋体" }, { val: "黑体, SimHei", abbr: "黑体" },
+    { val: "楷体, SimKai", abbr: "楷体" }, { val: "微软雅黑, 'Microsoft YaHei'", abbr: "微软雅黑" },
+    { val: "arial black" }, { val: "times new roman" }, { val: "Courier New" }
   ],
   fontSize: ['12px', '14px', '16px', '18px', '0.8rem', '1.0rem', '1.2rem', '1.5rem', '2.0rem'],
   emoji: ["1f600", "1f601", "1f602", "1f923", "1f603"],
@@ -44,8 +44,10 @@ import supplieruser from './dashboard/admin/supplier/supplieruser'//绑定供应
 import supplierworker from './dashboard/admin/supplier/supplierworker'//绑定供应商的店员，用来接收订单通知
 import suppliergoods from './dashboard/admin/supplier/suppliergoods'//创建该供应商提供的商品
 
+
 import goods from './dashboard/admin/goods/goods'//商品
 
+import suite from './dashboard/admin/suite/suitelist'//套餐
 
 
 
@@ -99,7 +101,10 @@ const routes = [
         ]
       },
       {
-        path:'goods', component:goods,meta:{title:'商品管理'}
+        path: 'goods', component: goods, meta: { title: '商品管理' }
+      },
+      {
+        path: 'suite', component: suite, meta: { title: '套餐管理' }
       }
     ]
   },

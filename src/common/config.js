@@ -23,6 +23,8 @@ var config={
     goodsCreate:"http://localhost:8085/sysmanage/goods",//创建商品接口
     goodsModify:"http://localhost:8085/sysmanage/goods",//修改商品的接口
 
+    suite:"http://localhost:8085/sysmanage/suite",//套餐接口
+
     tagTypes:['primary','success','warning','danger']
 }
 

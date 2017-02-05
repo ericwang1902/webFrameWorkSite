@@ -53,7 +53,7 @@ export default {
             this.axios.get(config.goodsList)
                       .then((response)=>{
                           this.goodslistData = response.data;
-                         
+                          console.log(this.goodslistData)
                           
                       })
                       .catch(function(err){

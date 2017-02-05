@@ -12,10 +12,10 @@
                 <!--<el-input v-model="goodsform.goodsdes"></el-input>-->
             </el-form-item>
             <el-form-item label="商品进价" prop="goodsbuyprice">
-                <el-input v-model="goodsform.goodsbuyprice"></el-input>
+                <el-input v-model.number="goodsform.goodsbuyprice"></el-input>
             </el-form-item>
             <el-form-item label="销售价格" prop="goodsprice">
-                <el-input v-model="goodsform.goodsprice"></el-input>
+                <el-input v-model.number="goodsform.goodsprice"></el-input>
             </el-form-item>
             <el-form-item label="选择供应商" style="width: 100%">
                 <el-table :data="supplierList" max-height="450" ref="supplierListTable" border style="width: 100%" @selection-change="handleSelectionChange">
@@ -50,8 +50,8 @@
                     goodsname: "",
                     goodsdes: "",
                     goodsphoto: "",
-                    goodsprice: "",
-                    goodsbuyprice: "",
+                    goodsprice: 0,
+                    goodsbuyprice: 0,
                     goodsstate: "",
                     goodstype: "",
                     weight: "",
@@ -64,8 +64,8 @@
                     goodsnum: [{ required: true, message: '请输入商品编号', trigger: 'blur' }],
                     goodsname: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
                     //  goodsdes:[{required:true,message:'请输入商品说明',trigger:'blur'}],
-                    goodsbuyprice: [{ required: true, message: '请输入商品进价', trigger: 'blur' }],
-                    goodsprice: [{ required: true, message: '请输入商品价格', trigger: 'blur' }]
+                    goodsbuyprice: [ { required: true, message: '价格不能空'},{ type: 'number', message: '价格必须为数字'}],
+                    goodsprice: [{ required: true, message: '价格不能空'},{ type: 'number', message: '价格必须为数字'}]
                 }
             }
         },
@@ -91,8 +91,8 @@
                 this.goodsform.goodsname = "";
                 this.goodsform.goodsdes = "";
                 this.goodsform.goodsphoto = "";
-                this.goodsform.goodsprice = "";
-                this.goodsform.goodsbuyprice = "";
+                this.goodsform.goodsprice = 0;
+                this.goodsform.goodsbuyprice = 0;
                 this.goodsform.goodsstate = "";
                 this.goodsform.goodstype = "";
                 this.goodsform.weight = "";
@@ -105,6 +105,7 @@
                 })
             },
             InitModifyGoods(){
+                console.log(typeof(this.goodsRow.goodsprice))
                 this.goodsform.goodsnum=this.goodsRow.goodsnum;
                 this.goodsform.goodsname = this.goodsRow.goodsname;
                 this.goodsform.goodsdes = this.goodsRow.goodsdes;
@@ -118,6 +119,7 @@
                 this.goodsform.salesnum = this.goodsRow.salesnum;
                 this.goodsform.goodsjudge = this.goodsRow.goodsjudge;
                 this.$refs["vueEditor1"].setContent(this.goodsRow.goodsdes);
+                console.log(typeof(this.goodsform.goodsprice))
 
                 this.supplierList.forEach((row)=>{
                     this.$refs.supplierListTable.toggleRowSelection(row,false);
@@ -127,6 +129,8 @@
             modifyGoods(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                       if (this.$refs["vueEditor1"].getContent().length!==0) {
+                        this.goodsform.goodsdes = this.$refs["vueEditor1"].getContent();
                         console.log("modifyGoods方法")
                         var length = this.supplierSelection.length;
                         if(length==0){
@@ -153,9 +157,24 @@
                             this.goodsform.supplier = this.supplierSelection[0]._id;
                             //提交给put接口
                             this.axios.put(config.goodsModify+'/'+this.goodsRow._id,this.goodsform)
-                                       .then((response))
+                                       .then((response)=>{
+                                           console.log(response);
+                                           this.$store.commit('setGoodsDialogStatus',false);
+                                       })
+                                       .catch(function(err){
+                                           console.log(err)
+                                       })
+
                         }
 
+                    }
+                        else{
+                            this.$message({
+                                        showClose: true,
+                                        message: '请输入商品描述！',
+                                        type: 'error'
+                                    });
+                        }
                     }
                 })
             },
@@ -197,6 +216,9 @@
                                         console.log(response)
                                         this.$store.commit('setGoodsDialogStatus', false);
                                     })
+                                    .catch(function(err){
+                                        console.log(err)
+                                    })
 
 
 
@@ -223,7 +245,7 @@
             //获取选择项
             handleSelectionChange(val) {
                 this.supplierSelection = val;
-            },
+            }
         }
     }
 </script>
