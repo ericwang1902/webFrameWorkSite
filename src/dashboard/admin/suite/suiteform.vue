@@ -21,6 +21,13 @@
                     </el-table-column>
                 </el-table>
             </el-form-item>
+             <el-form-item label = "套餐图片" prop = "suiteprice">
+                <el-upload action="//jsonplaceholder.typicode.com/posts/" multiple ="false" type="drag" :thumbnail-mode="true" :on-preview="handlePreview" :on-remove="handleRemove" :default-file-list="fileList">
+                    <i class="el-icon-upload"></i>
+                    <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
+                    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+            </el-form-item>
 
             <el-form-item>
                 <el-button type="primary" v-show="!isCreateForm" @click="modifySuite('suiteform')">提交修改</el-button>
@@ -169,6 +176,13 @@ import config from "../../../common/config"
                 this.goodsList.forEach((row)=>{
                                     this.$refs.goodsListTable.toggleRowSelection(row,false);
                 })
+            },
+            //移除
+             handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
             }
         }
     }
