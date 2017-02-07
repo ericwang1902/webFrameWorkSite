@@ -1,5 +1,7 @@
+var baseURL="http://localhost:8085"
+
 var config={
-    baseURL:"http://localhost:8085",
+    
     GetLoginUrl:baseURL+"/sysmanage/login",
     LogoutURL:baseURL+"/sysmanage/logout",
     GetUserInfo:baseURL+"/sysmanage/user",

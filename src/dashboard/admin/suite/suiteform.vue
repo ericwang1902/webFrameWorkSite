@@ -22,11 +22,7 @@
                 </el-table>
             </el-form-item>
              <el-form-item label = "套餐图片" prop = "suiteprice">
-                <el-upload action="//jsonplaceholder.typicode.com/posts/" multiple ="false" type="drag" :thumbnail-mode="true" :on-preview="handlePreview" :on-remove="handleRemove" :default-file-list="fileList">
-                    <i class="el-icon-upload"></i>
-                    <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                </el-upload>
+                <upload @imgurl="setImageURL" ></upload>
             </el-form-item>
 
             <el-form-item>
@@ -39,8 +35,12 @@
 </template>
 <script>
 import config from "../../../common/config"
+import upload from "../../../components/qiniuupload"
 
     export default {
+        components: {
+            upload
+        },
         props: ['goodsList','isCreateForm','suiteRow'],
         data () {
             return {
@@ -121,6 +121,7 @@ import config from "../../../common/config"
                             for(var i=0;i<this.goodsSelection.length;i++){
                                 this.suiteform.goodslist.push(this.goodsSelection[i]._id);
                             }
+                            console.log("22222222222222:"+JSON.stringify(this.suiteform))
                             this.axios.post(config.suite,this.suiteform)
                                       .then((response)=>{
                                           console.log(response)
@@ -183,6 +184,10 @@ import config from "../../../common/config"
             },
             handlePreview(file) {
                 console.log(file);
+            },
+            setImageURL(msg) {
+                this.suiteform.suitephoto = msg;
+                console.log("suitephoto:"+this.suiteform.suitephoto);
             }
         }
     }
