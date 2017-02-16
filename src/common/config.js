@@ -28,8 +28,9 @@ var config={
 
     suite:baseURL+"/sysmanage/suite",//套餐接口
 
-    qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
-
+    //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
+    qiniutoken:"http://aft.robustudio.com/sysmanage/qiniu",
+    
     tagTypes:['primary','success','warning','danger']
 }
 
