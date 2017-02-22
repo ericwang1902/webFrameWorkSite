@@ -8,6 +8,7 @@
 <script>
 
 export default {
+    props:['imgURL'],
     data () {
         return {
             fileForm:{
@@ -15,13 +16,13 @@ export default {
                 key:"",
                 file:""
             },
-            imgURL:""
+            
             ////jsonplaceholder.typicode.com/posts/
         }
     },
     methods: {
             upload: function(e) {
-                e.preventDefault();
+                e.preventDefault();//通知浏览器不要执行默认动作，以执行获取文件路径的下行代码
                 this.fileForm.file = this.$refs.photo.files[0];
                 console.log( this.fileForm.file)
             },

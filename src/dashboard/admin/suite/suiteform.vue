@@ -22,7 +22,7 @@
                 </el-table>
             </el-form-item>
              <el-form-item label = "套餐图片" prop = "suiteprice">
-                <upload @imgurl="setImageURL" ></upload>
+                <upload @imgurl="setImageURL" :imgURL="suitephoto" ></upload>
             </el-form-item>
 
             <el-form-item>
