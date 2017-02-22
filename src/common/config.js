@@ -31,7 +31,17 @@ var config={
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
     qiniutoken:"http://aft.robustudio.com/sysmanage/qiniu",
     
-    tagTypes:['primary','success','warning','danger']
+    tagTypes:['primary','success','warning','danger'],
+
+    //套餐状态
+    suiteState:[{
+        code:0,
+        stateDes:'已下架'
+    },
+    {   
+        code:1,
+        stateDes:'销售中'
+    }]
 }
 
 export default config;

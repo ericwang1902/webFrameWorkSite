@@ -48,7 +48,7 @@ export default {
                                             message: '成功上传一张图片！',
                                             type: 'success'
                                             });
-                                        this.$emit('imgurl',this.imgURL);
+                                        this.$emit('imgurlEvent',this.imgURL);
                                     })
                                     .catch(function(err){
                                         console.log(err)
