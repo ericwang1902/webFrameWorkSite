@@ -4,6 +4,9 @@
             <el-form-item label = "套餐编号" prop = "suitenum">
                 <el-input v-model="suiteform.suitenum"></el-input>
             </el-form-item>
+            <el-form-item label = "是否上架" prop = "suitestate">
+                <el-switch  v-model="suiteform.suitestate" on-color="#13ce66" on-text="是" off-color="#ff4949" off-text="否"></el-switch>
+            </el-form-item>
             <el-form-item label = "套餐名称" prop = "suitename">
                 <el-input v-model="suiteform.suitename"></el-input>
             </el-form-item>
@@ -22,7 +25,7 @@
                 </el-table>
             </el-form-item>
              <el-form-item label = "套餐图片" prop = "suiteprice">
-                <upload @imgurl="setImageURL" ></upload>
+                <upload @imgurlEvent="setImageURL" :imgURL="suiteform.suitephoto" ></upload>
             </el-form-item>
 
             <el-form-item>
@@ -50,7 +53,7 @@ import upload from "../../../components/qiniuupload"
                     suitedes:"",
                     suitephoto:"",
                     suiteprice : 0,
-                    suitestate : "",
+                    suitestate : true,
                     suitetype : "",
                     salesnum : "",
                     goodslist:[]
@@ -59,6 +62,7 @@ import upload from "../../../components/qiniuupload"
                 goodsSelection:[],//获取选项
                 rules:{
                     suitenum: [{ required: true, message: '请输入套餐编号', trigger: 'blur' }],
+                    //suitestate: [{ required: true, message: '请设置套餐状态', trigger: 'blur' },{ type: 'boolean', message: '价格必须为数字'}],
                      suitename: [{ required: true, message: '请输入套餐名称', trigger: 'blur' }],
                       suitedes: [{ required: true, message: '请输入套餐描述', trigger: 'blur' }],
                        suiteprice: [{ required: true, message: '价格不能空'},{ type: 'number', message: '价格必须为数字'}]
@@ -83,7 +87,7 @@ import upload from "../../../components/qiniuupload"
                     suitedes:"",
                     suitephoto:"",
                     suiteprice : 0,
-                    suitestate : "",
+                    suitestate : true,
                     suitetype : "",
                     salesnum : "",
                     goodslist:[]
@@ -107,9 +111,9 @@ import upload from "../../../components/qiniuupload"
                 this.goodsList.forEach((row)=>{
                     this.$refs.goodsListTable.toggleRowSelection(row,false);
                 })
-                console.log(";;;;;")
-                console.log(this.suiteRow.goodslist[0]._id);
-                console.log(this.goodsList);
+                //console.log(";;;;;")
+                //console.log(this.suiteRow.goodslist[0]._id);
+                //console.log(this.goodsList);
                  for (var i = 0; i < this.suiteRow.goodslist.length; i++) {
                     this.$refs.goodsListTable.toggleRowSelection(this.goodsList.find(d => d._id === this.suiteRow.goodslist[i]._id), true);
                 }
@@ -142,6 +146,7 @@ import upload from "../../../components/qiniuupload"
             },
             //修改套餐
             modifySuite(formName){
+                console.log("suitestate:~~~~~~~~~~~~~~"+JSON.stringify(this.suiteform));
                 this.$refs[formName].validate((valid)=>{
                     if(valid){
                         if (this.goodsSelection.length!==0) {
@@ -149,6 +154,7 @@ import upload from "../../../components/qiniuupload"
                             for(var i=0;i<this.goodsSelection.length;i++){
                                 this.suiteform.goodslist.push(this.goodsSelection[i]._id);
                             }
+                            
 
                             this.axios.put(config.suite+'/'+this.suiteRow._id,this.suiteform)
                                       .then((response)=>{

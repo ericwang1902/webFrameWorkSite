@@ -9,6 +9,13 @@
                <el-table-column label="套餐名称"  prop="suitename"></el-table-column>
                <el-table-column label="套餐描述"  prop="suitedes"></el-table-column>
                <el-table-column label="套餐价格"  prop="suiteprice"></el-table-column>
+               <el-table-column label="套餐状态" >
+                   <template scope="props">
+                        
+                        <p>{{props.row.suitestate ? '上架' : '下架'}}</p>
+                  </template>
+               </el-table-column>
+               
                <el-table-column width="100" fixed="right" label="操作">
                     <template scope="props">
                         <el-button type="primary" @click="modifySuite(props.row)" size="mini">修改</el-button>
@@ -48,9 +55,11 @@ export default {
     methods: {
         getSuiteList(){
             console.log("获取套餐列表")
+            
             this.axios.get(config.suite)
                       .then((response)=>{
                            this.suitelist = response.data;
+                          
                       })
                       .catch(function(err){
                           console.log(err);
@@ -76,6 +85,7 @@ export default {
         },
         modifySuite(val){
             this.suiteRow = val;
+            console.log("----"+JSON.stringify(this.suiteRow.suitestate));
             this.isCreateForm =false;
             this.$store.commit('setSuiteDialogStatus',true);
         },
@@ -84,6 +94,7 @@ export default {
             this.getSuiteList();
             this.$store.commit('setSuiteDialogStatus',false);
         }
+        
     }
 }
 </script>
