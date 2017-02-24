@@ -28,7 +28,6 @@
 import config from '../../../common/config'
 import goodsform from './goodsform'
 
-
 export default {
     components: {
         goodsform
