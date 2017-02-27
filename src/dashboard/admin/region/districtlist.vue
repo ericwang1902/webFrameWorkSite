@@ -41,13 +41,7 @@
             }
         },
         created() {
-            this.axios.get(config.district)
-                .then((response) => {
-                    console.log(response)
-                })
-                .catch(function (err) {
-                    console.log(err)
-                })
+            this.getDistricts();
         },
         methods: {
             createDistrict() {
@@ -56,9 +50,21 @@
             },
             ondialogclose() {
                 this.$store.commit('setDistrictDialogStatus', false);
+                this.getDistricts();
             },
             modifyDistrict(val) {
                 this.disRow = val;
+                this.isCreate = false;
+            },
+            getDistricts(){
+                this.axios.get(config.district)
+                .then((response) => {
+                    this.districts = response.data;
+                    console.log(response)
+                })
+                .catch(function (err) {
+                    console.log(err)
+                })
             }
         }
     }

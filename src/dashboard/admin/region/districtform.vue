@@ -7,8 +7,8 @@
             <el-form-item label="市" prop="city">
                 <el-input v-model="disform.city"></el-input>
             </el-form-item>
-            <el-form-item label="区县" prop="discrict">
-                <el-input v-model="disform.discrict"></el-input>
+            <el-form-item label="区县" prop="district">
+                <el-input v-model="disform.district"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" v-show="!isCreate" @click="modifyDis('disform')">提交修改</el-button>
@@ -32,10 +32,12 @@
                 disform: {
                     province: '',
                     city: '',
-                    discrict: ''
+                    district: ''
                 },
                 rules: {
-
+                    province: [{ required: true, message: '请输入省', trigger: 'blur' }],
+                    city: [{ required: true, message: '请输入市', trigger: 'blur' }],
+                    district: [{ required: true, message: '请输入区或县', trigger: 'blur' }]
                 }
             }
         },
@@ -44,14 +46,27 @@
                 console.log(val);
             },
             createDis(formName) {
-                this.$refs[formName].validate((valid) => {
+                console.log('form:'+JSON.stringify(this.disform));
 
+                this.$refs[formName].validate((valid) => {
+                    if(valid){
+                        this.axios.post(config.district,this.disform)
+                                   .then((response)=>{
+                                       console.log(response)
+                                       this.$store.commit('setDistrictDialogStatus', false);
+                                   })
+                                   .catch(function(err){
+                                       console.log(err);
+                                   })
+                    }
                 })
 
             },
             modifyDis(formName) {
                 this.$refs[formName].validate((valid) => {
-
+                    if(valid){
+                        
+                    }
                 })
             },
             //重置表单
