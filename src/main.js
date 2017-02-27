@@ -49,6 +49,8 @@ import goods from './dashboard/admin/goods/goods'//商品
 
 import suite from './dashboard/admin/suite/suitelist'//套餐
 
+import region from './dashboard/admin/region/region'//区域
+
 
 
 
@@ -97,7 +99,6 @@ const routes = [
           { path: 'supplieruser', component: supplieruser, meta: { title: "设置供应商后台用户" } },//作废
           { path: 'supplierworker', component: supplierworker, meta: { title: "绑定供应商店员" } },//作废
           { path: 'suppliergoods', component: suppliergoods, meta: { title: "管理商品" } }//作废
-
         ]
       },
       {
@@ -105,6 +106,9 @@ const routes = [
       },
       {
         path: 'suite', component: suite, meta: { title: '套餐管理' }
+      },
+      {
+        path:'region',component:region,meta:{title:'区域管理'}
       }
     ]
   },

@@ -27,6 +27,7 @@ var config={
     goodsModify:baseURL+"/sysmanage/goods",//修改商品的接口
 
     suite:baseURL+"/sysmanage/suite",//套餐接口
+    district:baseURL+"/sysmanage/district",//区县接口
 
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
     qiniutoken:"http://aft.robustudio.com/sysmanage/qiniu",
