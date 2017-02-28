@@ -105,6 +105,43 @@
                         }
                     }
                 })
+            },
+            modifyRegion(formName){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var length = this.districtSelection.length;
+                        if (length == 0) {
+                            this.$message({
+                                showClose: true,
+                                message: '必须选择一个区县！',
+                                type: 'error'
+                            });
+                            this.districtlist.forEach((row) => {
+                                this.$refs.districtlistTable.toggleRowSelection(row, false);
+                            })
+                        } else if (length > 1) {
+                            this.$message({
+                                showClose: true,
+                                message: '只能选择一个区县！',
+                                type: 'error'
+                            });
+                            this.districtlist.forEach((row) => {
+                                this.$refs.districtlistTable.toggleRowSelection(row, false);
+                            })
+                        } else {
+                            this.regionform.district = this.districtSelection[0]._id;
+                            //提交给创建接口
+                            this.axios.put(config.region+'/'+this.regionRow._id, this.regionform)
+                                .then((response) => {
+                                    console.log(response);
+                                    this.$store.commit('setRegionDialogStatus', false);
+                                })
+                                .catch(function (err) {
+                                    console.log(err);
+                                })
+                        }
+                    }
+                })
             }
         }
     }
