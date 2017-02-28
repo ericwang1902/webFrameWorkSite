@@ -68,6 +68,9 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+                this.districtlist.forEach((row) => {
+                        this.$refs.districtlistTable.toggleRowSelection(row, false);
+                    })
             },
             createRegion(formName) {
                 this.$refs[formName].validate((valid) => {
