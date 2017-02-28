@@ -5,7 +5,7 @@
                 <districtlist></districtlist>
             </el-tab-pane>
             <el-tab-pane label="配送区域维护">
-                <div>配送区域维护</div>
+                <regionlist></regionlist>
             </el-tab-pane>
             <el-tab-pane label="所有地址维护">
                 <div>所有地址维护</div>
@@ -15,10 +15,12 @@
 </template>
 <script>
     import districtlist from './districtlist'
+    import regionlist from './regionlist'
 
     export default {
         components: {
-            districtlist
+            districtlist,
+            regionlist
         }
     }
 

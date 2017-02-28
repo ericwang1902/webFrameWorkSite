@@ -21,7 +21,6 @@
 <script>
     import config from '../../../common/config'
 
-
     export default {
         components: {
 
@@ -41,9 +40,22 @@
                 }
             }
         },
+        mounted (){
+            console.log("mounted!!")
+            this.initModify();
+        },
+        watch:{
+            isCreate:function(){
+                this.initModify();
+            }
+            
+        },
         methods: {
-            change(val) {
-                console.log(val);
+            initModify(){
+                this.disform.province = this.disRow.province;
+                this.disform.city = this.disRow.city;
+                this.disform.district = this.disRow.district;
+                
             },
             createDis(formName) {
                 console.log('form:'+JSON.stringify(this.disform));
@@ -65,6 +77,14 @@
             modifyDis(formName) {
                 this.$refs[formName].validate((valid) => {
                     if(valid){
+                        this.axios.put(config.district+'/'+this.disRow._id,this.disform)
+                                  .then((response)=>{
+                                      console.log(response);
+                                      this.$store.commit('setDistrictDialogStatus', false);
+                                  })
+                                  .catch(function(err){
+                                      console.log(err)
+                                  })
                         
                     }
                 })

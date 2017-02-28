@@ -28,6 +28,7 @@ var config={
 
     suite:baseURL+"/sysmanage/suite",//套餐接口
     district:baseURL+"/sysmanage/district",//区县接口
+    region:baseURL+"/sysmanage/region",//配送区域接口
 
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
     qiniutoken:"http://aft.robustudio.com/sysmanage/qiniu",

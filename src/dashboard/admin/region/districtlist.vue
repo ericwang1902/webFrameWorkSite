@@ -18,7 +18,7 @@
 
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getDistrictDialogStatus" @close="ondialogclose">
-            <districtform :isCreate="isCreate" :disRow="disRow"></districtform>
+            <districtform v-if="$store.getters.getDistrictDialogStatus" :isCreate="isCreate" :disRow="disRow"></districtform>
         </el-dialog>
         <!--dialog end-->
     </div>
@@ -49,12 +49,15 @@
                 this.$store.commit('setDistrictDialogStatus', true);
             },
             ondialogclose() {
+                
                 this.$store.commit('setDistrictDialogStatus', false);
                 this.getDistricts();
             },
             modifyDistrict(val) {
                 this.disRow = val;
                 this.isCreate = false;
+                this.$store.commit('setDistrictDialogStatus', true);
+                console.log('selected row:'+JSON.stringify(this.disRow));
             },
             getDistricts(){
                 this.axios.get(config.district)
