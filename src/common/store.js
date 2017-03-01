@@ -7,7 +7,9 @@ Vue.use(Vuex)
 var userInfo = {
     username: "",
     password: "",
-    userid:""
+    userid:"",
+    userRole:[],
+    userRegion:""
 }
 var dialogStatus=false;
 var RoleDialogStatus =false;
@@ -40,6 +42,8 @@ const mutations = {
         state.user.username = userinfo.username;
         state.user.password = userinfo.password;
         state.user.userid=userinfo.userid;
+        state.user.userRole = userinfo.userRole;
+        state.user.userRegion = userinfo.userRegion;
     },
     //设置对话框的显示状态
     setDialogStatus:function(state,status){

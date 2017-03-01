@@ -67,14 +67,17 @@ import config from '../common/config'
                         this.axios.post(config.GetLoginUrl, user)
                                 .then((response) => {
                                     console.log(response.data.authresult)
+                                    //console.log(response.data)
                                     if(response.data.authresult==true)
                                         {
                                         var localuserInfo={
                                              username: this.ruleForm2.mobile,
                                              password: this.ruleForm2.pass,
-                                             userid:response.data.userId
+                                             userid:response.data.user._id,
+                                             userRole:response.data.user.role
                                         }
-                                        console.log(localuserInfo.userid)
+                                        console.log("当前登陆用户："+JSON.stringify(localuserInfo))
+                                        
                                       this.$store.commit('setUserInfo',localuserInfo)
                                        localStorage.setItem("currentInfo", JSON.stringify(localuserInfo)); //本地存储
                                      // console.log(this.$store.getters.getUserInfo)
