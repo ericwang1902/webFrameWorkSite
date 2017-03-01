@@ -74,7 +74,8 @@ import config from '../common/config'
                                              username: this.ruleForm2.mobile,
                                              password: this.ruleForm2.pass,
                                              userid:response.data.user._id,
-                                             userRole:response.data.user.role
+                                             userRole:response.data.user.role,
+                                             userDistrict:response.data.user.district
                                         }
                                         console.log("当前登陆用户："+JSON.stringify(localuserInfo))
                                         

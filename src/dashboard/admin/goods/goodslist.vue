@@ -44,15 +44,15 @@
         created() {
             this.getGoodsList();//获取所有的商品列表
             this.getSupplierList();
-            console.log("商品列表：")
-            console.log(this.goodslistData);
+           // console.log("商品列表：")
+            //console.log(this.goodslistData);
         },
         methods: {
             getGoodsList() {
                 this.axios.get(config.goodsList)
                     .then((response) => {
                         this.goodslistData = response.data;
-                        console.log(this.goodslistData)
+                        //console.log(this.goodslistData)
 
                     })
                     .catch(function (err) {
@@ -69,7 +69,7 @@
                     })
             },
             createGoods() {
-                console.log("创建商品");
+               // console.log("创建商品");
                 this.$store.commit('setGoodsDialogStatus', true);
                 this.isCreateForm = true;
             },

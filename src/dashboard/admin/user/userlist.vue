@@ -8,20 +8,29 @@
             <el-table border :data="usersArray" style="width: 100%">
                 <el-table-column type="expand">
                     <template scope="props1">
+                        <div>
+                        
                         <el-table :data="props1.row.role" style="width: 100%">                       
                             <el-table-column label="角色名称" prop="roleName"></el-table-column>
                             <el-table-column label="角色说明" prop="roleDes"></el-table-column>
                             <el-table-column label="角色id" prop="_id"></el-table-column>
                         </el-table>
+                        </div>
                     </template>
                     </el-table-column>
-                 <el-table-column label="手机号" prop="mobile" width="200">
+                 <el-table-column label="手机号" prop="mobile" >
                  </el-table-column>
                  <el-table-column label="用户名" prop="username">
                  </el-table-column>
-                 <el-table-column label="昵称" prop="nickname" width="200">
+                 <el-table-column label="昵称" prop="nickname" >
                  </el-table-column>
-                 <el-table-column  width="200px" label="操作">
+                 <el-table-column label="省" prop="district.province">
+                 </el-table-column>
+                  <el-table-column label="市" prop="district.city" >
+                 </el-table-column>
+                  <el-table-column label="区县" prop="district.district" >
+                 </el-table-column>
+                 <el-table-column  width="150" fixed="right" label="操作">
                         <template scope="props">
                             <el-button type="text" @click="modifyUser(props.row)" size="small">编辑</el-button>
                             <el-button type="text" @click="resetPassword(props.row)" size="small">密码重置</el-button>
@@ -31,7 +40,7 @@
         </el-card>
 <!--dialog start-->
 <el-dialog :title="title" v-model="$store.getters.getUserDialogStatus"  @close="ondialogclose" >
-    <userform  :isCreateForm="isCreateForm" :userRow="rowData" :roleList="roleList"></userform>
+    <userform  :isCreateForm="isCreateForm" :userRow="rowData" :roleList="roleList" :districtList="districtList"></userform>
     
 </el-dialog>
 <el-dialog title="修改密码" v-model="$store.getters.getPasswordDialogStatus"  @close="onpsddialogclose" >
@@ -61,14 +70,15 @@ export default {
             title:"添加用户",
             isCreateForm:true,
             rowData:{},
-            roleList:[]
+            roleList:[],
+            districtList:[]
         }
     },
     created () {
         //在登录开始，获取后台用户信息
         this.getUsers();
         this.getRoleList();
-       
+        this.getDistrictList();
     },
     methods: {
         //获取后台用户信息
@@ -76,7 +86,7 @@ export default {
             this.axios.get(config.GetUserInfo)
                         .then((response)=>{
                             this.usersArray = response.data;
-                            console.log(response.data)
+                            console.log('---------'+JSON.stringify(response.data))
                         })
                         .catch(function(err){
                             console.log(err)
@@ -87,11 +97,22 @@ export default {
             this.axios.get(config.roleList)
                       .then((response)=>{
                           this.roleList = response.data;//设置给form的属性
-                          console.log("获取所有的role清单")
-                          console.log(JSON.stringify(this.roleList))
+                          //console.log("获取所有的role清单")
+                          //console.log(JSON.stringify(this.roleList))
                       })
                       .catch(function(err){
                           console.log(err)
+                      })
+        },
+        //获取所有district的列表
+        getDistrictList:function(){
+            this.axios.get(config.district)
+                      .then((response)=>{
+                          this.districtList = response.data;
+                          //console.log("获取所有的district清单"+JSON.stringify(this.districtList));
+                      })
+                      .catch(function(err){
+                          console.log(err);
                       })
         },
         //修改用户

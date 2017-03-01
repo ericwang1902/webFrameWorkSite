@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         getSuiteList(){
-            console.log("获取套餐列表")
+          //  console.log("获取套餐列表")
             
             this.axios.get(config.suite)
                       .then((response)=>{
@@ -70,14 +70,14 @@ export default {
             this.axios.get(config.goodsList)
                        .then((response)=>{
                            this.goodsList = response.data;
-                           console.log(this.goodsList)
+                    //       console.log(this.goodsList)
                        })
                        .catch(function(err){
                            console.log(err);
                        })
         },
         createSuite(){
-            console.log("创建套餐")
+         //   console.log("创建套餐")
             this.title="创建套餐";
             this.isCreateForm =true;//创建套餐
             this.$store.commit('setSuiteDialogStatus',true);

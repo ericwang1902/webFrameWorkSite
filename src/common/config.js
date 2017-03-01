@@ -5,7 +5,7 @@ var config={
     GetLoginUrl:baseURL+"/sysmanage/login",
     LogoutURL:baseURL+"/sysmanage/logout",
     GetUserInfo:baseURL+"/sysmanage/user",
-    userCreaste:baseURL+"/sysmanage/user",//用户创建
+    userCreate:baseURL+"/sysmanage/user",//用户创建
     userModfiy:baseURL+"/sysmanage/user",//用户修改
 
     roleList:baseURL+"/sysmanage/role",//角色列表
