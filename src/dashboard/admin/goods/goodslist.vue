@@ -42,6 +42,7 @@
             }
         },
         created() {
+            
             this.getGoodsList();//获取所有的商品列表
             this.getSupplierList();
            // console.log("商品列表：")

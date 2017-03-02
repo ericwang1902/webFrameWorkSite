@@ -77,8 +77,6 @@ import config from './common/config'
             //concat就是合并数组
             this.menus=this.menus.concat(roles[i].menuList);
           }
-          
-          
         }
         )
         .catch(function (error) {

@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="createSupplier()" type="primary">添加供应商</el-button>
             </div>
-            <el-table border :data="supplierlistData" style="width: 100%" >
+            <el-table border :data="supplierlistData" style="width: 100%">
                 <el-table-column label="供应商编号" width="300" prop="suppliernum"></el-table-column>
                 <el-table-column label="供应商名称" width="300" prop="suppliername"></el-table-column>
                 <el-table-column label="供应商说明" width="300" prop="supplierdes"></el-table-column>
@@ -18,109 +18,126 @@
                 </el-table-column>
             </el-table>
         </el-card>
-<!--dialog start-->
-<el-dialog :title="title" v-model="$store.getters.getSupplierDialogStatus"  @close="ondialogclose" >
-    <supplierform v-if="formTypes[0]" :isCreateForm="isCreateForm" :supRow="supRow" :userList="userList"></supplierform>
-    <supplieruserform v-if="formTypes[1]" :userList="userList" :supRow="supRow"></supplieruserform>
-    <supplierworkerform v-if="formTypes[2]" :userList="userList" :supRow="supRow"></supplierworkerform>
+        <!--dialog start-->
+        <el-dialog :title="title" v-model="$store.getters.getSupplierDialogStatus" @close="ondialogclose">
+            <supplierform v-if="formTypes[0]" :districtid="districtid" :isCreateForm="isCreateForm" :supRow="supRow" :userList="userList"></supplierform>
+            <supplieruserform v-if="formTypes[1]" :userList="userList" :supRow="supRow"></supplieruserform>
+            <supplierworkerform v-if="formTypes[2]" :userList="userList" :supRow="supRow"></supplierworkerform>
 
-</el-dialog>
-<!--dialog end-->
+        </el-dialog>
+        <!--dialog end-->
     </div>
 </template>
 <script>
-import config from '../../../common/config'
-import supplierform from './supplierform'
-import supplieruserform from './supplieruserform'
-import supplierworkerform from './supplierworkerform'
+    import config from '../../../common/config'
+    import supplierform from './supplierform'
+    import supplieruserform from './supplieruserform'
+    import supplierworkerform from './supplierworkerform'
+    import funcAuth from '../../../common/funcAuth'
 
-export default {
-    components: {
-      supplierform,
-      supplieruserform,
-      supplierworkerform
-    },
-    data () {
-        return {
-            title:"新建供应商",
-            isCreateForm:true,
-            supRow:{},
-            supplierlistData:[],
-            userList:[],
-            formTypes:[false,false,false,false],//formtypes和isCreateForm来共同控制弹出form
-            
-        }
-    },
-    created () {
-        this.getsupplierList();
-        this.getUserList();
-    },
-    methods:{
-       //获取后台用户信息
-        getUserList:function(){
-            this.axios.get(config.GetUserInfo)
-                        .then((response)=>{
-                            this.userList = response.data;
-                        })
-                        .catch(function(err){
-                            console.log(err)
-                        })
+    export default {
+        components: {
+            supplierform,
+            supplieruserform,
+            supplierworkerform
         },
-        //重置formtypes数组
-        resetFormTypes(){
-            for(var i =0;i<this.formTypes.length;i++){
-                this.formTypes[i] = false;
+        data() {
+            return {
+                title: "新建供应商",
+                isCreateForm: true,
+                supRow: {},
+                supplierlistData: [],
+                userList: [],
+                formTypes: [false, false, false, false],//formtypes和isCreateForm来共同控制弹出form
+                districtid: ''
             }
         },
-        getsupplierList(){
-            this.axios.get(config.supplierList)
-                      .then((response)=>{
-                       //   console.log(response.data)
-                          this.supplierlistData = response.data;
-                      })
-                      .catch(function(err){
-                          console.log(err)
-                      })
+        created() {
+            this.getuserinfo((districtId)=>{
+                this.districtid=districtId;//用来传递给form
+                this.getsupplierList(districtId);
+                this.getUserList();
+            })
         },
-        ondialogclose(){
-            console.log("关闭dialog")
-            this.$store.commit('setSupplierDialogStatus',false);
-            this.getsupplierList();
-            this.resetFormTypes();//关闭窗口的时候，充值formtypes数组
-        },
-        //创建供应商
-        createSupplier:function(){
-            console.log("添加供应商")
-            this.isCreateForm = true;
-            this.title="新建供应商";
-            this.formTypes[0]=true;
-            this.$store.commit('setSupplierDialogStatus',true);//千万要注意顺序，需要先设置子控件的内容，在做弹出框显示
-        },
-        //修改供应商
-        modifySupplier(supRow){
-            console.log(supRow);
-            this.isCreateForm=false;
-            this.title="修改供应商";
-            this.supRow = supRow;
-            this.formTypes[0]=true;
-            this.$store.commit('setSupplierDialogStatus',true);
-        },
-        //设置供应商后台用户
-        setSupplierUser(supRow){
-            this.title="设置供应商后台用户"
-            this.formTypes[1]=true;
-            this.supRow = supRow;
-            this.$store.commit('setSupplierDialogStatus',true);
-        },
-        //设置供应商店员
-        setSupplierWorker(supRow){
-            this.title = "设置供应商店员";
-            this.formTypes[2] = true;
-            this.supRow = supRow;
-            this.$store.commit('setSupplierDialogStatus',true)
+        methods: {
+            //实时获取用户信息
+            getuserinfo(callback) {
+                funcAuth.checkAuth(function (userinfo) {
+                    console.log("校验用户功能权限：" + JSON.stringify(userinfo));
+
+                    var districtId = userinfo.district._id;
+
+                    callback(districtId)
+
+                })
+            },
+            //获取后台用户信息
+            getUserList: function () {
+                this.axios.get(config.GetUserInfo)
+                    .then((response) => {
+                        this.userList = response.data;
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+            },
+            //重置formtypes数组
+            resetFormTypes() {
+                for (var i = 0; i < this.formTypes.length; i++) {
+                    this.formTypes[i] = false;
+                }
+            },
+            getsupplierList(districtId) {
+                this.axios.get(config.supplierList+ '?districtId=' + districtId)
+                    .then((response) => {
+                        //   console.log(response.data)
+                        this.supplierlistData = response.data;
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+            },
+            ondialogclose() {
+                console.log("关闭dialog")
+                this.$store.commit('setSupplierDialogStatus', false);
+                this.getsupplierList(this.districtid);
+                this.resetFormTypes();//关闭窗口的时候，充值formtypes数组
+            },
+            //创建供应商
+            createSupplier: function () {
+                console.log("添加供应商")
+                this.isCreateForm = true;
+                this.title = "新建供应商";
+                this.formTypes[0] = true;
+                this.$store.commit('setSupplierDialogStatus', true);//千万要注意顺序，需要先设置子控件的内容，在做弹出框显示
+            },
+            //修改供应商
+            modifySupplier(supRow) {
+                console.log(supRow);
+                this.isCreateForm = false;
+                this.title = "修改供应商";
+                this.supRow = supRow;
+                this.formTypes[0] = true;
+                this.$store.commit('setSupplierDialogStatus', true);
+            },
+            //设置供应商后台用户
+            setSupplierUser(supRow) {
+                this.title = "设置供应商后台用户"
+                this.formTypes[1] = true;
+                this.supRow = supRow;
+                this.$store.commit('setSupplierDialogStatus', true);
+            },
+            //设置供应商店员
+            setSupplierWorker(supRow) {
+                this.title = "设置供应商店员";
+                this.formTypes[2] = true;
+                this.supRow = supRow;
+                this.$store.commit('setSupplierDialogStatus', true)
+            }
         }
     }
-}
+
 </script>
 <style>
+
 </style>

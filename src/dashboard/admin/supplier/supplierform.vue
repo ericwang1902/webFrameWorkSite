@@ -31,14 +31,15 @@
 import config from "../../../common/config"
 
 export default {
-    props: ['isCreateForm','supRow','userList'],
+    props: ['isCreateForm','supRow','userList','districtid'],
     data () {
         return {
             supform:{
                 suppliernum:'',
                 suppliername:'',
                 supplierdes:'',
-                supplieruser:''
+                supplieruser:'',
+                district:''
             },
             userselection:[],//表示表单选择关联用户的数组，需要转化给supform.supplieruser
             rules:{
@@ -160,6 +161,7 @@ export default {
                     }else{
                         //将list的选择转化为supplieruser
                         this.supform.supplieruser=this.userselection[0]._id;
+                        this.supform.district = this.districtid;
                         this.axios.post(config.supplierCreate,this.supform)
                                   .then((response)=>{
                                         console.log(response)
