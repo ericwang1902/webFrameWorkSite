@@ -16,6 +16,8 @@
                     </el-table-column>
                     <el-table-column prop="username" label="用户名称">
                     </el-table-column>
+                    <el-table-column prop="nickname" label="昵称">
+                    </el-table-column>
                 </el-table>
             </el-form-item>
 

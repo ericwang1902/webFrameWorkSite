@@ -76,14 +76,16 @@
         },
         watch: {
             isCreateForm: function () {
-                this.InitForm();
+           //     this.InitForm();
             }
         },
         methods: {
             InitForm() {
                 if (this.isCreateForm) {
+                    console.log("this.isCreateForm:"+this.isCreateForm);
                     this.InitCreateGoods();
                 } else {
+                    console.log("this.isCreateForm:"+this.isCreateForm);
                     this.InitModifyGoods();
                 }
             },
@@ -101,16 +103,16 @@
                 this.goodsform.salesnum = "";
                 this.goodsform.goodsjudge = "";
 
-                this.$refs["vueEditor1"].setContent('');
+                this.$refs["vueEditor1"].setContent('ooo');
                 this.supplierList.forEach((row) => {
                     this.$refs.supplierListTable.toggleRowSelection(row, false);
                 })
             },
             InitModifyGoods() {
-                console.log(typeof (this.goodsRow.goodsprice))
+              //  console.log(typeof (this.goodsRow.goodsprice))
                 this.goodsform.goodsnum = this.goodsRow.goodsnum;
                 this.goodsform.goodsname = this.goodsRow.goodsname;
-                this.goodsform.goodsdes = this.goodsRow.goodsdes;
+               // this.goodsform.goodsdes = this.goodsRow.goodsdes;
                 this.goodsform.goodsphoto = this.goodsRow.goodsphoto;
                 this.goodsform.goodsprice = this.goodsRow.goodsprice;
                 this.goodsform.goodsbuyprice = this.goodsRow.goodsbuyprice;
@@ -120,8 +122,10 @@
                 this.goodsform.supplier = this.goodsRow.supplier;
                 this.goodsform.salesnum = this.goodsRow.salesnum;
                 this.goodsform.goodsjudge = this.goodsRow.goodsjudge;
-                this.$refs["vueEditor1"].setContent(this.goodsRow.goodsdes);
-                console.log(typeof (this.goodsform.goodsprice))
+                this.$refs.vueEditor1.setContent(this.goodsRow.goodsdes);
+
+              //  console.log(typeof (this.goodsform.goodsprice))
+                console.log(this.goodsRow.goodsdes)
 
                 this.supplierList.forEach((row) => {
                     this.$refs.supplierListTable.toggleRowSelection(row, false);
@@ -158,7 +162,7 @@
                             } else {
                                 this.goodsform.supplier = this.supplierSelection[0]._id;
                                 //提交给put接口
-                                this.axios.put(config.goodsModify + '/' + this.goodsRow._id, this.goodsform)
+                                this.axios.put(config.goodsModify + '/' + this.goodsRow._id+ '?userid=' + this.$store.getters.getUserInfo.userid, this.goodsform)
                                     .then((response) => {
                                         console.log(response);
                                         this.$store.commit('setGoodsDialogStatus', false);
@@ -213,7 +217,7 @@
                                 //将list的选择转化为supplieruser
                                 this.goodsform.supplier = this.supplierSelection[0]._id;
                                 this.goodsform.district = this.districtId;
-                                this.axios.post(config.goodsCreate, this.goodsform)
+                                this.axios.post(config.goodsCreate+ '?userid=' + this.$store.getters.getUserInfo.userid, this.goodsform)
                                     .then((response) => {
                                         console.log(response)
                                         this.$store.commit('setGoodsDialogStatus', false);

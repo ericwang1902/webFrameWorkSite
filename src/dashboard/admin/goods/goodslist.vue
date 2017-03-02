@@ -10,6 +10,9 @@
                 <el-table-column label="进价" prop="goodsbuyprice"></el-table-column>
                 <el-table-column label="售价" prop="goodsprice"></el-table-column>
                 <el-table-column label="供应商" prop="supplier.suppliername"></el-table-column>
+                <el-table-column label="省" prop="district.province"></el-table-column>
+                <el-table-column label="市" prop="district.city"></el-table-column>
+                <el-table-column label="区县" prop="district.district"></el-table-column>
                 <el-table-column width="100" fixed="right" label="操作">
                     <template scope="props">
                         <el-button type="primary" @click="modifyGoods(props.row)" size="mini">修改</el-button>
@@ -53,14 +56,6 @@
 
         },
         methods: {
-            //实时获取用户信息，为了获取区县信息
-            getuserinfo(callback) {
-                funcAuth.checkAuth(function (userinfo) {
-                    var districtId = userinfo.district._id;
-                    //回调，用户赋值给this.districtid
-                    callback(districtId)
-                })
-            },
             getGoodsList(userid) {
                 this.axios.get(config.goodsList + '?userid=' + userid)
                     .then((response) => {

@@ -9,6 +9,9 @@
                 <el-table-column label="套餐名称" prop="suitename"></el-table-column>
                 <el-table-column label="套餐描述" prop="suitedes"></el-table-column>
                 <el-table-column label="套餐价格" prop="suiteprice"></el-table-column>
+                <el-table-column label="省" prop="district.province"></el-table-column>
+                <el-table-column label="市" prop="district.city"></el-table-column>
+                <el-table-column label="区县" prop="district.district"></el-table-column>
                 <el-table-column label="套餐状态">
                     <template scope="props">
 
@@ -25,7 +28,7 @@
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getSuiteDialogStatus" @close="ondialogclose">
-            <suiteform v-if="$store.getters.getSuiteDialogStatus" :districtid="districtId" :isCreateForm="isCreateForm" :goodsList="goodsList"
+            <suiteform v-if="$store.getters.getSuiteDialogStatus" :isCreateForm="isCreateForm" :goodsList="goodsList"
                 :suiteRow="suiteRow"></suiteform>
         </el-dialog>
         <!--dialog end-->
@@ -46,8 +49,7 @@
                 title: "",
                 isCreateForm: false,
                 goodsList: [],
-                suiteRow: {},
-                districtId: ''
+                suiteRow: {}
 
             }
         },
@@ -57,16 +59,6 @@
             this.getGoodsList(userid);
         },
         methods: {
-            //实时获取用户信息
-            getuserinfo(callback) {
-                funcAuth.checkAuth(function (userinfo) {
-                    console.log("校验用户功能权限：" + JSON.stringify(userinfo));
-
-                    var districtId = userinfo.district._id;
-                    callback(districtId)
-
-                })
-            },
             getSuiteList(userid) {
                 //  console.log("获取套餐列表")
 

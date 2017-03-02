@@ -5,9 +5,12 @@
                 <el-button style="float: right; " @click="createSupplier()" type="primary">添加供应商</el-button>
             </div>
             <el-table border :data="supplierlistData" style="width: 100%">
-                <el-table-column label="供应商编号" width="300" prop="suppliernum"></el-table-column>
-                <el-table-column label="供应商名称" width="300" prop="suppliername"></el-table-column>
-                <el-table-column label="供应商说明" width="300" prop="supplierdes"></el-table-column>
+                <el-table-column label="供应商编号"  prop="suppliernum"></el-table-column>
+                <el-table-column label="供应商名称"  prop="suppliername"></el-table-column>
+                <el-table-column label="供应商说明"  prop="supplierdes"></el-table-column>
+                <el-table-column label="省"  prop="supplieruser.district.province"></el-table-column>
+                <el-table-column label="市"  prop="supplieruser.district.city"></el-table-column>
+                <el-table-column label="区县"  prop="supplieruser.district.district"></el-table-column>
                 <el-table-column width="300" fixed="right" label="修改">
                     <template scope="props">
                         <el-button type="primary" @click="modifySupplier(props.row)" size="mini">信息</el-button>
@@ -70,8 +73,9 @@
             getsupplierList(userid) {
                 this.axios.get(config.supplierList + '?userid=' + userid)
                     .then((response) => {
-                        //   console.log(response.data)
+                          console.log(response.data)
                         this.supplierlistData = response.data;
+
                     })
                     .catch(function (err) {
                         console.log(err)

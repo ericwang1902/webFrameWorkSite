@@ -44,7 +44,7 @@
         components: {
             upload
         },
-        props: ['goodsList', 'isCreateForm', 'suiteRow','districtid'],
+        props: ['goodsList', 'isCreateForm', 'suiteRow'],
         data() {
             return {
                 suiteform: {
@@ -56,8 +56,7 @@
                     suitestate: true,
                     suitetype: "",
                     salesnum: "",
-                    goodslist: [],
-                    district: ''
+                    goodslist: []
 
                 },
                 goodsSelection: [],//获取选项
@@ -132,9 +131,8 @@
                             for (var i = 0; i < this.goodsSelection.length; i++) {
                                 this.suiteform.goodslist.push(this.goodsSelection[i]._id);
                             }
-                            this.suiteform.district = this.districtid;
                             console.log("22222222222222:" + JSON.stringify(this.suiteform))
-                            this.axios.post(config.suite, this.suiteform)
+                            this.axios.post(config.suite+ '?userid=' + this.$store.getters.getUserInfo.userid, this.suiteform)
                                 .then((response) => {
                                     console.log(response)
                                     this.$store.commit('setSuiteDialogStatus', false);
@@ -158,7 +156,7 @@
                             }
 
 
-                            this.axios.put(config.suite + '/' + this.suiteRow._id, this.suiteform)
+                            this.axios.put(config.suite + '/' + this.suiteRow._id+ '?userid=' + this.$store.getters.getUserInfo.userid, this.suiteform)
                                 .then((response) => {
                                     console.log(response)
                                     this.$store.commit('setSuiteDialogStatus', false);
