@@ -20,7 +20,7 @@
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getSupplierDialogStatus" @close="ondialogclose">
-            <supplierform v-if="formTypes[0]" :districtid="districtid" :isCreateForm="isCreateForm" :supRow="supRow" :userList="userList"></supplierform>
+            <supplierform v-if="formTypes[0]"  :isCreateForm="isCreateForm" :supRow="supRow" :userList="userList"></supplierform>
             <supplieruserform v-if="formTypes[1]" :userList="userList" :supRow="supRow"></supplieruserform>
             <supplierworkerform v-if="formTypes[2]" :userList="userList" :supRow="supRow"></supplierworkerform>
 
@@ -48,34 +48,30 @@
                 supRow: {},
                 supplierlistData: [],
                 userList: [],
-                formTypes: [false, false, false, false],//formtypes和isCreateForm来共同控制弹出form
-                districtid: ''
+                formTypes: [false, false, false, false]//formtypes和isCreateForm来共同控制弹出form
             }
         },
         created() {
-            this.getuserinfo((districtId)=>{
-                this.districtid=districtId;//用来传递给form
-                this.getsupplierList(districtId);
-                this.getUserList();
-            })
+            var userid = this.$store.getters.getUserInfo.userid;
+            this.getsupplierList(userid);
+            this.getUserList(userid);
         },
         methods: {
-            //实时获取用户信息
-            getuserinfo(callback) {
-                funcAuth.checkAuth(function (userinfo) {
-                    console.log("校验用户功能权限：" + JSON.stringify(userinfo));
-
-                    var districtId = userinfo.district._id;
-
-                    callback(districtId)
-
-                })
-            },
             //获取后台用户信息
-            getUserList: function () {
-                this.axios.get(config.GetUserInfo)
+            getUserList: function (userid) {
+                this.axios.get(config.GetUserInfo + '?userid=' + userid)
                     .then((response) => {
                         this.userList = response.data;
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+            },
+            getsupplierList(userid) {
+                this.axios.get(config.supplierList + '?userid=' + userid)
+                    .then((response) => {
+                        //   console.log(response.data)
+                        this.supplierlistData = response.data;
                     })
                     .catch(function (err) {
                         console.log(err)
@@ -87,20 +83,11 @@
                     this.formTypes[i] = false;
                 }
             },
-            getsupplierList(districtId) {
-                this.axios.get(config.supplierList+ '?districtId=' + districtId)
-                    .then((response) => {
-                        //   console.log(response.data)
-                        this.supplierlistData = response.data;
-                    })
-                    .catch(function (err) {
-                        console.log(err)
-                    })
-            },
+            
             ondialogclose() {
                 console.log("关闭dialog")
                 this.$store.commit('setSupplierDialogStatus', false);
-                this.getsupplierList(this.districtid);
+                this.getsupplierList(this.$store.getters.getUserInfo.userid);
                 this.resetFormTypes();//关闭窗口的时候，充值formtypes数组
             },
             //创建供应商

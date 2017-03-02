@@ -76,14 +76,15 @@ export default {
     },
     created () {
         //在登录开始，获取后台用户信息
-        this.getUsers();
+        var userid = this.$store.getters.getUserInfo.userid;
+        this.getUsers(userid);
         this.getRoleList();
         this.getDistrictList();
     },
     methods: {
         //获取后台用户信息
-        getUsers:function(){
-            this.axios.get(config.GetUserInfo)
+        getUsers:function(userid){
+            this.axios.get(config.GetUserInfo + '?userid=' + userid)
                         .then((response)=>{
                             this.usersArray = response.data;
                             console.log('---------'+JSON.stringify(response.data))
@@ -133,12 +134,12 @@ export default {
         //对话框关闭回调事件
         ondialogclose(){
             console.log("对话框关闭")
-            this.getUsers();
+            this.getUsers(this.$store.getters.getUserInfo.userid);
             this.$store.commit('setUserDialogStatus',false);
            
         },
         onpsddialogclose(){
-            this.getUsers();
+            this.getUsers(this.$store.getters.getUserInfo.userid);
             this.$store.commit('setPasswordDialogStatus',false)
         },
         //创建用户按钮

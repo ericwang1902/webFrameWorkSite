@@ -38,7 +38,7 @@ const state = {
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
 const mutations = {
     // TODO: 放置我们的状态变更函数
-    setUserInfo: function (state, userinfo) {
+        setUserInfo: function (state, userinfo) {
         state.user.username = userinfo.username;
         state.user.password = userinfo.password;
         state.user.userid=userinfo.userid;

@@ -64,12 +64,12 @@ import config from './common/config'
     },
     created: function () {
       
-      console.log("userinfo:"+this.$store.getters.getUserInfo.userid)
+     // console.log("userinfo:"+this.$store.getters.getUserInfo.userid)
       this.axios.get(config.GetUserInfo+'/'+JSON.parse(localStorage.getItem('currentInfo')).userid)
         .then((response) => {
          
           var user = response.data;
-         //  console.log("user:"+JSON.stringify(user))
+           console.log("user:"+JSON.stringify(user))
           var roles= user.role;
           
           //role其实是一个数组

@@ -25,7 +25,8 @@
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getSuiteDialogStatus" @close="ondialogclose">
-            <suiteform v-if="$store.getters.getSuiteDialogStatus" :isCreateForm="isCreateForm" :goodsList="goodsList" :suiteRow="suiteRow"></suiteform>
+            <suiteform v-if="$store.getters.getSuiteDialogStatus" :districtid="districtId" :isCreateForm="isCreateForm" :goodsList="goodsList"
+                :suiteRow="suiteRow"></suiteform>
         </el-dialog>
         <!--dialog end-->
     </div>
@@ -45,15 +46,15 @@
                 title: "",
                 isCreateForm: false,
                 goodsList: [],
-                suiteRow: {}
+                suiteRow: {},
+                districtId: ''
 
             }
         },
         created() {
-            this.getuserinfo((districtId) => {
-                this.getSuiteList(districtId);
-                this.getGoodsList(districtId);
-            });
+            var userid = this.$store.getters.getUserInfo.userid;
+            this.getSuiteList(userid);
+            this.getGoodsList(userid);
         },
         methods: {
             //实时获取用户信息
@@ -66,10 +67,10 @@
 
                 })
             },
-            getSuiteList(districtId) {
+            getSuiteList(userid) {
                 //  console.log("获取套餐列表")
 
-                this.axios.get(config.suite + '?districtId=' + districtId)
+                this.axios.get(config.suite + '?userid=' + userid)
                     .then((response) => {
                         this.suitelist = response.data;
 
@@ -79,8 +80,8 @@
                     })
 
             },
-            getGoodsList(districtId) {
-                this.axios.get(config.goodsList + '?districtId=' + districtId)
+            getGoodsList(userid) {
+                this.axios.get(config.goodsList + '?userid=' + userid)
                     .then((response) => {
                         this.goodsList = response.data;
                         //       console.log(this.goodsList)
@@ -104,7 +105,7 @@
             },
             ondialogclose() {
                 console.log("关闭dialog")
-                this.getSuiteList();
+                this.getSuiteList(this.$store.getters.getUserInfo.userid);
                 this.$store.commit('setSuiteDialogStatus', false);
             }
 

@@ -31,15 +31,14 @@
 import config from "../../../common/config"
 
 export default {
-    props: ['isCreateForm','supRow','userList','districtid'],
+    props: ['isCreateForm','supRow','userList'],
     data () {
         return {
             supform:{
                 suppliernum:'',
                 suppliername:'',
                 supplierdes:'',
-                supplieruser:'',
-                district:''
+                supplieruser:''
             },
             userselection:[],//表示表单选择关联用户的数组，需要转化给supform.supplieruser
             rules:{
@@ -66,7 +65,9 @@ export default {
         }
     },
     mounted(){
-        console.log("mounted")
+         var userid = this.$store.getters.getUserInfo.userid;
+        //console.log("mounted")
+        //console.log("123123"+config.supplierCreate+ '?userid=' + this.$store.getters.getUserInfo.userid)
         this.initForm();
     },
     methods: {
@@ -121,7 +122,7 @@ export default {
                             })
                     }else{
                     this.supform.supplieruser=this.userselection[0]._id;
-                    this.axios.put(config.supplierModify+'/'+this.supRow._id,this.supform)
+                    this.axios.put(config.supplierModify+'/'+this.supRow._id+ '?userid=' + this.$store.getters.getUserInfo.userid,this.supform)
                               .then((response)=>{
                                   console.log(response)
                                   this.$store.commit('setSupplierDialogStatus',false);
@@ -135,6 +136,7 @@ export default {
         },
         //创建供应商
         createSupplier(formName){
+            
             this.$refs[formName].validate((valid)=>{
                 if(valid){
                     var length =this.userselection.length;
@@ -161,8 +163,8 @@ export default {
                     }else{
                         //将list的选择转化为supplieruser
                         this.supform.supplieruser=this.userselection[0]._id;
-                        this.supform.district = this.districtid;
-                        this.axios.post(config.supplierCreate,this.supform)
+                        
+                        this.axios.post(config.supplierCreate+ '?userid=' + this.$store.getters.getUserInfo.userid,this.supform)
                                   .then((response)=>{
                                         console.log(response)
                                         this.$store.commit('setSupplierDialogStatus',false);

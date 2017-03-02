@@ -164,7 +164,7 @@
                         }
                         else {
                             this.userform.district = this.disSelection[0]._id;
-                            this.axios.post(config.userCreate, this.userform)
+                            this.axios.post(config.userCreate+ '?userid=' + this.$store.getters.getUserInfo.userid, this.userform)
                                 .then((response => {
                                     console.log(response)
                                     this.$store.commit('setUserDialogStatus', false);
@@ -191,7 +191,7 @@
                         }
                         else {
                             this.userform.district = this.disSelection[0]._id;
-                            this.axios.put(config.userModfiy + '/' + this.userRow._id, this.userform)
+                            this.axios.put(config.userModfiy + '/' + this.userRow._id+ '?userid=' + this.$store.getters.getUserInfo.userid, this.userform)
                                 .then((response) => {
                                     console.log(response)
                                     this.$store.commit('setUserDialogStatus', false)

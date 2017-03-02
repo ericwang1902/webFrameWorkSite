@@ -19,7 +19,8 @@
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getGoodsDialogStatus" @close="ondialogclose">
-            <goodsform v-if="$store.getters.getGoodsDialogStatus" :isCreateForm="isCreateForm" :goodsRow="goodsRow" :supplierList="supplierList"></goodsform>
+            <goodsform v-if="$store.getters.getGoodsDialogStatus" :districtId="districtid" :isCreateForm="isCreateForm" :goodsRow="goodsRow"
+                :supplierList="supplierList"></goodsform>
         </el-dialog>
         <!--dialog end-->
     </div>
@@ -27,6 +28,7 @@
 <script>
     import config from '../../../common/config'
     import goodsform from './goodsform'
+    import funcAuth from '../../../common/funcAuth'
 
     export default {
         components: {
@@ -38,19 +40,29 @@
                 isCreateForm: true,
                 goodsRow: {},
                 supplierList: [],
-                goodslistData: []
+                goodslistData: [],
+                districtid: ''
             }
         },
         created() {
-            
-            this.getGoodsList();//获取所有的商品列表
-            this.getSupplierList();
-           // console.log("商品列表：")
-            //console.log(this.goodslistData);
+            var userid = this.$store.getters.getUserInfo.userid;
+
+            this.getGoodsList(userid);//获取所有的商品列表
+            this.getSupplierList(userid);
+
+
         },
         methods: {
-            getGoodsList() {
-                this.axios.get(config.goodsList)
+            //实时获取用户信息，为了获取区县信息
+            getuserinfo(callback) {
+                funcAuth.checkAuth(function (userinfo) {
+                    var districtId = userinfo.district._id;
+                    //回调，用户赋值给this.districtid
+                    callback(districtId)
+                })
+            },
+            getGoodsList(userid) {
+                this.axios.get(config.goodsList + '?userid=' + userid)
                     .then((response) => {
                         this.goodslistData = response.data;
                         //console.log(this.goodslistData)
@@ -60,8 +72,8 @@
                         console.log(err)
                     })
             },
-            getSupplierList() {
-                this.axios.get(config.supplierList)
+            getSupplierList(userid) {
+                this.axios.get(config.supplierList + '?userid=' + userid)
                     .then((response) => {
                         this.supplierList = response.data;
                     })
@@ -70,7 +82,7 @@
                     })
             },
             createGoods() {
-               // console.log("创建商品");
+                // console.log("创建商品");
                 this.$store.commit('setGoodsDialogStatus', true);
                 this.isCreateForm = true;
             },
@@ -83,7 +95,7 @@
             },
             ondialogclose() {
                 this.$store.commit('setGoodsDialogStatus', false);
-                this.getGoodsList();
+                this.getGoodsList(this.$store.getters.getUserInfo.userid);
             }
         }
     }

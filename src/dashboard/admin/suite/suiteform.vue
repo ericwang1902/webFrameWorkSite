@@ -44,7 +44,7 @@
         components: {
             upload
         },
-        props: ['goodsList', 'isCreateForm', 'suiteRow'],
+        props: ['goodsList', 'isCreateForm', 'suiteRow','districtid'],
         data() {
             return {
                 suiteform: {
@@ -120,7 +120,7 @@
             createSuite(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if (this.goodsSelection.length == 0||this.disSelection.length!=1)  {
+                        if (this.goodsSelection.length == 0)  {
                             this.$message({
                                 showClose: true,
                                 message: '必须至少选择一个商品,必须选择一个区域！',
@@ -132,6 +132,7 @@
                             for (var i = 0; i < this.goodsSelection.length; i++) {
                                 this.suiteform.goodslist.push(this.goodsSelection[i]._id);
                             }
+                            this.suiteform.district = this.districtid;
                             console.log("22222222222222:" + JSON.stringify(this.suiteform))
                             this.axios.post(config.suite, this.suiteform)
                                 .then((response) => {
