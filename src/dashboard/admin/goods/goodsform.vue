@@ -8,8 +8,8 @@
                 <el-input v-model="goodsform.goodsname"></el-input>
             </el-form-item>
             <el-form-item label="商品介绍" prop="goodsdes">
-                <Vueditor ref="vueEditor1" style="height: 400px"></Vueditor>
-                <!--<el-input v-model="goodsform.goodsdes"></el-input>-->
+                <!--<Vueditor ref="vueEditor1" style="height: 400px"></Vueditor>-->
+                <el-input v-model="goodsform.goodsdes"></el-input>
             </el-form-item>
             <el-form-item label="商品进价" prop="goodsbuyprice">
                 <el-input v-model.number="goodsform.goodsbuyprice"></el-input>
@@ -72,11 +72,12 @@
         },
         mounted() {
             console.log("mounted!")
+           
             this.InitForm();
         },
         watch: {
             isCreateForm: function () {
-           //     this.InitForm();
+              this.InitForm();
             }
         },
         methods: {
@@ -103,7 +104,7 @@
                 this.goodsform.salesnum = "";
                 this.goodsform.goodsjudge = "";
 
-                this.$refs["vueEditor1"].setContent('ooo');
+               // this.$refs["vueEditor1"].setContent('ooo');
                 this.supplierList.forEach((row) => {
                     this.$refs.supplierListTable.toggleRowSelection(row, false);
                 })
@@ -112,7 +113,7 @@
               //  console.log(typeof (this.goodsRow.goodsprice))
                 this.goodsform.goodsnum = this.goodsRow.goodsnum;
                 this.goodsform.goodsname = this.goodsRow.goodsname;
-               // this.goodsform.goodsdes = this.goodsRow.goodsdes;
+                this.goodsform.goodsdes = this.goodsRow.goodsdes;
                 this.goodsform.goodsphoto = this.goodsRow.goodsphoto;
                 this.goodsform.goodsprice = this.goodsRow.goodsprice;
                 this.goodsform.goodsbuyprice = this.goodsRow.goodsbuyprice;
@@ -122,7 +123,8 @@
                 this.goodsform.supplier = this.goodsRow.supplier;
                 this.goodsform.salesnum = this.goodsRow.salesnum;
                 this.goodsform.goodsjudge = this.goodsRow.goodsjudge;
-                this.$refs.vueEditor1.setContent(this.goodsRow.goodsdes);
+                
+               // this.$refs.vueEditor1.setContent(this.goodsRow.goodsdes);
 
               //  console.log(typeof (this.goodsform.goodsprice))
                 console.log(this.goodsRow.goodsdes)
@@ -135,8 +137,6 @@
             modifyGoods(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if (this.$refs["vueEditor1"].getContent().length !== 0) {
-                            this.goodsform.goodsdes = this.$refs["vueEditor1"].getContent();
                             console.log("modifyGoods方法")
                             var length = this.supplierSelection.length;
                             if (length == 0) {
@@ -173,14 +173,7 @@
 
                             }
 
-                        }
-                        else {
-                            this.$message({
-                                showClose: true,
-                                message: '请输入商品描述！',
-                                type: 'error'
-                            });
-                        }
+                 
                     }
                 })
             },
@@ -188,10 +181,6 @@
             createGoods(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log(this.$refs["vueEditor1"].getContent().length)
-
-                        if (this.$refs["vueEditor1"].getContent().length !== 0) {
-                            this.goodsform.goodsdes = this.$refs["vueEditor1"].getContent();
                             var length = this.supplierSelection.length;
                             if (length == 0) {
                                 //当没有选择角色时
@@ -229,13 +218,7 @@
 
 
                             }
-                        } else {
-                            this.$message({
-                                showClose: true,
-                                message: '请输入商品描述！',
-                                type: 'error'
-                            });
-                        }
+                        
 
 
                     }
