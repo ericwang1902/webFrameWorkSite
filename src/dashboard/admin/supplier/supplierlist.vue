@@ -11,7 +11,7 @@
                 <el-table-column label="省"  prop="supplieruser.district.province"></el-table-column>
                 <el-table-column label="市"  prop="supplieruser.district.city"></el-table-column>
                 <el-table-column label="区县"  prop="supplieruser.district.district"></el-table-column>
-                <el-table-column width="300" fixed="right" label="修改">
+                <el-table-column width="300" label="修改">
                     <template scope="props">
                         <el-button type="primary" @click="modifySupplier(props.row)" size="mini">信息</el-button>
                         <el-button type="success" @click="setSupplierUser(props.row)" size="mini">用户</el-button>

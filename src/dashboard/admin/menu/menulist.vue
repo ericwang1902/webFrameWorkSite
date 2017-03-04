@@ -15,7 +15,7 @@
                     <el-tag v-for="(funcItem, index) in props.row.funcList " :type="tagTypes[index]" style="margin-left: 5px">{{funcItem.funcName}}</el-tag>
             </template>
             </el-table-column>
-            <el-table-column fixed="right" width="200px" label="操作">
+            <el-table-column  width="200px" label="操作">
                 <template scope="props">
                     <el-button type="text" @click="modifyMenu(props.row)" size="small">编辑</el-button>
                 </template>

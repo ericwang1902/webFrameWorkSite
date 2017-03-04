@@ -30,7 +30,7 @@
                  </el-table-column>
                   <el-table-column label="区县" prop="district.district" >
                  </el-table-column>
-                 <el-table-column  width="150" fixed="right" label="操作">
+                 <el-table-column  width="150" label="操作">
                         <template scope="props">
                             <el-button type="text" @click="modifyUser(props.row)" size="small">编辑</el-button>
                             <el-button type="text" @click="resetPassword(props.row)" size="small">密码重置</el-button>

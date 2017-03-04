@@ -14,12 +14,10 @@
                 <el-table-column label="区县" prop="district.district"></el-table-column>
                 <el-table-column label="套餐状态">
                     <template scope="props">
-
                         <p>{{props.row.suitestate ? '上架' : '下架'}}</p>
                     </template>
                 </el-table-column>
-
-                <el-table-column width="100" fixed="right" label="操作">
+                <el-table-column width="100"  label="操作">
                     <template scope="props">
                         <el-button type="primary" @click="modifySuite(props.row)" size="mini">修改</el-button>
                     </template>

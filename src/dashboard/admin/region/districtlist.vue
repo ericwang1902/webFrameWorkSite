@@ -8,7 +8,7 @@
                 <el-table-column label="省" prop="province"></el-table-column>
                 <el-table-column label="市" prop="city"></el-table-column>
                 <el-table-column label="区/县" prop="district"></el-table-column>
-                <el-table-column width="100" fixed="right" label="操作">
+                <el-table-column width="100" label="操作">
                     <template scope="props">
                         <el-button type="primary" @click="modifyDistrict(props.row)" size="mini">修改</el-button>
                     </template>

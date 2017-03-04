@@ -13,7 +13,7 @@
                 <el-table-column label="省" prop="district.province"></el-table-column>
                 <el-table-column label="市" prop="district.city"></el-table-column>
                 <el-table-column label="区县" prop="district.district"></el-table-column>
-                <el-table-column width="100" fixed="right" label="操作">
+                <el-table-column width="100"  label="操作">
                     <template scope="props">
                         <el-button type="primary" @click="modifyGoods(props.row)" size="mini">修改</el-button>
                     </template>
