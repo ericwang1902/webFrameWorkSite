@@ -32,7 +32,7 @@ var config={
     region:baseURL+"/sysmanage/region",//配送区域接口
 
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
-    qiniutoken:"http://aft.robustudio.com/sysmanage/qiniu",
+    qiniutoken:baseURL+"/sysmanage/qiniu",
     
     tagTypes:['primary','success','warning','danger'],
 

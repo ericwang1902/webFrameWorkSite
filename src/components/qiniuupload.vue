@@ -6,6 +6,7 @@
     </div>
 </template>
 <script>
+import config from '../common/config'
 
 export default {
     props:['imgURL'],
@@ -35,7 +36,7 @@ export default {
             },
             submitForm:function(){
                 //获取token和key
-                this.axios.get("http://localhost:8085/sysmanage/qiniu")
+                this.axios.get(config.qiniutoken)
                       .then((response)=>{
                           this.fileForm.key = response.data.key;
                           this.fileForm.token = response.data.token;
