@@ -41,7 +41,6 @@
         },
         mounted() {
             this.getRegion();
-            this.getDistrict();
         },
         methods: {
             getRegion: function () {
@@ -54,17 +53,22 @@
                         console.log(err)
                     })
             },
-            getDistrict: function () {
+            getDistrict: function (callback) {
                 this.axios.get(config.district)
                     .then((response) => {
                         this.districtlist = response.data;
                         console.log(JSON.stringify(this.districtlist))
+                        callback();
+                        
                     })
             },
             createRegion: function () {
                 console.log("createRegion")
-                this.isCreate = true;
-                this.$store.commit("setRegionDialogStatus", true);
+                this.getDistrict(()=>{
+                    this.isCreate = true;
+                    this.$store.commit("setRegionDialogStatus", true);
+                })
+                
 
             },
             ondialogclose: function () {
