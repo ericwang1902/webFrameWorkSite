@@ -51,6 +51,8 @@ import suite from './dashboard/admin/suite/suitelist'//套餐
 
 import region from './dashboard/admin/region/region'//区域
 
+import order from './dashboard/admin/order/order'
+
 
 
 
@@ -109,6 +111,9 @@ const routes = [
       },
       {
         path:'region',component:region,meta:{title:'区域管理'}
+      },
+      {
+        path:'order',component:order,meta:{title:'订单管理'}
       }
     ]
   },

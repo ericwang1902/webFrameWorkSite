@@ -13,7 +13,7 @@
             <el-table-column label="包含功能">
                 <template scope="props">
                     <el-tag v-for="(funcItem, index) in props.row.funcList " :type="tagTypes[index]" style="margin-left: 5px">{{funcItem.funcName}}</el-tag>
-            </template>
+                </template>
             </el-table-column>
             <el-table-column  width="200px" label="操作">
                 <template scope="props">
