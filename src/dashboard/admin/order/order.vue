@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="diliverOrder()" type="primary">下发订单</el-button>
             </div>
-            <el-table border :data="orderlist" style="width: 100%">
+            <el-table border :data="orderlist" style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="订单信息">
                     <el-table-column label="订单编号" prop="ordernum"></el-table-column>
@@ -17,6 +17,10 @@
                 <el-table-column type="expand">
                     <template scope="props">
                         <el-table :data="props.row.suitelist" style="width: 100%">
+
+                            <el-table-column label="套餐名称" prop="suite.suitename"></el-table-column>
+                            <el-table-column label="数量" prop="count"></el-table-column>
+                            <el-table-column label="金额（小计）" prop="amount"></el-table-column>
                             <el-table-column type="expand">
                                 <template scope="props">
                                     <el-table :data="props.row.suite.goodslist" style="width: 100%">
@@ -25,9 +29,6 @@
                                     </el-table>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="套餐名称" prop="suite.suitename"></el-table-column>
-                            <el-table-column label="数量" prop="count"></el-table-column>
-                            <el-table-column label="金额（小计）" prop="amount"></el-table-column>
                         </el-table>
                     </template>
                 </el-table-column>
@@ -41,7 +42,8 @@
     export default {
         data() {
             return {
-                orderlist: []
+                orderlist: [],
+                selectedOrders: []
             }
         },
         created() {
@@ -59,7 +61,18 @@
         },
         methods: {
             diliverOrder() {
-                console.log("创建订单")
+                console.log("创建订单");
+                //按商品拆分订单,按照供应商汇总
+                /*
+                1.统计各套餐及相应数量；
+                2.统计各商品及相应数量；
+                3.按照供应商分类商品及数量
+                */
+                
+            },
+            handleSelectionChange(val) {
+                this.selectedOrders = val;//获取要下发的订单
+                console.log(val)
             }
         }
     }
