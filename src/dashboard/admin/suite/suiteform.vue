@@ -149,7 +149,8 @@
                 console.log("suitestate:~~~~~~~~~~~~~~" + JSON.stringify(this.suiteform));
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if (this.goodsSelection.length !== 0 ) {
+                        if (this.goodsSelection.length !== 0 ) { 
+                                this.suiteform.goodslist = [];//清空改goodslist
 
                             for (var i = 0; i < this.goodsSelection.length; i++) {
                                 this.suiteform.goodslist.push(this.goodsSelection[i]._id);
