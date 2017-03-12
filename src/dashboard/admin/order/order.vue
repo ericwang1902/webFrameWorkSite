@@ -67,8 +67,10 @@
                 1.统计各套餐及相应数量；
                 2.统计各商品及相应数量；
                 3.按照供应商分类商品及数量
+
                 */
-                
+
+
             },
             handleSelectionChange(val) {
                 this.selectedOrders = val;//获取要下发的订单
