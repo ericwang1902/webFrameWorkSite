@@ -89,25 +89,69 @@
                     }
                 }
 
-                var shoporderlist =[];
                 //2.根据goodslist中的goods数据，按照supplierid来分组,按照goods汇总数据，构成shoporder
-                for(var i = 0;i<goodslist.length;i++){
-                    //如果没有在shoporderlist中，就要加上count
-                    if(!shoporderlist.find(d=>d.goodsid==goodslist[i].goodsid)){
-                        shoporderlist.push(goodslist[i]);
-                    }else{
-                      var index =  shoporderlist.indexOf(shoporderlist.find(d=>d.goodsid==goodslist[i].goodsid));
-                      shoporderlist[index].goodscount+=goodslist[i].goodscount;
+                /*
+                [{"supplier":"58c4123426ff2d1ed5bf4e7d","goodsid":"58c62905641c7b5a142ad2ac","goodscount":2},
+                {"supplier":"58c4123426ff2d1ed5bf4e7d","goodsid":"58c4123d26ff2d1ed5bf4e7e","goodscount":19}]
+                */
+
+                var shopgoodslist = [];
+
+                for (var i = 0; i < goodslist.length; i++) {
+                    //如果没有在shopgoodslist中，就要加上count
+                    if (!shopgoodslist.find(d => d.goodsid == goodslist[i].goodsid)) {
+                        shopgoodslist.push(goodslist[i]);
+                    } else {
+                        var index = shopgoodslist.indexOf(shopgoodslist.find(d => d.goodsid == goodslist[i].goodsid));
+                        shopgoodslist[index].goodscount += goodslist[i].goodscount;
                     }
                 }
-                console.log("拆分后的订单："+JSON.stringify(shoporderlist));
+                console.log("拆分后的订单：" + JSON.stringify(shopgoodslist));
 
+                //3.按供应商汇总goods
+                /*[
+                    {
+                        supplier:'',
+                        goodslist:[
+                            {
+                                goodsid:'',
+                                goodscount:10
+                            },
+                            {
+                                goodsid:'',
+                                goodscount:10
+                            }
+                        ]
+                    }
+                ]
+                */
+                var shoporderlist = [];
+                for (var i = 0; i < shopgoodslist.length; i++) {
+                    if (!shoporderlist.find(d => d.supplier == shopgoodslist[i].supplier)) {
+                        shoporderlist.push({
+                            supplier: shopgoodslist[i].supplier,
+                            goodslist: [
+                                {
+                                    goodsid: shopgoodslist[i].goodsid,
+                                    goodscount: shopgoodslist[i].goodscount
+                                }
+                            ]
+                        })
+                    } else {
+                        var index = shoporderlist.indexOf(shoporderlist.find(d => d.supplier == shopgoodslist[i].supplier));
+                        shoporderlist[index].goodslist.push({
+                            goodsid: shopgoodslist[i].goodsid,
+                            goodscount: shopgoodslist[i].goodscount
+                        })
+                    }
+                }
+                console.log("最终的商家订单：" + JSON.stringify(shoporderlist))
 
             },
             handleSelectionChange(val) {
                 this.selectedOrders = val;//获取要下发的订单
                 //console.log("当前所选订单");
-              //  console.log(JSON.stringify(val))
+                //  console.log(JSON.stringify(val))
             }
         }
     }
