@@ -143,7 +143,7 @@
                                 //当没有选择供应商时
                                 this.$message({
                                     showClose: true,
-                                    message: '必须选择一个用户！',
+                                    message: '必须选择一个供应商！',
                                     type: 'error'
                                 });
                                 this.userList.forEach((row) => {
@@ -153,7 +153,7 @@
                                 //当选择的供应商过多时
                                 this.$message({
                                     showClose: true,
-                                    message: '只能选择一个用户！',
+                                    message: '只能选择一个供应商！',
                                     type: 'error'
                                 });
                                 this.userList.forEach((row) => {

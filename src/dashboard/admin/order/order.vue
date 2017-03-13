@@ -8,6 +8,7 @@
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="订单信息">
                     <el-table-column label="订单编号" prop="ordernum"></el-table-column>
+                    <el-table-column label="套餐总数" prop="taotalcount"></el-table-column>
                     <el-table-column label="金额" prop="totalamount"></el-table-column>
                 </el-table-column>
                 <el-table-column label="配送信息">
@@ -63,21 +64,50 @@
             diliverOrder() {
                 console.log("创建订单");
                 //按商品拆分订单,按照供应商汇总
-                /*
-                1.统计各套餐及相应数量；
-                2.统计各商品及相应数量；
-                3.按照供应商分类商品及数量
-                */
-                for(var i = 0;i<this.selectedOrders.length;i++){
-                    for(var j = 0;j<this.selectedOrders[j].)
+
+                var goodslist = [];
+                //1.提取所有订单中的商品列表
+                for (var i = 0; i < this.selectedOrders.length; i++) {
+                    for (var j = 0; j < this.selectedOrders[i].suitelist.length; j++) {
+
+                        var count = this.selectedOrders[i].suitelist[j].count;//套餐数量（也就是该套餐下的商品的数量)
+                        var suite = this.selectedOrders[i].suitelist[j].suite;
+                        console.log(suite)
+
+                        for (var k = 0; k < suite.goodslist.length; k++) {
+                            var supplierid = suite.goodslist[k].supplier._id;
+                            var goodsid = suite.goodslist[k]._id;
+                            var goodscount = count;
+
+                            var goodsitem = {
+                                supplier: supplierid,
+                                goodsid: goodsid,
+                                goodscount: goodscount
+                            }
+                            goodslist.push(goodsitem);
+                        }
+                    }
                 }
+
+                var shoporderlist =[];
+                //2.根据goodslist中的goods数据，按照supplierid来分组,按照goods汇总数据，构成shoporder
+                for(var i = 0;i<goodslist.length;i++){
+                    //如果没有在shoporderlist中，就要加上count
+                    if(!shoporderlist.find(d=>d.goodsid==goodslist[i].goodsid)){
+                        shoporderlist.push(goodslist[i]);
+                    }else{
+                      var index =  shoporderlist.indexOf(shoporderlist.find(d=>d.goodsid==goodslist[i].goodsid));
+                      shoporderlist[index].goodscount+=goodslist[i].goodscount;
+                    }
+                }
+                console.log("拆分后的订单："+JSON.stringify(shoporderlist));
 
 
             },
             handleSelectionChange(val) {
                 this.selectedOrders = val;//获取要下发的订单
-                console.log("当前所选订单");
-                console.log(JSON.stringify(val))
+                //console.log("当前所选订单");
+              //  console.log(JSON.stringify(val))
             }
         }
     }

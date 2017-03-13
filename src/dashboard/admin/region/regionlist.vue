@@ -2,7 +2,7 @@
     <div>
         <el-card class="box-card" style="margin: 10px">
             <div slot="header" class="clearfix">
-                <el-button style="float: right; " @click="createRegion()" type="primary">创建商品</el-button>
+                <el-button style="float: right; " @click="createRegion()" type="primary">创建区域</el-button>
             </div>
             <el-table border :data="regionlistdata" style="width: 100%">
                 <el-table-column label="名称" prop="regionname"></el-table-column>
