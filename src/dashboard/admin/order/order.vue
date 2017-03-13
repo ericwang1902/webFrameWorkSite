@@ -4,8 +4,9 @@
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="diliverOrder()" type="primary">下发订单</el-button>
             </div>
-            <el-table border :data="orderlist" style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table empty-text="暂无未分发订单" border :data="orderlist" style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column label="批次号" prop="ficorder.ficordernum"></el-table-column>
                 <el-table-column label="订单信息">
                     <el-table-column label="订单编号" prop="ordernum"></el-table-column>
                     <el-table-column label="套餐总数" prop="taotalcount"></el-table-column>
@@ -48,20 +49,40 @@
             }
         },
         created() {
-            var userid = this.$store.getters.getUserInfo.userid;
-
-            this.axios.get(config.order + '?userid=' + userid)
-                .then((response) => {
-                    console.log("该地区的订单列表：")
-                    console.log(response.data);
-                    this.orderlist = response.data;
-                })
-                .catch(function (err) {
-                    console.log(err);
-                })
+            this.getorderlist();
         },
         methods: {
+            getorderlist() {
+                var userid = this.$store.getters.getUserInfo.userid;
+
+                this.axios.get(config.order + '?userid=' + userid)
+                    .then((response) => {
+                        console.log("该地区的订单列表：")
+                        console.log(response.data);
+                        this.orderlist = response.data;
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            },
             diliverOrder() {
+                console.log("创建虚拟订单");
+                this.axios.post(config.ficorder, { ficorderstate: 1 })
+                    .then((response) => {
+                        console.log("ficorder:")
+                        var ficorder = response.data;
+                        console.log(response.data);
+                        this.createShopOrder(ficorder);//创建商铺订单
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+
+
+
+
+            },
+            createShopOrder(fic) {
                 console.log("创建订单");
                 //按商品拆分订单,按照供应商汇总
 
@@ -76,12 +97,12 @@
 
                         for (var k = 0; k < suite.goodslist.length; k++) {
                             var supplierid = suite.goodslist[k].supplier._id;
-                            var goodsid = suite.goodslist[k]._id;
+                            var goods = suite.goodslist[k];
                             var goodscount = count;
 
                             var goodsitem = {
                                 supplier: supplierid,
-                                goodsid: goodsid,
+                                goods: goods,
                                 goodscount: goodscount
                             }
                             goodslist.push(goodsitem);
@@ -99,10 +120,10 @@
 
                 for (var i = 0; i < goodslist.length; i++) {
                     //如果没有在shopgoodslist中，就要加上count
-                    if (!shopgoodslist.find(d => d.goodsid == goodslist[i].goodsid)) {
+                    if (!shopgoodslist.find(d => d.goods._id == goodslist[i].goods._id)) {
                         shopgoodslist.push(goodslist[i]);
                     } else {
-                        var index = shopgoodslist.indexOf(shopgoodslist.find(d => d.goodsid == goodslist[i].goodsid));
+                        var index = shopgoodslist.indexOf(shopgoodslist.find(d => d.goods._id == goodslist[i].goods._id));
                         shopgoodslist[index].goodscount += goodslist[i].goodscount;
                     }
                 }
@@ -114,11 +135,11 @@
                         supplier:'',
                         goodslist:[
                             {
-                                goodsid:'',
+                                goods:{},
                                 goodscount:10
                             },
                             {
-                                goodsid:'',
+                                goods:{},
                                 goodscount:10
                             }
                         ]
@@ -130,9 +151,10 @@
                     if (!shoporderlist.find(d => d.supplier == shopgoodslist[i].supplier)) {
                         shoporderlist.push({
                             supplier: shopgoodslist[i].supplier,
+                            ficorder: fic._id,
                             goodslist: [
                                 {
-                                    goodsid: shopgoodslist[i].goodsid,
+                                    goods: shopgoodslist[i].goods,
                                     goodscount: shopgoodslist[i].goodscount
                                 }
                             ]
@@ -140,18 +162,42 @@
                     } else {
                         var index = shoporderlist.indexOf(shoporderlist.find(d => d.supplier == shopgoodslist[i].supplier));
                         shoporderlist[index].goodslist.push({
-                            goodsid: shopgoodslist[i].goodsid,
+                            goods: shopgoodslist[i].goods,
                             goodscount: shopgoodslist[i].goodscount
                         })
                     }
                 }
-                console.log("最终的商家订单：" + JSON.stringify(shoporderlist))
+                console.log("最终的商家订单：" + JSON.stringify(shoporderlist));//需要存储到数据库
+                this.axios.post(config.pshoporder, { shoporderlist: shoporderlist })
+                    .then((response) => {
+                        console.log(response);
+                        this.updateCustOrder(fic);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
 
+
+            },
+            updateCustOrder(fic) {
+                //构造orderlist，带上ficorder的属性
+                for (var i = 0; i < this.selectedOrders.length; i++) {
+                    this.selectedOrders[i].ficorder = fic._id;
+                }
+                console.log("最终的客户订单：" + JSON.stringify(this.selectedOrders))//要更新客户订单
+                this.axios.post(config.porder, { orderlist: this.selectedOrders })
+                    .then((response) => {
+                        console.log(response);
+                        this.getorderlist();
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
             },
             handleSelectionChange(val) {
                 this.selectedOrders = val;//获取要下发的订单
-                //console.log("当前所选订单");
-                //  console.log(JSON.stringify(val))
+                console.log("当前所选订单");
+                console.log(JSON.stringify(val))
             }
         }
     }

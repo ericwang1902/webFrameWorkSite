@@ -32,6 +32,9 @@ var config={
     region:baseURL+"/sysmanage/region",//配送区域接口
     
     order:baseURL +"/sysmanage/order",//后台订单接口
+    ficorder:baseURL +"/sysmanage/ficorder",//虚拟订单的创建
+    pshoporder:baseURL +"/sysmanage/pshoporder",//商铺订单接口
+    porder:baseURL +"/sysmanage/porder",//批量更新客户订单
 
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
     qiniutoken:baseURL+"/sysmanage/qiniu",
