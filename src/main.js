@@ -53,6 +53,12 @@ import region from './dashboard/admin/region/region'//区域
 
 import order from './dashboard/admin/order/order'
 
+import shoporder from './dashboard/admin/shoporder/shoporder'
+
+import shopercenter from './dashboard/admin/shopercenter/shopercenter'
+
+import couriercenter from './dashboard/admin/couriercenter/couriercenter'
+
 
 
 
@@ -114,6 +120,15 @@ const routes = [
       },
       {
         path:'order',component:order,meta:{title:'订单管理'}
+      },
+      {
+        path:'shoporder',component:shoporder,meta:{title:'商铺订单'}
+      },
+      {
+        path:'shoppercenter',component:shopercenter,meta:{title:'店主中心'}
+      },
+      {
+        path:'couriercenter',component:couriercenter,meta:{title:'配送员中心'}
       }
     ]
   },

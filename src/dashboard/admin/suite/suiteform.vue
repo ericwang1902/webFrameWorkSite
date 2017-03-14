@@ -20,7 +20,11 @@
                 <el-table :data="goodsList" max-height="450" ref="goodsListTable" border style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
                     </el-table-column>
-                    <el-table-column prop="goodsname" label="商品名称">
+                    <el-table-column prop="goodsname" label="名称">
+                    </el-table-column>
+                    <el-table-column prop="goodsbuyprice" label="进价">
+                    </el-table-column>
+                    <el-table-column prop="goodsprice" label="售价">
                     </el-table-column>
                 </el-table>
             </el-form-item>

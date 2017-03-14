@@ -33,7 +33,8 @@ var config={
     
     order:baseURL +"/sysmanage/order",//后台订单接口
     ficorder:baseURL +"/sysmanage/ficorder",//虚拟订单的创建
-    pshoporder:baseURL +"/sysmanage/pshoporder",//商铺订单接口
+    pshoporder:baseURL +"/sysmanage/pshoporder",//创建商铺订单接口
+    shoporder:baseURL + "/sysmanage/shoporder",//商铺订单接口
     porder:baseURL +"/sysmanage/porder",//批量更新客户订单
 
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口

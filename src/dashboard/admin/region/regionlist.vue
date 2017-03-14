@@ -44,7 +44,9 @@
         },
         methods: {
             getRegion: function () {
-                this.axios.get(config.region)
+                var userid = this.$store.getters.getUserInfo.userid;
+
+                this.axios.get(config.region+ '?userid=' + userid)
                     .then((response) => {
                         console.log(response)
                         this.regionlistdata = response.data;
