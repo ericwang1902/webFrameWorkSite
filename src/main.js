@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
 
+
 import store from './common/store'//vuex配置和相关数据在这里面
 
 import Vueditor from 'vueditor' //富文本编辑器

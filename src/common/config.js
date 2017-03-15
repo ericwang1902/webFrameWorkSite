@@ -50,7 +50,15 @@ var config={
     {   
         code:1,
         stateDes:'销售中'
-    }]
+    }],
+    //虚拟订单的状态
+    ficstatus: [
+        { shop: '无', cust: '已下单' },
+        { shop: '未取件', cust: '已接单' },
+        { shop: '已取件', cust: '配送中' },
+        { shop: '已送达', cust: '已送达' },
+        { shop: "已结算", cust: "已送达" }
+    ]
 }
 
 export default config;
