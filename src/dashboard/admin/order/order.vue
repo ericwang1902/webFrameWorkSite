@@ -1,6 +1,6 @@
 <template>
     <div class="menucontent">
-        <el-tabs class="eltabs" @tab-click="handleClick">
+        <el-tabs class="eltabs" value="first" @tab-click="handleClick">
             <el-tab-pane label="待下发" name="first">
                 <deliverorder></deliverorder>
             </el-tab-pane>
