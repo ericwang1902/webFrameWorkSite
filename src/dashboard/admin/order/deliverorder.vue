@@ -150,7 +150,7 @@ export default {
                     var ficorder = response.data;
                     console.log(response.data);
                     this.createShopOrder(ficorder,function(){
-                        loadingInstance.close();
+                        loadingInstance.close();//模态窗口
                     });//创建商铺订单
                     
                 })
