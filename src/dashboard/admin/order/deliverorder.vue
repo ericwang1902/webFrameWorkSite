@@ -39,6 +39,8 @@
                                      prop="region.regionname"></el-table-column>
                     <el-table-column label="详细地址"
                                      prop="address"></el-table-column>
+                    <el-table-column label="电话"
+                                     prop="mobile"></el-table-column>
                 </el-table-column>
                 <el-table-column type="expand">
                     <template scope="props">
