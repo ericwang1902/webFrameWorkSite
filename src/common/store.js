@@ -20,6 +20,7 @@ var GoodsDialogStatus = false;
 var SuiteDialogStatus = false;
 var DistrictDialogStatus = false;
 var RegionDialogStatus = false;
+var CourierDialogStaus = false;
 
 // 创建一个对象来保存应用启动时的初始状态
 const state = {
@@ -32,7 +33,8 @@ const state = {
     GoodsDialogStatus:GoodsDialogStatus,//商品新建form的状态
     SuiteDialogStatus:SuiteDialogStatus,//套餐form的状态
     DistrictDialogStatus:DistrictDialogStatus,//区县form的状态
-    RegionDialogStatus:RegionDialogStatus//配送区域的form状态
+    RegionDialogStatus:RegionDialogStatus,//配送区域的form状态
+    CourierDialogStaus:CourierDialogStaus//配送员的form的状态
 }
 
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
@@ -80,6 +82,10 @@ const mutations = {
     //新建配送区域的form的对话框状态
     setRegionDialogStatus:function(state,status){
         state.RegionDialogStatus = status;
+    },
+    //新建配送员的form的对话框状态
+    setCourierDialogStaus:function(state,status){
+        state.CourierDialogStaus = status;
     }
 }
 
@@ -93,7 +99,8 @@ const getters = {
     getGoodsDialogStatus:state=>{return state.GoodsDialogStatus},
     getSuiteDialogStatus:state=>{return state.SuiteDialogStatus},
     getDistrictDialogStatus:state=>{return state.DistrictDialogStatus},
-    getRegionDialogStatus:state=>{return state.RegionDialogStatus}
+    getRegionDialogStatus:state=>{return state.RegionDialogStatus},
+    getCourierDialogStaus:state=>{return state.CourierDialogStaus}
 
 }
 

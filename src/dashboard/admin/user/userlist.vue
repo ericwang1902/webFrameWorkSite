@@ -18,11 +18,12 @@
                         </div>
                     </template>
                     </el-table-column>
-                 <el-table-column label="手机号" prop="mobile" >
-                 </el-table-column>
+                 
                  <el-table-column label="用户名" prop="username">
                  </el-table-column>
                  <el-table-column label="昵称" prop="nickname" >
+                 </el-table-column>
+                 <el-table-column label="手机号" prop="mobile" >
                  </el-table-column>
                  <el-table-column label="省" prop="district.province">
                  </el-table-column>

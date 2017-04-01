@@ -7,6 +7,9 @@
             <el-form-item label="昵称" prop="nickName">
                 <el-input v-model="userform.nickName"></el-input>
             </el-form-item>
+            <el-form-item label="手机号" prop="mobile">
+                <el-input v-model="userform.mobile"></el-input>
+            </el-form-item>
             <el-form-item v-if="isCreateForm" label="密码" prop="passWord">
                 <el-input v-model="userform.passWord"></el-input>
             </el-form-item>
@@ -49,6 +52,7 @@
                 userform: {
                     userName: '',
                     nickName: '',
+                    mobile:'',
                     passWord: '',
                     roleSelection: [],
                     district: ''
@@ -63,6 +67,9 @@
                     ],
                     passWord: [
                         { required: true, message: '请输入密码', trigger: 'blur' }
+                    ],
+                    mobile: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' }
                     ]
 
                 }
@@ -112,6 +119,7 @@
                 this.userform.userName = '';
                 this.userform.nickName = '';
                 this.userform.passWord = '';
+                this.userform.mobile = '';
                 this.roleList.forEach((row) => {
                     this.$refs.roleListTable.toggleRowSelection(row, false);
                 })
@@ -125,6 +133,7 @@
                 this.userform.userName = this.userRow.username;
                 this.userform.nickName = this.userRow.nickname;
                 this.userform.passWord = this.userRow.passWord;
+                this.userform.mobile = this.userRow.mobile;
                 //初始化角色选择列表
                 this.roleList.forEach((row) => {
                     this.$refs.roleListTable.toggleRowSelection(row, false);
