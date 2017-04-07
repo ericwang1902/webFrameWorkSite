@@ -146,7 +146,7 @@ export default {
             console.log("创建虚拟订单");
             let loadingInstance = Loading.service({ fullscreen: true });
             
-            this.axios.post(config.ficorder, { ficorderstate: 1 })
+            this.axios.post(config.ficorder, { ficorderstate: 1,region:this.selectedregion })
                 .then((response) => {
                     console.log("ficorder:")
                     var ficorder = response.data;
@@ -276,6 +276,7 @@ export default {
                 .then((response) => {
                     console.log(response);
                     callback();
+                    //
                     this.getorderlist();
                 })
                 .catch(function (err) {
