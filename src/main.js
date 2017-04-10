@@ -60,6 +60,8 @@ import shopercenter from './dashboard/admin/shopercenter/shopercenter'
 
 import couriercenter from './dashboard/admin/couriercenter/couriercenter'
 
+import dailyreport from './dashboard/admin/report/dailyreport';
+
 
 
 
@@ -117,19 +119,22 @@ const routes = [
         path: 'suite', component: suite, meta: { title: '套餐管理' }
       },
       {
-        path:'region',component:region,meta:{title:'区域管理'}
+        path: 'region', component: region, meta: { title: '区域管理' }
       },
       {
-        path:'order',component:order,meta:{title:'订单管理'}
+        path: 'order', component: order, meta: { title: '订单管理' }
       },
       {
-        path:'shoporder',component:shoporder,meta:{title:'商铺订单'}
+        path: 'shoporder', component: shoporder, meta: { title: '商铺订单' }
       },
       {
-        path:'shoppercenter',component:shopercenter,meta:{title:'店主中心'}
+        path: 'shoppercenter', component: shopercenter, meta: { title: '店主中心' }
       },
       {
-        path:'couriercenter',component:couriercenter,meta:{title:'配送员中心'}
+        path: 'couriercenter', component: couriercenter, meta: { title: '配送员中心' }
+      },
+      {
+        path: 'dailyreport', component: dailyreport, meta: { title: '日报表' }
       }
     ]
   },

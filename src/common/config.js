@@ -18,6 +18,7 @@ var config={
     menuModify:baseURL+"/sysmanage/menu",//系统menu修改的接口
 
     funcList:baseURL+"/sysmanage/func",
+    func:baseURL+"/sysmanage/func",
 
     supplierCreate:baseURL+"/sysmanage/supplier",//供应商创建接口
     supplierList:baseURL+"/sysmanage/supplier",//供应商列表
