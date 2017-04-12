@@ -15,8 +15,8 @@
                     <template scope="props">
                         <el-button type="primary" @click="modifySupplier(props.row)" size="mini">信息</el-button>
                         <el-button type="success" @click="setSupplierUser(props.row)" size="mini">用户</el-button>
-                        <el-button type="warning" @click="setSupplierWorker(props.row)" size="mini">店员</el-button>
-                        <el-button type="danger" @click="modifySupplier(props.row)" size="mini">商品</el-button>
+                        <!--<el-button type="warning" @click="setSupplierWorker(props.row)" size="mini">店员</el-button>
+                        <el-button type="danger" @click="modifySupplier(props.row)" size="mini">商品</el-button>-->
                     </template>
                 </el-table-column>
             </el-table>

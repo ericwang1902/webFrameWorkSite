@@ -39,6 +39,8 @@ var config={
     shoporder:baseURL + "/sysmanage/shoporder",//商铺订单接口
     porder:baseURL +"/sysmanage/porder",//批量更新客户订单
 
+    supplierDaily:baseURL+"/report/supplierdaily",//获取供应商日报表
+
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
     qiniutoken:baseURL+"/sysmanage/qiniu",
     

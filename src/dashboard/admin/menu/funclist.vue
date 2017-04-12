@@ -74,6 +74,7 @@
                 this.isCreateForm = false;
                 this.title = "修改功能";
                 this.rowdata = funcitem;
+                console.log(funcitem);
 
             },
             ondialogclose(){

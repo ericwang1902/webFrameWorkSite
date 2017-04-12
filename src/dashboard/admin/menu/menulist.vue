@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="createMenu()" type="primary">添加菜单</el-button>
             </div>
-
+            
             <el-table border :data="menudata" style="width: 100%">
             <el-table-column label="#" prop="index"  width="100">
             </el-table-column>

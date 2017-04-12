@@ -4,6 +4,10 @@
             <el-input v-model="menuform.menuName"></el-input>
         </el-form-item>
 
+        <el-form-item label="菜单编号" prop="menuNum">
+            <el-input v-model="menuform.menuNum"></el-input>
+        </el-form-item>
+
         <el-form-item label="选择功能" style="width: 100%" >
             <el-table :data="funcList" max-height="450" ref="funcListTable" border style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55">
@@ -32,6 +36,7 @@
         data() {
             return {
                 menuform: {
+                    menuNum:0,
                     menuName: '',
                     funcSelection: []
                 },
@@ -39,6 +44,9 @@
                 rules: {
                     menuName: [
                         { required: true, message: '请输入菜单名称', trigger: 'blur' }
+                    ],
+                    menuNum: [
+                        { required: true, message: '请输入菜单序号', trigger: 'blur' }
                     ]
 
                 }
@@ -74,12 +82,14 @@
         methods: {
             CreateInitFrom(){
                 this.menuform.menuName ="";
+                this.menuform.menuNum = "";
                 this.funcList.forEach((row) => {
                     this.$refs.funcListTable.toggleRowSelection(row, false);//将符合条件的表行置为false，作为下一个for的初始化。
                 })
             },
             ModifyInitForm() {
                 this.menuform.menuName = this.row.menuName;
+                this.menuform.menuNum = this.row.menuNum;
                 console.log("watch:" + JSON.stringify(this.row))
                 this.funcList.forEach((row) => {
                     //this.$refs.funcListTable.toggleRowSelection(row, true);//将符合条件的表行置为true

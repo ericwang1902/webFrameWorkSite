@@ -94,6 +94,19 @@
                         return false;
                     }
                 });
+            },
+            modifyFunc(formName){
+                this.$refs[formName].validate((valid)=>{
+                    if(valid){
+                        this.axios.put(config.func+"/"+this.row._id,this.funcform)
+                        .then((response)=>{
+                            this.$store.commit('setFuncDialogStatus', false);
+                        })
+                        .catch(function(err){
+                            console.log(err);
+                        })
+                    }
+                })
             }
         }
     }
