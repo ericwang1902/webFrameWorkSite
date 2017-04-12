@@ -1,23 +1,22 @@
 <template>
-  <div style="height: 100%">
-    <el-row class="header" type="flex" align="middle">
-      <el-col :span="3" class="logo">管理后台</el-col>
-      <el-col :span="18">
-      </el-col>
-      <el-col :span="3">
-        <el-menu theme="dark" default-active="1" mode="horizontal" @select="jumpTo">
-          <el-submenu index="1">
-            <template slot="title">我的工作台</template>
-            <!--<el-menu-item index="password">修改密码</el-menu-item>
-        <el-menu-item index="modify">修改资料</el-menu-item>
-        <hr>-->
-            <el-menu-item index="exit">退出登录</el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </el-col>
-    </el-row>
+  <div style="height: 100%;">
+    <div>
+      <el-row  class="header" type="flex" align="middle">
+        <el-col :span="3" class="logo">小熊下午茶管理后台</el-col>
+        <el-col :span="18">
+        </el-col>
+        <el-col :span="3">
+          <el-menu theme="dark" default-active="1" mode="horizontal" @select="jumpTo">
+            <el-submenu index="1">
+              <template slot="title">我的工作台</template>
+              <el-menu-item index="exit">退出登录</el-menu-item>
+            </el-submenu>
+          </el-menu>
+        </el-col>
+      </el-row>
+    </div>
 
-    <el-row style="height: 100%">
+    <el-row style="height: 100%;">
       <el-col :span="3" style="height: 100%">
 
         <!--官方menu 结合router的使用方法，出现menu-item和跳转不匹配的情况-->
@@ -29,9 +28,9 @@
 </el-menu>-->
         <!--end 官方menu-->
 
-        <el-menu style="height: 100%;border-radius: 0px" theme="dark" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+        <el-menu style="height: 100%;overflow:scroll; border-radius: 0px" theme="dark" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
           <el-submenu v-for="(menu, index) in menus" :index="index.toString()">
-            <template slot="title"><i class="el-icon-message"></i>{{menu.menuName}}</template>
+            <template slot="title">{{menu.menuName}}</template>
             <router-link style="text-decoration:none" v-for="(func,index2) in menu.funcList" :to="func.funcLink">
               <el-menu-item :index="index.toString()+'-'+index2.toString()">{{func.funcName}}</el-menu-item>
             </router-link>
@@ -41,11 +40,12 @@
 
 
       </el-col>
-      <el-col :span="21" style="height: 100%">
-        <router-view></router-view>
+      <el-col :span="21" style="height: 100%;overflow:scroll;">
+        <router-view style="margin-bottom:50px"></router-view>
       </el-col>
 
     </el-row>
+
   </div>
 </template>
 
@@ -120,7 +120,12 @@
 
 <style>
   .header {
+    
     background-color: #324057;
     color: #c0ccda;
+  }
+  .logo{
+    display: flex;
+    justify-content: center;
   }
 </style>

@@ -12,7 +12,7 @@
                     </el-select>
                 </span>
             </div>
-            <el-table empty-text="暂无已分发订单" border :data="orderlist" style="width: 100%">
+            <el-table  empty-text="暂无已分发订单" border :data="orderlist" style="width: 100%;">
                 <el-table-column label="批次号" width="200" prop="ficorder.ficordernum"></el-table-column>
                 <el-table-column label="订单信息">
                     <el-table-column label="下单时间" width="200" prop="ordertime"></el-table-column>

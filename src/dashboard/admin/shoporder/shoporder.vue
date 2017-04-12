@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <el-card class="box-card" style="margin: 10px">
-            <div slot="header" class="clearfix">
-            </div>
-            <el-table empty-text="暂无商铺订单" border :data="shoporderlist" style="width: 100%">
+    <div >
+        <el-card class="box-card" >
+            <el-table  empty-text="暂无商铺订单" border :data="shoporderlist" style="width: 100%;">
                 <el-table-column label="下单时间" prop="ordertime"></el-table-column>
                 <el-table-column label="编号">
                     <el-table-column label="批次号" prop="ficorder.ficordernum"></el-table-column>

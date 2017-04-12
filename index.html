@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html style="height: 100%">
+<html style="position:absolute; height:100%; overflow:hidden;width:100%">
 
 <head>
   <meta charset="utf-8">
   <title>webframeworksite</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
   <script language="javascript" src="http://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.min.js"></script>
   <script language="javascript" src="http://cdn.staticfile.org/plupload/3.0-beta1/plupload.min.js"></script>
   <script lang="javascript" src="moment.js"></script>
 </head>
 
 <body style="height: 100%;margin: 0px">
-  <div id="app" style="height: 100%">
+  <div id="app" style="height:100%;">
     <!-- 路由出口 -->
     <!-- 路由匹配到的组件将渲染在这里 -->
     <router-view></router-view>

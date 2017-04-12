@@ -1,5 +1,5 @@
 <template>
-    <div class="menucontent">
+    <div class="menucontent" style="margin: 10px">
         <el-tabs class="eltabs" value="first" @tab-click="handleClick">
             <el-tab-pane label="待下发" name="first">
                 <deliverorder></deliverorder>
