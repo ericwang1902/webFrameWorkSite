@@ -12,22 +12,22 @@
                     </el-select>
                 </span>
             </div>
-            <el-table  empty-text="暂无已分发订单" border :data="orderlist" style="width: 100%;">
-                <el-table-column label="批次号" width="200" prop="ficorder.ficordernum"></el-table-column>
+            <el-table empty-text="暂无已分发订单" border :data="orderlist" style="width: 100%;">
+                <el-table-column label="批次号" width="200" prop="item.ficorder.ficordernum"></el-table-column>
                 <el-table-column label="订单信息">
-                    <el-table-column label="下单时间" width="200" prop="ordertime"></el-table-column>
+                    <el-table-column label="下单时间" width="200" prop="item.ordertime"></el-table-column>
                     <!--<el-table-column label="订单编号" width="200" prop="ordernum"></el-table-column>-->
-                    <el-table-column label="套餐总数" width="100" prop="taotalcount"></el-table-column>
-                    <el-table-column label="金额" width="100" prop="totalamount"></el-table-column>
+                    <el-table-column label="套餐总数" width="100" prop="item.taotalcount"></el-table-column>
+                    <el-table-column label="金额" width="100" prop="item.totalamount"></el-table-column>
                 </el-table-column>
                 <el-table-column label="配送信息">
-                    <el-table-column label="区域" width="100" prop="region.regionname"></el-table-column>
-                    <el-table-column label="详细地址" width="300" prop="address"></el-table-column>
+                    <el-table-column label="区域" width="100" prop="item.region.regionname"></el-table-column>
+                    <el-table-column label="详细地址" width="300" prop="item.address"></el-table-column>
                 </el-table-column>
                 <el-table-column label="状态" width="100" prop="status"></el-table-column>
                 <el-table-column type="expand">
                     <template scope="props">
-                        <el-table :data="props.row.suitelist" style="width: 100%">
+                        <el-table :data="props.row.item.suitelist" style="width: 100%">
                             <el-table-column label="套餐名称" prop="suite.suitename"></el-table-column>
                             <el-table-column label="数量" prop="count"></el-table-column>
                             <el-table-column label="金额（小计）" prop="amount"></el-table-column>
@@ -43,6 +43,12 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <!--分页-->
+            <div class="block">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-size="pageitems"
+                    layout="prev, pager, next, jumper" :total="total">
+                </el-pagination>
+            </div>
         </el-card>
     </div>
 </template>
@@ -57,30 +63,67 @@
                 orderlist: [],
                 selectedOrders: [],
                 regionlistdata: [],
-                selectedregion: ''
+                selectedregion: '',
+
+                currentPage: 1,
+                pageitems: 10,
+                total: 0
             }
         },
         created() {
-            this.getorderlist();
+            this.getorderlist(this.pageitems, this.currentPage, 0);
             this.getregions();
         },
         methods: {
-            getorderlist() {
+            getorderlist(pageitems, currentpage, deliverd) {
                 var userid = this.$store.getters.getUserInfo.userid;
+                var params = {};
 
-                this.axios.get(config.order + '?userid=' + userid + '&delivered=1')
-                    .then((response) => {
-                        console.log("该地区的订单列表：")
-                        console.log(response.data);
-                        for (var i = 0; i < response.data.length; i++) {
-                            response.data[i].ordertime = moment(response.data[i].ordertime).format("YYYY-MM-DD HH:mm:ss ");
-                            response.data[i].status = config.ficstatus[response.data[i].ficorder.ficorderstate].cust;
+                if (deliverd == 0) {
+                    params = {
+                        userid: userid,
+                        pageItems: pageitems,
+                        currentPage: currentpage
+                    }
+                }else{
+                    params = {
+                        userid: userid,
+                        pageItems: pageitems,
+                        currentPage: currentpage,
+                        delivered: 1
+                    }
+                }
+
+                this.axios.get(config.order,
+                    {
+                        params: params
+                    })
+                    .then(response => {
+                        console.log(response.data.orders);
+                        for (var i = 0; i < response.data.orders.length; i++) {
+                            response.data.orders[i].ordertime = moment(response.data.orders[i].ordertime).format("YYYY-MM-DD HH:mm:ss ");
+                            response.data.orders[i].status = config.ficstatus[response.data.orders[i].ficorder.ficorderstate].shop;
+
                         }
-                        this.orderlist = response.data;
+                        console.log(response.data.orders);
+
+                        this.orderlist = [];
+                        response.data.orders.forEach(
+                            (item, index, array) => {
+                                this.orderlist.push({
+                                    index: ((this.currentPage - 1) * this.pageitems) + index + 1,
+                                    orderitem: item,
+                                    status: item.status
+                                })
+                            }
+                        )
+                        this.total = response.data.count;
+
                     })
                     .catch(function (err) {
                         console.log(err);
                     })
+
             },
             getregions() {
                 var userid = this.$store.getters.getUserInfo.userid;
@@ -97,19 +140,19 @@
                 console.log(val);
                 var userid = this.$store.getters.getUserInfo.userid;
 
-                this.axios.get(config.order + '?userid=' + userid + '&region=' + val + '&delivered=1')
-                    .then((response) => {
-                        console.log("该地区的订单列表：")
-                        console.log(response.data);
-                        for (var i = 0; i < response.data.length; i++) {
-                            response.data[i].ordertime = moment(response.data[i].ordertime).format("YYYY-MM-DD HH:mm:ss ");
-                            response.data[i].status = config.ficstatus[response.data[i].ficorder.ficorderstate].cust;
-                        }
-                        this.orderlist = response.data;
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                    })
+                // this.axios.get(config.order + '?userid=' + userid + '&region=' + val + '&delivered=1')
+                //     .then((response) => {
+                //         console.log("该地区的订单列表：")
+                //         console.log(response.data);
+                //         for (var i = 0; i < response.data.length; i++) {
+                //             response.data[i].ordertime = moment(response.data[i].ordertime).format("YYYY-MM-DD HH:mm:ss ");
+                //             response.data[i].status = config.ficstatus[response.data[i].ficorder.ficorderstate].cust;
+                //         }
+                //         this.orderlist = response.data;
+                //     })
+                //     .catch(function (err) {
+                //         console.log(err);
+                //     })
 
 
             }
