@@ -5,12 +5,12 @@
                 <el-button style="float: right; " @click="createSupplier()" type="primary">添加供应商</el-button>
             </div>
             <el-table border :data="supplierlistData" style="width: 100%">
-                <el-table-column label="供应商编号"  prop="suppliernum"></el-table-column>
-                <el-table-column label="供应商名称"  prop="suppliername"></el-table-column>
-                <el-table-column label="供应商说明"  prop="supplierdes"></el-table-column>
-                <el-table-column label="省"  prop="supplieruser.district.province"></el-table-column>
-                <el-table-column label="市"  prop="supplieruser.district.city"></el-table-column>
-                <el-table-column label="区县"  prop="supplieruser.district.district"></el-table-column>
+                <el-table-column label="供应商编号" prop="suppliernum"></el-table-column>
+                <el-table-column label="供应商名称" prop="suppliername"></el-table-column>
+                <el-table-column label="供应商说明" prop="supplierdes"></el-table-column>
+                <el-table-column label="省" prop="supplieruser.district.province"></el-table-column>
+                <el-table-column label="市" prop="supplieruser.district.city"></el-table-column>
+                <el-table-column label="区县" prop="supplieruser.district.district"></el-table-column>
                 <el-table-column width="300" label="修改">
                     <template scope="props">
                         <el-button type="primary" @click="modifySupplier(props.row)" size="mini">信息</el-button>
@@ -20,10 +20,16 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <!--分页-->
+            <div class="block">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-size="pageitems"
+                    layout="prev, pager, next, jumper" :total="total">
+                </el-pagination>
+            </div>
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getSupplierDialogStatus" @close="ondialogclose">
-            <supplierform v-if="formTypes[0]"  :isCreateForm="isCreateForm" :supRow="supRow" :userList="userList"></supplierform>
+            <supplierform v-if="formTypes[0]" :isCreateForm="isCreateForm" :supRow="supRow" :userList="userList"></supplierform>
             <supplieruserform v-if="formTypes[1]" :userList="userList" :supRow="supRow"></supplieruserform>
             <supplierworkerform v-if="formTypes[2]" :userList="userList" :supRow="supRow"></supplierworkerform>
 
@@ -51,13 +57,18 @@
                 supRow: {},
                 supplierlistData: [],
                 userList: [],
-                formTypes: [false, false, false, false]//formtypes和isCreateForm来共同控制弹出form
+                formTypes: [false, false, false, false],//formtypes和isCreateForm来共同控制弹出form
+                userid: '',
+
+                currentPage: 1,
+                pageitems: 10,
+                total: 0
             }
         },
         created() {
-            var userid = this.$store.getters.getUserInfo.userid;
-            this.getsupplierList(userid);
-            this.getUserList(userid);
+            this.userid = this.$store.getters.getUserInfo.userid;
+            this.getsupplierList(this.userid);
+            this.getUserList(this.userid);
         },
         methods: {
             //获取后台用户信息
@@ -71,15 +82,31 @@
                     })
             },
             getsupplierList(userid) {
-                this.axios.get(config.supplierList + '?userid=' + userid)
-                    .then((response) => {
-                          console.log(response.data)
-                        this.supplierlistData = response.data;
+                // this.axios.get(config.supplierList + '?userid=' + userid)
+                //     .then((response) => {
+                //           console.log(response.data)
+                //         this.supplierlistData = response.data;
 
+                //     })
+                //     .catch(function (err) {
+                //         console.log(err)
+                //     })
+
+                this.axios.get(config.supplierList, {
+                    params: {
+                        userid: userid,
+                        pageItems: this.pageitems,
+                        currentPage: this.currentPage
+                    }
+                })
+                    .then((response) => {
+                        this.supplierlistData = response.data.suppliers;
+                        this.total = response.data.count;
                     })
                     .catch(function (err) {
-                        console.log(err)
+                        console.log(err);
                     })
+
             },
             //重置formtypes数组
             resetFormTypes() {
@@ -87,7 +114,7 @@
                     this.formTypes[i] = false;
                 }
             },
-            
+
             ondialogclose() {
                 console.log("关闭dialog")
                 this.$store.commit('setSupplierDialogStatus', false);
@@ -124,6 +151,15 @@
                 this.formTypes[2] = true;
                 this.supRow = supRow;
                 this.$store.commit('setSupplierDialogStatus', true)
+            },
+            //暂时不支持修改每页数量
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getsupplierList(this.userid);
+                console.log(`当前页: ${val}`);
             }
         }
     }

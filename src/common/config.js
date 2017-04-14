@@ -40,6 +40,8 @@ var config={
     porder:baseURL +"/sysmanage/porder",//批量更新客户订单
 
     supplierDaily:baseURL+"/report/supplierdaily",//获取供应商日报表
+    goodslistall:baseURL+"/sysmanage/formlistdata/goodslistall",//所有商品列表的接口
+    supplierslistall:baseURL+"/sysmanage/formlistdata/supplierslistall",//所有供应商列表接口
 
     //qiniutoken:baseURL+"/sysmanage/qiniu",//七牛token接口
     qiniutoken:baseURL+"/sysmanage/qiniu",

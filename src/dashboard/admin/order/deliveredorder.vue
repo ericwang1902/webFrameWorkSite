@@ -30,7 +30,7 @@
                 <el-table-column label="状态" width="100" prop="status"></el-table-column>
                 <el-table-column type="expand">
                     <template scope="props">
-                        <el-table :data="props.row.item.suitelist" style="width: 100%">
+                        <el-table :data="props.row.orderitem.suitelist" style="width: 100%">
                             <el-table-column label="套餐名称" prop="suite.suitename"></el-table-column>
                             <el-table-column label="数量" prop="count"></el-table-column>
                             <el-table-column label="金额（小计）" prop="amount"></el-table-column>

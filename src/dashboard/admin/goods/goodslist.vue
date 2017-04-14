@@ -19,6 +19,12 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <!--分页-->
+            <div class="block">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-size="pageitems"
+                    layout="prev, pager, next, jumper" :total="total">
+                </el-pagination>
+            </div>
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getGoodsDialogStatus" @close="ondialogclose">
@@ -44,7 +50,11 @@
                 goodsRow: {},
                 supplierList: [],
                 goodslistData: [],
-                districtid: ''
+                districtid: '',
+
+                currentPage: 1,
+                pageitems: 10,
+                total: 0
             }
         },
         created() {
@@ -57,18 +67,34 @@
         },
         methods: {
             getGoodsList(userid) {
-                this.axios.get(config.goodsList + '?userid=' + userid)
-                    .then((response) => {
-                        this.goodslistData = response.data;
-                        //console.log(this.goodslistData)
+                // this.axios.get(config.goodsList + '?userid=' + userid)
+                //     .then((response) => {
+                //         this.goodslistData = response.data;
+                //         //console.log(this.goodslistData)
+                //     })
+                //     .catch(function (err) {
+                //         console.log(err)
+                //     })
+                this.axios.get(config.goodsList,{
+                    params:{
+                        userid: userid,
+                        pageItems: this.pageitems,
+                        currentPage: this.currentPage
+                    }
+                })
+                .then((response=>{
+                     this.goodslistData = response.data.goods;
+                     this.total = response.data.count;
+                     console.log("count:"+this.total);
+                }))
+                .catch(function(err){
+                    console.log(err);
+                })
+                
 
-                    })
-                    .catch(function (err) {
-                        console.log(err)
-                    })
             },
             getSupplierList(userid) {
-                this.axios.get(config.supplierList + '?userid=' + userid)
+                this.axios.get(config.supplierslistall + '?userid=' + userid)
                     .then((response) => {
                         this.supplierList = response.data;
                     })
@@ -91,6 +117,15 @@
             ondialogclose() {
                 this.$store.commit('setGoodsDialogStatus', false);
                 this.getGoodsList(this.$store.getters.getUserInfo.userid);
+            },
+            //暂时不支持修改每页数量
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getGoodsList(this.$store.getters.getUserInfo.userid);
+                console.log(`当前页: ${val}`);
             }
         }
     }

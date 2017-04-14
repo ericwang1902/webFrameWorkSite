@@ -29,6 +29,12 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <!--分页-->
+            <div class="block">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-size="pageitems"
+                    layout="prev, pager, next, jumper" :total="total">
+                </el-pagination>
+            </div>
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getSuiteDialogStatus" @close="ondialogclose">
@@ -52,7 +58,11 @@
                 title: "",
                 isCreateForm: false,
                 goodsList: [],
-                suiteRow: {}
+                suiteRow: {},
+
+                currentPage: 1,
+                pageitems: 10,
+                total: 0
 
             }
         },
@@ -63,20 +73,26 @@
         },
         methods: {
             getSuiteList(userid) {
-                //  console.log("获取套餐列表")
-
-                this.axios.get(config.suite + '?userid=' + userid)
-                    .then((response) => {
-                        this.suitelist = response.data;
-
-                    })
+                
+                this.axios.get(config.suite, {
+                    params: {
+                        userid: userid,
+                        pageItems: this.pageitems,
+                        currentPage: this.currentPage
+                    }
+                })
+                    .then((response => {
+                        this.suitelist = response.data.suites;
+                        this.total = response.data.count;
+                        console.log("count:" + this.total);
+                    }))
                     .catch(function (err) {
                         console.log(err);
                     })
 
             },
             getGoodsList(userid) {
-                this.axios.get(config.goodsList + '?userid=' + userid)
+                this.axios.get(config.goodslistall + '?userid=' + userid)
                     .then((response) => {
                         this.goodsList = response.data;
                         //       console.log(this.goodsList)
@@ -102,6 +118,15 @@
                 console.log("关闭dialog")
                 this.getSuiteList(this.$store.getters.getUserInfo.userid);
                 this.$store.commit('setSuiteDialogStatus', false);
+            },
+            //暂时不支持修改每页数量
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getGoodsList(this.$store.getters.getUserInfo.userid);
+                console.log(`当前页: ${val}`);
             }
 
         }

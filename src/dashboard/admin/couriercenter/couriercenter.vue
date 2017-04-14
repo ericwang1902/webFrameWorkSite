@@ -5,14 +5,24 @@
                 <el-button style="float: right; " @click="createCourier()" type="primary">创建配送员</el-button>
             </div>
             <el-table border :data="courierArray" style="width: 100%">
+                <el-table-column label="区县" prop="district.province"></el-table-column>
+                <el-table-column label="区县" prop="district.city"></el-table-column>
+                <el-table-column label="区县" prop="district.district"></el-table-column>
                 <el-table-column label="姓名" prop="couriername"></el-table-column>
                 <el-table-column label="描述" prop="courierdes"></el-table-column>
+                <el-table-column label="系统用户" prop="courieruser.username"></el-table-column>
                 <el-table-column width="100" label="操作">
                     <template scope="props">
                         <el-button type="primary" @click="modifyCourier(props.row)" size="mini">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
+            <!--分页-->
+            <div class="block">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-size="pageitems"
+                    layout="prev, pager, next, jumper" :total="total">
+                </el-pagination>
+            </div>
         </el-card>
         <!--dialog start-->
         <el-dialog :title="title" v-model="$store.getters.getCourierDialogStaus" @close="ondialogclose">
@@ -38,7 +48,11 @@
                 courierArray: [],
                 userid: '',
                 courierRow: {},
-                userlist: []
+                userlist: [],
+
+                currentPage: 1,
+                pageitems: 10,
+                total: 0
             }
         },
         created() {
@@ -74,21 +88,36 @@
             },
             //获取配送员
             getCourier: function (userid) {
-                this.axios.get(config.courier + '?userid=' + userid)
-                    .then((response) => {
-                        this.courierArray = response.data;
-                        console.log('配送员：' + JSON.stringify(response.data))
-                    })
-                    .catch(function (err) {
-                        console.log(err)
-                    })
+                // this.axios.get(config.courier + '?userid=' + userid)
+                //     .then((response) => {
+                //         this.courierArray = response.data;
+                //         console.log('配送员：' + JSON.stringify(response.data))
+                //     })
+                //     .catch(function (err) {
+                //         console.log(err)
+                //     })
+
+                this.axios.get(config.courier, {
+                    params: {
+                        userid: userid,
+                        pageItems: this.pageitems,
+                        currentPage: this.currentPage
+                    }
+                })
+                .then((response)=>{
+                    this.courierArray = response.data.couriers;
+                    this.total = response.data.count;
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
             },
             createCourier: function () {
                 console.log('创建配送员按钮');
                 this.getRegion(this.userid, () => {
-                    this.getuserlist(this.userid,()=>{
+                    this.getuserlist(this.userid, () => {
                         this.isCreate = true;
-                    this.$store.commit('setCourierDialogStaus', true);
+                        this.$store.commit('setCourierDialogStaus', true);
                     });
                 });
             },
@@ -105,6 +134,15 @@
             ondialogclose: function () {
                 this.$store.commit('setCourierDialogStaus', false);
                 this.getCourier(this.userid);
+            },
+             //暂时不支持修改每页数量
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getCourier(this.$store.getters.getUserInfo.userid);
+                console.log(`当前页: ${val}`);
             }
         }
     }
