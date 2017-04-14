@@ -13,16 +13,19 @@
                 </span>
             </div>
             <el-table empty-text="暂无已分发订单" border :data="orderlist" style="width: 100%;">
-                <el-table-column label="批次号" width="200" prop="item.ficorder.ficordernum"></el-table-column>
+                <el-table-column label="#" prop="index"  width="100">
+                </el-table-column>
+                <el-table-column label="批次号"  prop="orderitem.ficorder.ficordernum"></el-table-column>
                 <el-table-column label="订单信息">
-                    <el-table-column label="下单时间" width="200" prop="item.ordertime"></el-table-column>
+                    <el-table-column label="下单时间" prop="orderitem.ordertime"></el-table-column>
                     <!--<el-table-column label="订单编号" width="200" prop="ordernum"></el-table-column>-->
-                    <el-table-column label="套餐总数" width="100" prop="item.taotalcount"></el-table-column>
-                    <el-table-column label="金额" width="100" prop="item.totalamount"></el-table-column>
+                    <el-table-column label="套餐总数"  prop="orderitem.taotalcount"></el-table-column>
+                    <el-table-column label="金额"  prop="orderitem.totalamount"></el-table-column>
                 </el-table-column>
                 <el-table-column label="配送信息">
-                    <el-table-column label="区域" width="100" prop="item.region.regionname"></el-table-column>
-                    <el-table-column label="详细地址" width="300" prop="item.address"></el-table-column>
+                    <el-table-column label="区域"  prop="orderitem.region.regionname"></el-table-column>
+                    <el-table-column label="详细地址"  prop="orderitem.address"></el-table-column>
+                    <el-table-column label="电话" prop="orderitem.mobile"></el-table-column>
                 </el-table-column>
                 <el-table-column label="状态" width="100" prop="status"></el-table-column>
                 <el-table-column type="expand">
@@ -63,7 +66,7 @@
                 orderlist: [],
                 selectedOrders: [],
                 regionlistdata: [],
-                selectedregion: '',
+                selectedregion: 'all',
 
                 currentPage: 1,
                 pageitems: 10,
@@ -71,25 +74,28 @@
             }
         },
         created() {
-            this.getorderlist(this.pageitems, this.currentPage, 0);
+            this.getorderlist();
             this.getregions();
         },
         methods: {
-            getorderlist(pageitems, currentpage, deliverd) {
+            getorderlist() {
                 var userid = this.$store.getters.getUserInfo.userid;
                 var params = {};
 
-                if (deliverd == 0) {
+                var params = {};
+                if (this.selectedregion == 'all') {
                     params = {
                         userid: userid,
-                        pageItems: pageitems,
-                        currentPage: currentpage
+                        pageItems: this.pageitems,
+                        currentPage: this.currentpage,
+                        delivered: 1
                     }
-                }else{
+                } else {
                     params = {
                         userid: userid,
-                        pageItems: pageitems,
-                        currentPage: currentpage,
+                        region: this.selectedregion,
+                        pageItems: this.pageitems,
+                        currentPage: this.currentpage,
                         delivered: 1
                     }
                 }
@@ -102,10 +108,9 @@
                         console.log(response.data.orders);
                         for (var i = 0; i < response.data.orders.length; i++) {
                             response.data.orders[i].ordertime = moment(response.data.orders[i].ordertime).format("YYYY-MM-DD HH:mm:ss ");
-                            response.data.orders[i].status = config.ficstatus[response.data.orders[i].ficorder.ficorderstate].shop;
-
+                            response.data.orders[i].status = config.ficstatus[response.data.orders[i].ficorder.ficorderstate].cust;
+                   
                         }
-                        console.log(response.data.orders);
 
                         this.orderlist = [];
                         response.data.orders.forEach(
@@ -131,6 +136,11 @@
                     .then((response) => {
                         console.log(response)
                         this.regionlistdata = response.data;
+
+                        this.regionlistdata.push({
+                            regionname: "所有区域",
+                            _id: "all"
+                        })
                     })
                     .catch(function (err) {
                         console.log(err)
@@ -138,23 +148,18 @@
             },
             onchange(val) {
                 console.log(val);
-                var userid = this.$store.getters.getUserInfo.userid;
-
-                // this.axios.get(config.order + '?userid=' + userid + '&region=' + val + '&delivered=1')
-                //     .then((response) => {
-                //         console.log("该地区的订单列表：")
-                //         console.log(response.data);
-                //         for (var i = 0; i < response.data.length; i++) {
-                //             response.data[i].ordertime = moment(response.data[i].ordertime).format("YYYY-MM-DD HH:mm:ss ");
-                //             response.data[i].status = config.ficstatus[response.data[i].ficorder.ficorderstate].cust;
-                //         }
-                //         this.orderlist = response.data;
-                //     })
-                //     .catch(function (err) {
-                //         console.log(err);
-                //     })
+                this.getorderlist();
 
 
+            },
+            //暂时不支持修改每页数量
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getorderlist();
+                console.log(`当前页: ${val}`);
             }
         }
     }
