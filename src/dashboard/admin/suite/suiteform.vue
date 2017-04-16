@@ -16,6 +16,9 @@
             <el-form-item label="套餐价格" prop="suiteprice">
                 <el-input v-model.number="suiteform.suiteprice"></el-input>
             </el-form-item>
+            <el-form-item label="套餐标价" prop="suiteshowprice">
+                <el-input v-model.number="suiteform.suiteshowprice"></el-input>
+            </el-form-item>
             <el-form-item label="选择商品" style="width: 100%">
                 <el-table :data="goodsList" max-height="450" ref="goodsListTable" border style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
@@ -57,6 +60,7 @@
                     suitedes: "",
                     suitephoto: "",
                     suiteprice: 0,
+                    suiteshowprice:0,
                     suitestate: true,
                     suitetype: "",
                     salesnum: "",
@@ -91,6 +95,7 @@
                     suitedes: "",
                     suitephoto: "",
                     suiteprice: 0,
+                    suiteshowprice:0,
                     suitestate: true,
                     suitetype: "",
                     salesnum: "",
@@ -107,6 +112,7 @@
                     suitedes: this.suiteRow.suitedes,
                     suitephoto: this.suiteRow.suitephoto,
                     suiteprice: this.suiteRow.suiteprice,
+                    suiteshowprice:this.suiteRow.suiteshowprice,
                     suitestate: this.suiteRow.suitestate,
                     suitetype: this.suiteRow.suitetype,
                     salesnum: this.suiteRow.salesnum,

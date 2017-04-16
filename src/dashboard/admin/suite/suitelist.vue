@@ -10,6 +10,7 @@
                     <el-table-column label="套餐名称" prop="suitename"></el-table-column>
                     <el-table-column label="套餐描述" prop="suitedes"></el-table-column>
                     <el-table-column label="套餐价格" prop="suiteprice"></el-table-column>
+                    <el-table-column label="套餐标价" prop="suiteshowprice"></el-table-column>
                 </el-table-column>
                 <el-table-column label="所属区县">
                     <el-table-column label="省" prop="district.province"></el-table-column>
@@ -23,7 +24,7 @@
                 </el-table-column>
 
 
-                <el-table-column width="100" label="操作">
+                <el-table-column width="100" label="操作" v-if="isAdmin">
                     <template scope="props">
                         <el-button type="primary" @click="modifySuite(props.row)" size="mini">修改</el-button>
                     </template>
@@ -62,12 +63,22 @@
 
                 currentPage: 1,
                 pageitems: 10,
-                total: 0
+                total: 0,
+
+                isAdmin:false
 
             }
         },
         created() {
             var userid = this.$store.getters.getUserInfo.userid;
+            var role = this.$store.getters.getUserInfo.userRole;
+            console.log("role:"+JSON.stringify(role[0]));
+            if(role[0].roleName=="ADMIN"){
+                this.isAdmin=false;
+            }else{
+                this.isAdmin = true;
+            }
+
             this.getSuiteList(userid);
             this.getGoodsList(userid);
         },
