@@ -4,6 +4,7 @@
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="createGoods()" type="primary">创建商品</el-button>
             </div>
+            
             <el-table border :data="goodslistData" style="width: 100%">
                 <el-table-column label="名称" prop="goodsname"></el-table-column>
                 <el-table-column label="描述" prop="goodsdes"></el-table-column>
