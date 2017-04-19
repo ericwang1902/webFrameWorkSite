@@ -18,7 +18,7 @@
                 <el-table-column label="批次号"  prop="orderitem.ficorder.ficordernum"></el-table-column>
                 <el-table-column label="订单信息">
                     <el-table-column label="下单时间" prop="orderitem.ordertime"></el-table-column>
-                    <!--<el-table-column label="订单编号" width="200" prop="ordernum"></el-table-column>-->
+                    <el-table-column label="订单编号"  prop="orderitem.ordernum"></el-table-column>
                     <el-table-column label="套餐总数"  prop="orderitem.taotalcount"></el-table-column>
                     <el-table-column label="金额"  prop="orderitem.totalamount"></el-table-column>
                 </el-table-column>
