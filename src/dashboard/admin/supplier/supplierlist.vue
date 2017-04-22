@@ -15,8 +15,8 @@
                     <template scope="props">
                         <el-button type="primary" @click="modifySupplier(props.row)" size="mini">信息</el-button>
                         <el-button type="success" @click="setSupplierUser(props.row)" size="mini">用户</el-button>
-                        <!--<el-button type="warning" @click="setSupplierWorker(props.row)" size="mini">店员</el-button>
-                        <el-button type="danger" @click="modifySupplier(props.row)" size="mini">商品</el-button>-->
+                        <el-button type="warning" @click="setWechat(props.row)" size="mini">微信</el-button>
+                        <!--<el-button type="danger" @click="modifySupplier(props.row)" size="mini">商品</el-button>-->
                     </template>
                 </el-table-column>
             </el-table>
@@ -31,8 +31,7 @@
         <el-dialog :title="title" v-model="$store.getters.getSupplierDialogStatus" @close="ondialogclose">
             <supplierform v-if="formTypes[0]" :isCreateForm="isCreateForm" :supRow="supRow" :userList="userList"></supplierform>
             <supplieruserform v-if="formTypes[1]" :userList="userList" :supRow="supRow"></supplieruserform>
-            <supplierworkerform v-if="formTypes[2]" :userList="userList" :supRow="supRow"></supplierworkerform>
-
+            <supplierwechatform v-if="formTypes[2]" :supRow="supRow"></supplierwechatform>
         </el-dialog>
         <!--dialog end-->
     </div>
@@ -43,12 +42,14 @@
     import supplieruserform from './supplieruserform'
     import supplierworkerform from './supplierworkerform'
     import funcAuth from '../../../common/funcAuth'
+    import supplierwechatform from './supplierwechat';
 
     export default {
         components: {
             supplierform,
             supplieruserform,
-            supplierworkerform
+            supplierworkerform,
+            supplierwechatform
         },
         data() {
             return {
@@ -147,6 +148,13 @@
             },
             //设置供应商店员
             setSupplierWorker(supRow) {
+                this.title = "设置供应商店员";
+                this.formTypes[2] = true;
+                this.supRow = supRow;
+                this.$store.commit('setSupplierDialogStatus', true)
+            },
+            //查看微信绑定
+            setWechat(supRow){
                 this.title = "设置供应商店员";
                 this.formTypes[2] = true;
                 this.supRow = supRow;
