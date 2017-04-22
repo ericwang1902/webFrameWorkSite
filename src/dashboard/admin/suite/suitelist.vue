@@ -7,6 +7,7 @@
             <el-table border :data="suitelist" style="width: 100%">
                 <el-table-column label="套餐信息">
                     <el-table-column label="套餐编号" prop="suitenum"></el-table-column>
+                    <el-table-column label="套餐排序" prop="suiteorder"></el-table-column>
                     <el-table-column label="套餐名称" prop="suitename"></el-table-column>
                     <el-table-column label="套餐描述" prop="suitedes"></el-table-column>
                     <el-table-column label="套餐价格" prop="suiteprice"></el-table-column>

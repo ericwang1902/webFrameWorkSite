@@ -109,6 +109,8 @@
                         for (var i = 0; i < response.data.orders.length; i++) {
                             response.data.orders[i].ordertime = moment(response.data.orders[i].ordertime).format("YYYY-MM-DD HH:mm:ss ");
                             response.data.orders[i].status = config.ficstatus[response.data.orders[i].ficorder.ficorderstate].cust;
+                            response.data.orders[i].totalamount=(response.data.orders[i].totalamount/100).toFixed(2)
+                            console.log(response.data.orders[i].totalamount)
                    
                         }
 

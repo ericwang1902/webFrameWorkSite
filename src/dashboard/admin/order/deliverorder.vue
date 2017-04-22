@@ -107,6 +107,7 @@
                         console.log(response.data);
                         for (var i = 0; i < response.data.orders.length; i++) {
                             response.data.orders[i].status = "未接单";
+                            response.data.orders[i].totalamount=(response.data.orders[i].totalamount/100).toFixed(2)
                    
                         }
                         this.orderlist = [];

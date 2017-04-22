@@ -4,6 +4,10 @@
             <el-form-item label="套餐编号" prop="suitenum">
                 <el-input v-model="suiteform.suitenum"></el-input>
             </el-form-item>
+            <el-form-item label="套餐排序" prop="suiteorder">
+                <el-input v-model="suiteform.suiteorder"></el-input>
+            </el-form-item>
+            
             <el-form-item label="是否上架" prop="suitestate">
                 <el-switch v-model="suiteform.suitestate" on-color="#13ce66" on-text="是" off-color="#ff4949" off-text="否"></el-switch>
             </el-form-item>
@@ -56,6 +60,7 @@
             return {
                 suiteform: {
                     suitenum: "",
+                    suiteorder:0,
                     suitename: "",
                     suitedes: "",
                     suitephoto: "",
@@ -91,6 +96,7 @@
             InitCreateForm() {
                 this.suiteform = {
                     suitenum: "",
+                     suiteorder:0,
                     suitename: "",
                     suitedes: "",
                     suitephoto: "",
@@ -108,6 +114,7 @@
             InitModifyForm() {
                 this.suiteform = {
                     suitenum: this.suiteRow.suitenum,
+                     suiteorder:this.suiteRow.suiteorder,
                     suitename: this.suiteRow.suitename,
                     suitedes: this.suiteRow.suitedes,
                     suitephoto: this.suiteRow.suitephoto,
