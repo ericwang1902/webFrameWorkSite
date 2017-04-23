@@ -187,6 +187,7 @@
 
 
             },
+            
             createShopOrder(fic, callback) {
                 console.log("创建订单");
                 //按商品拆分订单,按照供应商汇总
@@ -306,6 +307,8 @@
                         console.log(err);
                     })
             },
+
+
             handleSelectionChange(val) {
                 this.selectedOrders = val;//获取要下发的订单
                 console.log("当前所选订单");
