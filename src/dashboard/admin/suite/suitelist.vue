@@ -14,8 +14,8 @@
                     <el-table-column label="套餐标价" prop="suiteshowprice"></el-table-column>
                 </el-table-column>
                 <el-table-column label="所属区县">
-                    <el-table-column label="省" prop="district.province"></el-table-column>
-                    <el-table-column label="市" prop="district.city"></el-table-column>
+                    <!--<el-table-column label="省" prop="district.province"></el-table-column>
+                    <el-table-column label="市" prop="district.city"></el-table-column>-->
                     <el-table-column label="区县" prop="district.district"></el-table-column>
                     <el-table-column label="套餐状态">
                         <template scope="props">
