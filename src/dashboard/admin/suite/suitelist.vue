@@ -137,7 +137,7 @@
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.getGoodsList(this.$store.getters.getUserInfo.userid);
+                this.getSuiteList(this.$store.getters.getUserInfo.userid);
                 console.log(`当前页: ${val}`);
             }
 
