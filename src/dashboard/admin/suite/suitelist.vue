@@ -134,6 +134,7 @@
             //暂时不支持修改每页数量
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
+                
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
