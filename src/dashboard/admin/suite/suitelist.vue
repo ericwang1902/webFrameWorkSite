@@ -14,8 +14,9 @@
                     <el-table-column label="套餐标价" prop="suiteshowprice"></el-table-column>
                 </el-table-column>
                 <el-table-column label="所属区县">
-                    <el-table-column label="省" prop="district.province"></el-table-column>
-                    <el-table-column label="市" prop="district.city"></el-table-column>
+                    <!--<el-table-column label="省" prop="district.province"></el-table-column>
+                    <el-table-column label="市" prop="district.city"></el-table-column>-->
+                    
                     <el-table-column label="区县" prop="district.district"></el-table-column>
                     <el-table-column label="套餐状态">
                         <template scope="props">
@@ -134,10 +135,11 @@
             //暂时不支持修改每页数量
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
+                
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.getGoodsList(this.$store.getters.getUserInfo.userid);
+                this.getSuiteList(this.$store.getters.getUserInfo.userid);
                 console.log(`当前页: ${val}`);
             }
 
