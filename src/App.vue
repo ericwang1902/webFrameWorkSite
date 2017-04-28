@@ -41,7 +41,9 @@
 
       </el-col>
       <el-col :span="21" style="height: 100%;overflow:scroll;">
-        <router-view style="margin-bottom:50px"></router-view>
+        <div style="margin-bottom:50px">
+            <router-view ></router-view>
+        </div>
       </el-col>
 
     </el-row>

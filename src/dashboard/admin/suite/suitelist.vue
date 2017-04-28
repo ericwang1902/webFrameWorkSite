@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="suitelistcls">
         <el-card class="box-card" style="margin: 10px">
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="createSuite()" type="primary">创建套餐</el-button>
@@ -148,5 +148,8 @@
 
 </script>
 <style>
+    .suitelistcls{
+        margin-bottom: 10px;
+    }
 
 </style>
