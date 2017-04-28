@@ -9,26 +9,32 @@
                     <el-table-column label="套餐编号" prop="suitenum"></el-table-column>
                     <el-table-column label="套餐排序" prop="suiteorder"></el-table-column>
                     <el-table-column label="套餐名称" prop="suitename"></el-table-column>
-                    <el-table-column label="套餐描述" prop="suitedes"></el-table-column>
+                    <!--<el-table-column label="套餐描述" prop="suitedes"></el-table-column>-->
                     <el-table-column label="套餐价格" prop="suiteprice"></el-table-column>
                     <el-table-column label="套餐标价" prop="suiteshowprice"></el-table-column>
+                    <el-table-column type="expand">
+                        <template scope="props">
+                            {{props.row.suitedes}}
+                        </template>
+                    </el-table-column>
                 </el-table-column>
                 <el-table-column label="所属区县">
                     <!--<el-table-column label="省" prop="district.province"></el-table-column>
                     <el-table-column label="市" prop="district.city"></el-table-column>-->
-                    
+
                     <el-table-column label="区县" prop="district.district"></el-table-column>
                     <el-table-column label="套餐状态">
                         <template scope="props">
-                            <p>{{props.row.suitestate ? '上架' : '下架'}}</p>
+                            <p>{{props.row.suitestate ? '销售中' : '已停售'}}</p>
                         </template>
                     </el-table-column>
                 </el-table-column>
 
 
-                <el-table-column width="100" label="操作" v-if="isAdmin">
+                <el-table-column width="200" label="操作" v-if="isAdmin">
                     <template scope="props">
                         <el-button type="primary" @click="modifySuite(props.row)" size="mini">修改</el-button>
+                        <el-button type="danger" @click="changeSuiteState(props.row)" size="mini">{{!props.row.suitestate ? '上架' : '下架'}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -67,17 +73,17 @@
                 pageitems: 10,
                 total: 0,
 
-                isAdmin:false
+                isAdmin: false
 
             }
         },
         created() {
             var userid = this.$store.getters.getUserInfo.userid;
             var role = this.$store.getters.getUserInfo.userRole;
-            console.log("role:"+JSON.stringify(role[0]));
-            if(role[0].roleName=="ADMIN"){
-                this.isAdmin=false;
-            }else{
+            console.log("role:" + JSON.stringify(role[0]));
+            if (role[0].roleName == "ADMIN") {
+                this.isAdmin = false;
+            } else {
                 this.isAdmin = true;
             }
 
@@ -86,7 +92,7 @@
         },
         methods: {
             getSuiteList(userid) {
-                
+
                 this.axios.get(config.suite, {
                     params: {
                         userid: userid,
@@ -108,7 +114,7 @@
                 this.axios.get(config.goodslistall + '?userid=' + userid)
                     .then((response) => {
                         this.goodsList = response.data;
-                        //       console.log(this.goodsList)
+                        console.log(this.goodsList)
                     })
                     .catch(function (err) {
                         console.log(err);
@@ -127,6 +133,18 @@
                 this.isCreateForm = false;
                 this.$store.commit('setSuiteDialogStatus', true);
             },
+            changeSuiteState(val) {
+                this.suiteRow = val;
+                var formdata = {
+                    suitestate: !this.suiteRow.suitestate
+                }
+                this.axios.put(config.suite + '/' + this.suiteRow._id + '?userid=' + this.$store.getters.getUserInfo.userid, formdata)
+                    .then((response) => {
+                        console.log(response)
+                        this.getSuiteList(this.$store.getters.getUserInfo.userid);
+                    })
+
+            },
             ondialogclose() {
                 console.log("关闭dialog")
                 this.getSuiteList(this.$store.getters.getUserInfo.userid);
@@ -135,7 +153,7 @@
             //暂时不支持修改每页数量
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
-                
+
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
@@ -148,8 +166,7 @@
 
 </script>
 <style>
-    .suitelistcls{
+    .suitelistcls {
         margin-bottom: 10px;
     }
-
 </style>

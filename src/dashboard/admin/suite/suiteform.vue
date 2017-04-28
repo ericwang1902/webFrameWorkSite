@@ -15,7 +15,7 @@
                 <el-input v-model="suiteform.suitename"></el-input>
             </el-form-item>
             <el-form-item label="套餐说明" prop="suitedes">
-                <el-input v-model="suiteform.suitedes"></el-input>
+                <el-input type="textarea" :rows="2" v-model="suiteform.suitedes"></el-input>
             </el-form-item>
             <el-form-item label="套餐价格" prop="suiteprice">
                 <el-input v-model.number="suiteform.suiteprice"></el-input>
@@ -26,6 +26,8 @@
             <el-form-item label="选择商品" style="width: 100%">
                 <el-table :data="goodsList" max-height="450" ref="goodsListTable" border style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
+                    </el-table-column>
+                    <el-table-column prop="supplier.suppliername" label="供应商">
                     </el-table-column>
                     <el-table-column prop="goodsname" label="名称">
                     </el-table-column>

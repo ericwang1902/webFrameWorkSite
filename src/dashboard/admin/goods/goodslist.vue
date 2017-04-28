@@ -6,17 +6,19 @@
             </div>
             
             <el-table border :data="goodslistData" style="width: 100%">
+                <el-table-column label="编号" prop="goodsnum"></el-table-column>
                 <el-table-column label="名称" prop="goodsname"></el-table-column>
                 <el-table-column label="描述" prop="goodsdes"></el-table-column>
                 <el-table-column label="进价" prop="goodsbuyprice"></el-table-column>
                 <el-table-column label="售价" prop="goodsprice"></el-table-column>
                 <el-table-column label="供应商" prop="supplier.suppliername"></el-table-column>
-                <el-table-column label="省" prop="district.province"></el-table-column>
-                <el-table-column label="市" prop="district.city"></el-table-column>
+                <!--<el-table-column label="省" prop="district.province"></el-table-column>
+                <el-table-column label="市" prop="district.city"></el-table-column>-->
                 <el-table-column label="区县" prop="district.district"></el-table-column>
-                <el-table-column width="100"  label="操作" v-if="isAdmin">
+                <el-table-column width="200"  label="操作" v-if="isAdmin">
                     <template scope="props">
                         <el-button type="primary" @click="modifyGoods(props.row)" size="mini">修改</el-button>
+                        <el-button type="danger" @click="deleteGoods(props.row)" size="mini">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -122,6 +124,15 @@
                 this.goodsRow = val;
                 this.isCreateForm = false;
                 this.$store.commit('setGoodsDialogStatus', true);
+
+            },
+            deleteGoods(val){
+                this.goodsRow = val;
+                this.axios.delete(config.goodsList+'/'+this.goodsRow._id )
+                          .then((response)=>{
+                              console.log(response);
+                              this.getGoodsList(this.$store.getters.getUserInfo.userid);
+                          })
 
             },
             ondialogclose() {
