@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <el-button style="float: right; " @click="createGoods()" type="primary">创建商品</el-button>
             </div>
-            
+
             <el-table border :data="goodslistData" style="width: 100%">
                 <el-table-column label="编号" prop="goodsnum"></el-table-column>
                 <el-table-column label="名称" prop="goodsname"></el-table-column>
@@ -15,7 +15,7 @@
                 <!--<el-table-column label="省" prop="district.province"></el-table-column>
                 <el-table-column label="市" prop="district.city"></el-table-column>-->
                 <el-table-column label="区县" prop="district.district"></el-table-column>
-                <el-table-column width="200"  label="操作" v-if="isAdmin">
+                <el-table-column width="200" label="操作" v-if="isAdmin">
                     <template scope="props">
                         <el-button type="primary" @click="modifyGoods(props.row)" size="mini">修改</el-button>
                         <el-button type="danger" @click="deleteGoods(props.row)" size="mini">删除</el-button>
@@ -34,6 +34,7 @@
             <goodsform v-if="$store.getters.getGoodsDialogStatus" :districtId="districtid" :isCreateForm="isCreateForm" :goodsRow="goodsRow"
                 :supplierList="supplierList"></goodsform>
         </el-dialog>
+
         <!--dialog end-->
     </div>
 </template>
@@ -59,16 +60,16 @@
                 pageitems: 10,
                 total: 0,
 
-                isAdmin:false
+                isAdmin: false
             }
         },
         created() {
             var userid = this.$store.getters.getUserInfo.userid;
             var role = this.$store.getters.getUserInfo.userRole;
-            console.log("role:"+JSON.stringify(role[0]));
-            if(role[0].roleName=="ADMIN"){
-                this.isAdmin=false;
-            }else{
+            console.log("role:" + JSON.stringify(role[0]));
+            if (role[0].roleName == "ADMIN") {
+                this.isAdmin = false;
+            } else {
                 this.isAdmin = true;
             }
 
@@ -87,22 +88,23 @@
                 //     .catch(function (err) {
                 //         console.log(err)
                 //     })
-                this.axios.get(config.goodsList,{
-                    params:{
+                this.axios.get(config.goodsList, {
+                    params: {
                         userid: userid,
                         pageItems: this.pageitems,
                         currentPage: this.currentPage
                     }
                 })
-                .then((response=>{
-                     this.goodslistData = response.data.goods;
-                     this.total = response.data.count;
-                     console.log("count:"+this.total);
-                }))
-                .catch(function(err){
-                    console.log(err);
-                })
-                
+                    .then((response => {
+                        this.goodslistData = response.data.goods;
+                        this.total = response.data.count;
+                        console.log("count:" + this.total);
+                        console.log("goodslistData:" + this.goodslistData);
+                    }))
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+
 
             },
             getSupplierList(userid) {
@@ -126,13 +128,32 @@
                 this.$store.commit('setGoodsDialogStatus', true);
 
             },
-            deleteGoods(val){
+            deleteGoods(val) {
                 this.goodsRow = val;
-                this.axios.delete(config.goodsList+'/'+this.goodsRow._id )
-                          .then((response)=>{
-                              console.log(response);
-                              this.getGoodsList(this.$store.getters.getUserInfo.userid);
-                          })
+
+                this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.axios.delete(config.goodsList + '/' + this.goodsRow._id)
+                        .then((response) => {
+                            console.log(response);
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getGoodsList(this.$store.getters.getUserInfo.userid);
+                        })
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+
+
 
             },
             ondialogclose() {

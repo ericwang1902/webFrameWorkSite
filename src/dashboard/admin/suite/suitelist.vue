@@ -104,6 +104,7 @@
                         this.suitelist = response.data.suites;
                         this.total = response.data.count;
                         console.log("count:" + this.total);
+                        console.log("suitelist:" + JSON.stringify(this.suitelist));
                     }))
                     .catch(function (err) {
                         console.log(err);
