@@ -31,6 +31,9 @@
                  </el-table-column>
                   <el-table-column label="区县" prop="district.district" >
                  </el-table-column>
+                 <el-table-column label="微信" prop="openid" >
+                     
+                 </el-table-column>
                  <el-table-column  width="150" label="操作">
                         <template scope="props">
                             <el-button type="text" @click="modifyUser(props.row)" size="small">编辑</el-button>
@@ -83,6 +86,14 @@ export default {
         this.getDistrictList();
     },
     methods: {
+        hasopenid:function(row){
+            if(row.openid){
+                return true;
+            }else
+            {
+                return false;
+            }
+        },
         //获取后台用户信息
         getUsers:function(userid){
             this.axios.get(config.GetUserInfo + '?userid=' + userid)
