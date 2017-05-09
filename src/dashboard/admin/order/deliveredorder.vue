@@ -48,7 +48,7 @@
             </el-table>
             <!--分页-->
             <div class="block">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-size="pageitems"
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="pageitems"
                     layout="prev, pager, next, jumper" :total="total">
                 </el-pagination>
             </div>
@@ -81,22 +81,22 @@
             getorderlist() {
                 var userid = this.$store.getters.getUserInfo.userid;
                 var params = {};
+                console.log(this.currentPage)
 
-                var params = {};
                 if (this.selectedregion == 'all') {
                     params = {
                         userid: userid,
                         pageItems: this.pageitems,
-                        currentPage: this.currentpage,
-                        delivered: 1
+                        delivered: 1,
+                        currentPage: this.currentPage
                     }
                 } else {
                     params = {
                         userid: userid,
                         region: this.selectedregion,
                         pageItems: this.pageitems,
-                        currentPage: this.currentpage,
-                        delivered: 1
+                        delivered: 1,
+                        currentPage: this.currentPage
                     }
                 }
 
@@ -159,7 +159,8 @@
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
-                this.currentPage = val;
+                this.currentPage = Number(val);
+                console.log(this.currentPage);
                 this.getorderlist();
                 console.log(`当前页: ${val}`);
             }
